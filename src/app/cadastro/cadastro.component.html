@@ -1,0 +1,39 @@
+<div id="cadastro-container">
+  <div id="cadastro-card">
+    <h1 id="cadastro-title">Cadastre-se</h1>
+
+    <form (ngSubmit)="cadastrar()" id="cadastro-form">
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <input id="name" type="text" [(ngModel)]="name" name="name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" [(ngModel)]="email" name="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input id="password" type="password" [(ngModel)]="password" name="password" required />
+      </div>
+
+      <div class="form-group">
+        <label for="dataNascimento">Data de Nascimento</label>
+        <input id="dataNascimento" type="date" [(ngModel)]="dataNascimento" name="dataNascimento" required />
+      </div>
+
+      <div class="form-group">
+        <label for="tipoPerfil">Tipo de Perfil</label>
+        <input id="tipoPerfil" type="text" [(ngModel)]="tipoPerfil" name="tipoPerfil" required />
+      </div>
+
+      <button type="submit" [disabled]="loading" id="cadastro-button">
+        {{ loading ? 'Processando...' : 'Cadastrar' }}
+      </button>
+    </form>
+
+    <div *ngIf="errorMessage" id="error-message">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" id="success-message">{{ successMessage }}</div>
+  </div>
+</div>
