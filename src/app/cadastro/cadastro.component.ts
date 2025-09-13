@@ -22,7 +22,7 @@ export class CadastroComponent {
   password = '';
   name = '';
   dataNascimento: string = '';
-  tipoPerfil: string = 'ALUNO';
+  perfil: string = 'ALUNO';
   errorMessage: string | null = null;
   successMessage: string | null = null;
   loading = false;
@@ -42,7 +42,7 @@ export class CadastroComponent {
         password: this.password,
         name: this.name,
         dataNascimento: this.dataNascimento,
-        tipoPerfil: this.tipoPerfil
+        perfil: this.perfil 
     };
 
     this.authService.register(userData).pipe(
@@ -58,4 +58,4 @@ export class CadastroComponent {
       }
     });
   }
-}
+} 

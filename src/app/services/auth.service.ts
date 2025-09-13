@@ -9,7 +9,7 @@ export interface RegisterData {
   password: string;
   name: string;
   dataNascimento: string;
-  tipoPerfil: string;
+  perfil: string;
 }
 
 @Injectable({
@@ -43,7 +43,7 @@ export class AuthService {
             nome: userData.name,
             email: userData.email,
             dataNascimento: userData.dataNascimento,
-            tipoPerfil: userData.tipoPerfil
+            perfil: userData.perfil
           };
           return this.http.post(this.apiUrl, requestBody, { headers });
         }),
@@ -88,7 +88,7 @@ export class AuthService {
                 nome: user.displayName || 'Nome não fornecido',
                 email: user.email,
                 dataNascimento: '1900-01-01', // Pode deixar um valor padrão ou criar uma etapa para o usuário preencher depois
-                tipoPerfil: 'ALUNO'
+                perfil: 'ALUNO'
               };
               return this.http.post(this.apiUrl, requestBody, { headers });
             })
