@@ -53,10 +53,11 @@ label {
 }
 
 /* Inputs */
-input {
+input, select {
   width: 100%;
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Garante a mesma fonte */
   background-color: #2e2e2e;
   color: #ffffff;
   border: 1px solid #444;
@@ -66,11 +67,7 @@ input {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-input::placeholder {
-  color: #aaaaaa;
-}
-
-input:focus {
+input:focus, select:focus {
   border-color: #9f3cd4;
   box-shadow: 0 0 0 2px rgba(159, 60, 212, 0.3);
 }
