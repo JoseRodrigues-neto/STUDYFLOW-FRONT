@@ -1,54 +1,51 @@
-<div id="login-container">
-  <div id="login-card">
-    <h1 id="login-title">Login</h1>
+<div id="auth-container">
+  <div id="auth-card">
 
-    <form (ngSubmit)="login()" id="login-form">
+    <div id="logo-container">
+      <img src="logo_studyflowsgv.svg" alt="Logo StudyFlow" id="logo-img" />
+    </div>
+
+    <h1 id="auth-title">Faça o login em sua conta</h1>
+
+    <form (ngSubmit)="login()" #form="ngForm" id="auth-form">
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email" class="sr-only">E-mail</label>
         <input
           id="email"
           type="email"
           [(ngModel)]="email"
           name="email"
           required
-          placeholder="seuemail@exemplo.com"
-        />
+          placeholder="E-mail" />
       </div>
 
       <div class="form-group">
-        <label for="password">Senha</label>
+        <label for="password" class="sr-only">Senha</label>
         <input
           id="password"
           type="password"
           [(ngModel)]="password"
           name="password"
           required
-          placeholder="********"
-        />
-        <div class="forgot-password-container">
-          <a routerLink="/forgot-password" id="forgot-link">Esqueceu sua senha?</a>
-        </div>
+          placeholder="Senha" />
+        <a routerLink="/forgot-password" id="forgot-link">Esqueceu a senha?</a>
       </div>
 
-      <button type="submit" [disabled]="loading" id="login-button">
+      <button type="submit" [disabled]="loading || form.invalid" id="auth-button">
         {{ loading ? 'Entrando...' : 'Entrar' }}
       </button>
     </form>
 
     <div class="separator">OU</div>
-
     <button (click)="loginComGoogle()" id="google-login-button">
       Entrar com o Google
     </button>
-    <div *ngIf="errorMessage" id="error-message">
-      {{ errorMessage }}
-    </div>
-    <div *ngIf="successMessage" id="success-message">
-      {{ successMessage }}
-    </div>
+    
+    <div *ngIf="errorMessage" id="error-message">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" id="success-message">{{ successMessage }}</div>
 
-    <div id="login-footer">
-      <a routerLink="/cadastro" id="signup-link">Não tem uma conta? Cadastre-se</a>
+    <div id="signup-link-container">
+        <span>Não possui uma conta?</span> <a routerLink="/cadastro">Crie uma conta</a>
     </div>
     
   </div>

@@ -1,0 +1,107 @@
+.status-card {
+  background-color: #24283b;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #414868;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;.status-card {
+  background-color: #24283b;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #414868;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #c0caf5;
+  margin-bottom: 1.5rem;
+}
+
+.status-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.status-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #a9b1d6;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #16161e;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease-in-out;
+}
+
+/* Cores das barras de progresso */
+.progress-blue {
+  background-color: #7aa2f7;
+}
+
+.progress-green {
+  background-color: #9ece6a;
+}
+
+.progress-yellow {
+  background-color: #e0af68;
+}
+  color: #c0caf5;
+  margin-bottom: 1.5rem;
+}
+
+.status-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.status-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #a9b1d6;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #16161e;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease-in-out;
+}
+
+/* Cores das barras de progresso */
+.progress-blue {
+  background-color: #7aa2f7;
+}
+
+.progress-green {
+  background-color: #9ece6a;
+}
+
+.progress-yellow {
+  background-color: #e0af68;
+}

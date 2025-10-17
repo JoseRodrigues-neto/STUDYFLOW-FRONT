@@ -2,27 +2,29 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, RegisterData } from '../services/auth.service';
 import { finalize } from 'rxjs/operators';
-
- 
+// Remova NgForm se não for mais usado em nenhum outro lugar
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-cadastro',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    RouterLink,
   ],
-  templateUrl: './cadastro.component.html',  
+  templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })
 export class CadastroComponent {
   email = '';
   password = '';
+  confirmPassword = '';
   name = '';
   dataNascimento: string = '';
-  perfil: string = 'ALUNO';
+  perfil: string = ''; // Deixei vazio para forçar o usuário a selecionar
   errorMessage: string | null = null;
   successMessage: string | null = null;
   loading = false;
@@ -32,7 +34,14 @@ export class CadastroComponent {
     private router: Router
   ) {}
 
-  cadastrar() {
+ 
+  cadastrar(form: NgForm) {
+  
+    if (this.password !== this.confirmPassword) {
+      this.errorMessage = 'As senhas não coincidem. Verifique novamente.';
+      return;
+    }
+    
     this.errorMessage = null;
     this.successMessage = null;
     this.loading = true;
@@ -42,7 +51,7 @@ export class CadastroComponent {
         password: this.password,
         name: this.name,
         dataNascimento: this.dataNascimento,
-        perfil: this.perfil 
+        perfil: this.perfil
     };
 
     this.authService.register(userData).pipe(
@@ -54,8 +63,9 @@ export class CadastroComponent {
       },
       error: (error) => {
         console.error('Erro no processo de cadastro:', error);
-        this.errorMessage = 'Ocorreu um erro. Verifique os dados e tente novamente.';
+        // Esta mensagem de erro agora é para erros do servidor (ex: e-mail já existe)
+        this.errorMessage = error.error?.message || 'Ocorreu um erro. Verifique os dados e tente novamente.';
       }
     });
   }
-} 
+}

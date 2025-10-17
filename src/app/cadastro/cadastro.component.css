@@ -1,121 +1,158 @@
-/* Reset básico */
-html, body {
-  height: 100%;
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #2a005f; /* Roxo escuro */
-  color: #f3f3f3;
-}
+/* Importando uma fonte do Google Fonts para um visual mais moderno (Opcional) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-/* Container principal */
-#cadastro-container {
+/* :host é o seletor para o próprio componente Angular */
+:host {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-height: 100vh;
-  padding: 1rem;
+  background-color: #1e1e24; /* Fundo cinza escuro */
+  font-family: 'Inter', sans-serif;
+
+/* background-image: url('/book.png'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;   */
+  
 }
 
-/* Card de cadastro */
-#cadastro-card {
+#auth-card {
+  background-color: transparent; 
+  box-shadow: none; 
+  padding: 25px;  
+  border-radius: 12px;
   width: 100%;
-  max-width: 28rem;
-  background-color: #1a1a1a; /* Preto suave */
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(106, 13, 173, 0.4);
-  color: #e5e5e5;
-}
-
-/* Título */
-#cadastro-title {
-  font-size: 2rem;
-  font-weight: 700;
+   width: 450px;
   text-align: center;
-  color: #d4d4d4;
-  margin-bottom: 1.5rem;
 }
 
-/* Formulário */
-#cadastro-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+#logo-container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #8097FF;
+  border-radius: 16px;
+  padding: 15px;
+  margin-bottom: 20px; /* Reduzido de 25px */
 }
 
-/* Labels */
-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #cfcfcf;
-  display: block;
-  margin-bottom: 0.25rem;
-}
-
-/* Inputs */
-input, select {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Garante a mesma fonte */
-  background-color: #2e2e2e;
+#auth-title {
   color: #ffffff;
-  border: 1px solid #444;
-  border-radius: 0.5rem;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
-  outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 25px; /* Reduzido de 30px */
 }
 
-input:focus, select:focus {
-  border-color: #9f3cd4;
-  box-shadow: 0 0 0 2px rgba(159, 60, 212, 0.3);
+#logo-img {
+  width: 80px; /* Ajuste o tamanho da sua logo conforme necessário */
+  height: auto;
+  
+
+}
+ 
+.form-group {
+  margin-bottom: 12px; /* Reduzido de 15px */
 }
 
-/* Botão */
-#cadastro-button { 
+/* Estilo unificado para inputs e select */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+select {
   width: 100%;
-  padding: 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border-radius: 0.5rem;
-  background-color: #6a0dad;
-  color: white;
+  padding: 12px; /* Reduzido de 15px */
+  background-color: #ffffff;
   border: none;
-  box-shadow: 0 4px 10px rgba(106, 13, 173, 0.4);
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* Estilo para o placeholder dos inputs */
+::placeholder {
+  color: #a0a0a0;
+}
+
+/* Garante que o select tenha uma aparência consistente */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 1em;
+}
+#auth-button {
+  width: 100%;
+  padding: 12px;  
+  border: none;
+  border-radius: 8px;
+  background-color: #8097FF;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;  
 }
 
-#cadastro-button:hover {
-  background-color: #7e22ce;
-  transform: scale(1.02);
+#auth-button:hover:not(:disabled) {
+  background-color: #8097FF; /* Cor um pouco mais escura ao passar o mouse */
 }
 
-#cadastro-button:disabled {
-  opacity: 0.5;
+#auth-button:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
-/* Mensagens */
+#login-link {
+  margin-top: 20px; /* Reduzido de 25px */
+  color: #a0a0a0;
+  font-size: 14px;
+}
+
+#login-link a {
+  color: #8097FF; /* Cor azul-arroxeado para o link */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Estilos para mensagens de erro/sucesso */
+#error-message, #success-message {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
 #error-message {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  font-size: 0.875rem;
-  text-align: center;
-  color: #f87171;
-  background-color: #3b0a3b;
-  border: 1px solid #f87171;
-  border-radius: 0.5rem;
+  background-color: #ff4d4d20;
+  color: #ff4d4d;
 }
 
 #success-message {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  font-size: 0.875rem;
-  text-align: center;
-  color: #4ade80;
-  background-color: #142a14;
-  border: 1px solid #4ade80;
-  border-radius: 0.5rem;
+  background-color: #4caf5020;
+  color: #4caf50;
+}
+
+ 
+ /* Adicione no final do seu arquivo cadastro.component.css */
+
+.validation-error {
+  text-align: left; /* Alinha o texto à esquerda */
+  font-size: 13px;  /* Tamanho pequeno */
+  color: #ff4d4d;   /* Cor vermelha para o erro */
+  margin-top: -8px; /* Espaçamento negativo para ficar mais perto do campo */
+  margin-bottom: 12px; /* Espaço antes do próximo campo */
+  padding-left: 5px; /* Pequeno recuo */
 }

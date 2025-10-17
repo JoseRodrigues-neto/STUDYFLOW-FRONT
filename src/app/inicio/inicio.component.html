@@ -1,0 +1,24 @@
+<div class="page-container">
+  <header class="navbar">
+    <div class="logo">Study Flow</div>
+    <nav class="nav-links">
+      <a routerLink="/login" class="nav-button login-btn">Login</a>
+      <a routerLink="/cadastro" class="nav-button cadastro-btn">Cadastro</a>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="text-section">
+      <h1>Organize seus estudos e programe suas tarefas</h1>
+      <p>Menos procrastinação, mais resultados. Nossa plataforma ajuda você a criar uma rotina de estudos eficiente e a manter o foco no que realmente importa para o seu sucesso.</p>
+      
+      <form class="cta-form" (ngSubmit)="irParaCadastro()">
+        <input type="email" name="email" [(ngModel)]="email" placeholder="E-mail" required>
+        <button type="submit" class="cta-button">Cadastre-se agora!</button>
+      </form>
+    </div>
+    <div class="image-section">
+      <img src="imagen_inicio.svg" alt="Ilustração de pessoas organizando um calendário">
+    </div>
+  </main>
+</div>
