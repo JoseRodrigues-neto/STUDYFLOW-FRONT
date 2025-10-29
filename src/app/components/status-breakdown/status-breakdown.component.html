@@ -1,0 +1,14 @@
+<div class="status-card" *ngIf="data">
+  <h2 class="card-title">Distribuição de Atividades</h2>
+  <div class="status-content">
+    <div *ngFor="let item of items" class="status-item">
+      <div class="status-label">
+        <span>{{ item.label }}</span>
+        <span>{{ item.value }} / {{ data.totalAtividades }}</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" [ngClass]="item.class" [style.width.%]="calculateProgress(item.value)"></div>
+      </div>
+    </div>
+  </div>
+</div>

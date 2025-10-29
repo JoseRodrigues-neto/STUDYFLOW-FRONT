@@ -1,0 +1,162 @@
+:host {
+  display: block;
+  background-color: #f8f9fa; /* Um cinza muito claro, mais suave que o F1F1F1 */
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+}
+
+.page-container {
+  /* MUDANÇA 1: Limitamos a largura máxima para que o conteúdo não se estique demais em ecrãs grandes */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabeçalho */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #ffffff; /* Fundo branco para se destacar */
+  border-radius: 12px;
+  
+  /* MUDANÇA 2: Criamos a separação visual que você pediu */
+  margin-top: 1.5rem; /* Margem no topo */
+  margin-bottom: 2rem; /* Margem em baixo, separando do conteúdo principal */
+
+  /* MUDANÇA 3: Substituímos a borda por uma sombra suave, mais moderna */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.nav-button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px; /* Bordas um pouco mais arredondadas */
+  text-decoration: none;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.login-btn {
+  color: #495057;
+}
+
+.login-btn:hover {
+  background-color: #f1f3f5;
+  transform: translateY(-2px); /* Pequeno efeito de elevação */
+}
+
+.cadastro-btn {
+  background-color: #7950f2;
+  color: #fff;
+}
+
+.cadastro-btn:hover {
+  background-color: #6741d9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(121, 80, 242, 0.2);
+}
+
+/* Conteúdo Principal */
+.main-content {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 4rem; /* Aumentei o espaço entre texto e imagem */
+  padding: 2rem 0;
+}
+
+.text-section h1 {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #212529;
+  margin: 0 0 1.5rem 0;
+}
+
+.text-section p {
+  font-size: 1.1rem;
+  color: #6c757d;
+  line-height: 1.7;
+  margin: 0 0 2.5rem 0;
+}
+
+/* Formulário CTA */
+.cta-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cta-form input {
+  flex-grow: 1;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.cta-form input:focus {
+  outline: none;
+  border-color: #7950f2;
+  box-shadow: 0 0 0 2px rgba(121, 80, 242, 0.25);
+}
+
+.cta-button {
+  padding: 0.8rem 1.5rem;
+  background-color: #7950f2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.cta-button:hover {
+  background-color: #6741d9;
+  transform: translateY(-2px);
+}
+
+/* Secção da Imagem */
+.image-section img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Media Query para ecrãs menores */
+@media (max-width: 992px) {
+  .page-container {
+    padding: 0 1rem;
+  }
+  .navbar {
+    margin-top: 1rem;
+  }
+  .main-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 2rem;
+  }
+  .image-section {
+    order: -1;
+    margin-bottom: 2rem;
+  }
+  .cta-form {
+    justify-content: center;
+  }
+}

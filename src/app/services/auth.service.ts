@@ -101,4 +101,16 @@ export class AuthService {
       })
     );
   }
+  getIdToken(): Observable<string | null> {
+    return this.authState$.pipe(
+      switchMap(user => {
+        if (user) {
+          
+          return from(user.getIdToken());
+        } else {
+           return of(null);
+        }
+      })
+    );
+  }
 }

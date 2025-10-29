@@ -1,0 +1,47 @@
+
+:host {
+  
+  min-height: 100vh;
+  background-color: #2d2da2; /* Fundo cinza escuro da imagem */
+  
+}
+.dashboard-container {
+  padding: 2rem 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.dashboard-header p {
+  color: #737aa2;
+  margin-top: 0.5rem;
+  margin-bottom: 2.5rem;
+  font-size: 1rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.loading-shade, .error-shade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  gap: 1rem;
+}
+
+.error-shade {
+  color: #f7768e;
+  font-size: 1.2rem;
+}
