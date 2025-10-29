@@ -1,0 +1,38 @@
+.container {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.atividade-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.details {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+/* Cores para os status */
+.pendente { background-color: #f0ad4e; }
+.em_andamento { background-color: #0275d8; }
+.concluida { background-color: #5cb85c; }
+
+.loading, .no-data {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+}

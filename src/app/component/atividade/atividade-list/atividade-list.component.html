@@ -1,0 +1,25 @@
+<div class="container">
+  <h2>Lista de Atividades</h2>
+
+  <div *ngIf="isLoading" class="loading">
+    <p>Carregando atividades...</p>
+  </div>
+
+  <div *ngIf="!isLoading && atividades.length > 0">
+    <div *ngFor="let atividade of atividades" class="atividade-card">
+      <h3>{{ atividade.titulo }}</h3>
+      <p>{{ atividade.descricao }}</p>
+      <div class="details">
+        <span><strong>Início:</strong> {{ atividade.dataInicio | date: 'dd/MM/yyyy' }}</span>
+        <span><strong>Fim:</strong> {{ atividade.dataFim | date: 'dd/MM/yyyy' }}</span>
+        <span class="status-badge" [ngClass]="atividade.status.toLowerCase()">
+          {{ atividade.status }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && atividades.length === 0" class="no-data">
+    <p>Nenhuma atividade encontrada para este roadmap.</p>
+  </div>
+</div>
