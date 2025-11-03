@@ -4,12 +4,8 @@ import { finalize } from 'rxjs/operators';
 // Remova NgForm se não for mais usado em nenhum outro lugar
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-<<<<<<< HEAD
-import { FormsModule } from '@angular/forms';
-import { AuthService, RegisterData } from '../services/auth.service';
-=======
 import { FormsModule, NgForm } from '@angular/forms';
->>>>>>> c194a0a00a2d9b1e102c8bc4bae5c397a176eab2
+import { AuthService, RegisterData } from '../services/auth.service';
 
 @Component({
   selector: 'app-cadastro',

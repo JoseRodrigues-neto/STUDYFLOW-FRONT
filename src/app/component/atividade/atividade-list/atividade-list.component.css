@@ -1,38 +1,90 @@
-.container {
-  padding: 20px;
+.atividades-container {
+  color: #fff;
   font-family: sans-serif;
 }
 
-.atividade-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.header h1 {
+  font-size: 2em;
+  margin: 0;
 }
 
-.details {
+.header p {
+  color: #aaa;
+  margin-top: 5px;
+}
+
+.add-task-input {
   display: flex;
-  gap: 20px;
-  margin-top: 10px;
-  font-size: 0.9em;
-  color: #555;
+  align-items: center;
+  background-color: #252526;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin: 20px 0;
 }
 
-.status-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-weight: bold;
+.add-task-input span {
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
+.add-task-input input {
+  flex-grow: 1;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1em;
+}
+
+.add-task-input input:focus {
+  outline: none;
+}
+
+.add-task-input button {
+  background-color: #007acc;
   color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-/* Cores para os status */
-.pendente { background-color: #f0ad4e; }
-.em_andamento { background-color: #0275d8; }
-.concluida { background-color: #5cb85c; }
+.task-list {
+  margin-top: 20px;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #252526;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border-left: 3px solid transparent; /* Para indicar seleção no futuro */
+}
+
+.task-item:hover {
+  background-color: #3e3e42;
+}
+
+.task-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1em;
+}
+
+.task-content p {
+  margin: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+
+.task-actions .star-icon {
+  font-size: 1.5em;
+  cursor: pointer;
+}
 
 .loading, .no-data {
   text-align: center;
   color: #888;
-  padding: 20px;
+  padding: 40px 0;
 }

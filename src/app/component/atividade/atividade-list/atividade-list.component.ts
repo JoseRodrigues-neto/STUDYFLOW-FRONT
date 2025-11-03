@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AtividadeService } from '../atividade.service'; // Importe o serviço
-import { Atividade } from '../../../model/atividade.model'; // Importe o model
+import { Atividade } from '../../../models/atividade.model'; // Importe o model
 import { CommonModule } from '@angular/common';
 
 @Component({
