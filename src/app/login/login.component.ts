@@ -50,6 +50,7 @@ export class LoginComponent {
       next: () => {
         this.successMessage = "Login realizado com sucesso!";
          localStorage.setItem('sessionLoginTime', Date.now().toString());
+        this.router.navigate(['/app']);
       },
       error: (error) => {
         this.errorMessage = this.getFirebaseErrorMessage(error.code);
@@ -67,6 +68,7 @@ export class LoginComponent {
       next: () => {
         this.successMessage = "Login com Google realizado com sucesso!";
          localStorage.setItem('sessionLoginTime', Date.now().toString());
+        this.router.navigate(['/app']);
       },
       error: (error) => {
         console.error("Erro no login com Google:", error);
