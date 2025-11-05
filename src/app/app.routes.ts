@@ -12,4 +12,5 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
    { path: 'dashboard', component: DashboardComponent },
    { path: 'inicio', component: InicioComponent },
+   {   path: 'perfil', loadComponent: () => import('./usuario/perfil/perfil.component').then(m => m.PerfilComponent) },
 ];

@@ -1,0 +1,15 @@
+<h2 mat-dialog-title class="dialog-title-custom">{{ data.title }}</h2>
+
+<mat-dialog-content class="dialog-content-custom">
+  <p>{{ data.message }}</p>
+  <p *ngIf="data.secondaryMessage" [innerHTML]="data.secondaryMessage"></p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions-custom">
+  <button mat-button class="btn-cancel-custom" (click)="onCancel()">
+    {{ data.cancelText || 'Cancelar' }}
+  </button>
+  <button mat-button class="btn-confirm-custom" (click)="onConfirm()" cdkFocusInitial>
+    {{ data.confirmText || 'Desconectar' }}
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,88 @@
+:host {
+  display: block;
+}
+
+.dialog-title-custom {
+  font-size: 1.5rem; 
+  font-weight: 600;
+  color: #3e52ac; /* Azul claro (para o título ser legível) */
+  padding: 24px 24px 0px 24px; 
+  margin: 0;
+  text-align: left; 
+}
+
+.dialog-content-custom {
+  padding: 16px 24px 24px 24px; 
+  color: #5e659d; /* Seu azul secundário (para o parágrafo) */
+  font-size: 0.95rem;
+  line-height: 1.5; 
+}
+
+.dialog-content-custom p {
+  margin: 0;
+  padding-bottom: 0.5rem; 
+}
+
+.dialog-content-custom p:last-child {
+  padding-bottom: 0; 
+}
+
+.dialog-content-custom a {
+  color: #3E80FF; /* Seu azul vibrante (para o link) */
+  text-decoration: none; 
+  font-weight: 500;
+}
+
+.dialog-content-custom a:hover {
+  text-decoration: underline;
+}
+
+.dialog-actions-custom {
+  padding: 8px 24px 24px 24px; 
+  display: flex;
+  justify-content: flex-end; 
+  gap: 12px; 
+}
+
+/* Botão Cancelar (azul, sem fundo) */
+.btn-cancel-custom {
+  background: none;
+  border: none;
+  color: #3E80FF; /* Seu azul vibrante (para o botão) */
+  font-weight: 600; 
+  padding: 8px 16px; 
+  border-radius: 8px;
+  min-width: unset; 
+  line-height: 1.5; 
+  transition: background-color 0.2s ease;
+}
+
+.btn-cancel-custom:hover {
+  background-color: rgba(62, 128, 255, 0.1); 
+}
+
+/* Botão Confirmar/Desconectar (vermelho) */
+.btn-confirm-custom {
+  background-color: #FF3B5D; /* Seu vermelho */
+  color: #FFFFFF; /* Texto branco */
+  font-weight: 600; 
+  padding: 12px 24px; 
+  border-radius: 25px; 
+  min-width: 120px; 
+  transition: background-color 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.btn-confirm-custom:hover {
+  background-color: #e02f4a; /* Seu vermelho (hover) */
+}
+
+/* ESTA É A REGRA MAIS IMPORTANTE 
+  Aqui aplicamos o seu fundo preto azulado
+*/
+.dialog-custom-panel .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: #12226c; /* <-- SEU FUNDO PRETO AZULADO APLICADO AQUI */
+  color: #A0A9D3; /* Define a cor de texto padrão (o azul claro) */
+  border-radius: 12px; 
+  padding: 0; 
+}
