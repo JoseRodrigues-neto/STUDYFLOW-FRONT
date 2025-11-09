@@ -1,0 +1,189 @@
+<div *ngIf="loading" class="loading-container">
+  <p>Carregando dados do perfil...</p>
+</div>
+
+<div *ngIf="errorMessage && !loading" class="error-container">
+  <p>{{ errorMessage }}</p>
+  <button class="btn-primary" (click)="carregarDadosUsuario()">Tentar Novamente</button>
+</div>
+
+
+<div class="page-container" *ngIf="!loading && usuario">
+
+  <header class="header">
+    <div class="header-title">
+   <div class="header-icon-wrapper">
+          <img *ngIf="usuario.avatarUrl" 
+             [src]="usuario.avatarUrl" 
+             alt="Avatar do Usuário"
+             class="avatar-image-up">
+        
+        <mat-icon *ngIf="!usuario.avatarUrl">account_circle</mat-icon>
+     </div>
+      <div>
+        <h1>Meu Perfil</h1>
+        <p>Gerencie suas informações pessoais</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon">
+        <mat-icon>notifications</mat-icon>
+      </button>
+      <button class="btn-text-icon" (click)="sair()">
+        <mat-icon>logout</mat-icon>
+        <span>Sair</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="main-layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-profile">
+  <div class="avatar-wrapper"> 
+
+       <img *ngIf="usuario.avatarUrl"
+             [src]="usuario.avatarUrl" 
+             alt="Avatar do Usuário"
+             class="avatar-image">
+        
+        <mat-icon *ngIf="!usuario.avatarUrl" class="avatar-placeholder-icon">
+          account_circle
+        </mat-icon>
+ 
+       <button type="button" class="avatar-edit-btn" (click)="fileInput.click()">
+          <mat-icon>photo_camera</mat-icon>
+        </button>
+        
+ </div>
+        <div class="tag tag-user">
+          <mat-icon>shield</mat-icon>
+          <span>{{ usuario.perfil }}</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-button active" (click)="navigateTo('perfil')">
+          <mat-icon>person_outline</mat-icon>
+          <span>Perfil</span>
+        </button>
+        <button class="nav-button" (click)="navigateTo('configuracoes')">
+          <mat-icon>settings</mat-icon>
+          <span>Configurações</span>
+        </button>
+        <button class="nav-button" (click)="navigateTo('seguranca')">
+          <mat-icon>lock_outline</mat-icon>
+          <span>Segurança</span>
+        </button>
+      </nav>
+    </aside>
+
+    <main class="content-area">
+      
+      <form (ngSubmit)="salvarAlteracoes()">
+        <section class="content-section">
+          <div class="section-header">
+            <h2>Informações do Perfil</h2>
+            
+            <div class="edit-actions">
+              <button *ngIf="!isEditing" type="button" class="btn-primary" (click)="iniciarEdicao()">
+                <mat-icon>edit</mat-icon>
+                <span>Editar</span>
+              </button>
+
+              <button *ngIf="isEditing" type="button" class="btn-secondary" (click)="cancelarEdicao()" [disabled]="loadingSave">
+                <span>Cancelar</span>
+              </button>
+              <button *ngIf="isEditing" type="submit" class="btn-primary" [disabled]="loadingSave">
+                <mat-icon *ngIf="!loadingSave">save</mat-icon>
+                <span *ngIf="!loadingSave">Salvar</span>
+                <span *ngIf="loadingSave">Salvando...</span>
+              </button>
+            </div>
+          </div>
+          <p class="section-subheader">Suas informações pessoais e dados da conta</p>
+
+          <div *ngIf="errorMessage && isEditing" class="error-message-inline">
+            {{ errorMessage }}
+          </div>
+
+          <div class="info-grid">
+            
+            <div class="info-field">
+              <label for="nome">Nome Completo</label>
+              <div *ngIf="!isEditing" class="info-value">{{ usuario.nome }}</div>
+              <input *ngIf="isEditing" type="text" id="nome" class="info-input" 
+                     [(ngModel)]="formData.nome" name="nome">
+            </div>
+
+            <div class="info-field">
+              <label for="email">Email</label>
+              <div *ngIf="!isEditing" class="info-value">{{ usuario.email }}</div>
+              <input *ngIf="isEditing" type="email" id="email" class="info-input" 
+                     [(ngModel)]="formData.email" name="email">
+            </div>
+            
+            <div class="info-field">
+              <label>Função</label>
+              <div class="info-value">
+                <span class="tag tag-user-inline">{{ usuario.perfil }}</span>
+              </div>
+            </div>
+            <div class="info-field">
+              <label>Membro desde</label>
+              <div class="info-value">{{ formatarData(usuario.dataNascimento) }}</div>
+            </div>
+            <div class="info-field">
+              <label>Telefone</label>
+              <div class="info-value not-informed">Não informado</div>
+            </div>
+            <div class="info-field">
+              <label>Localização</label>
+              <div class="info-value not-informed">Não informado</div>
+            </div>
+          </div>
+        </section>
+      </form> 
+      
+      <section class="content-section">
+        <h2>Estatísticas da Conta</h2>
+        <div class="stats-grid">
+          <div class="stat-card blue">
+            <div class="stat-info">
+              <span class="stat-value">1</span>
+              <span class="stat-label">Projeto Ativo</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <mat-icon>person</mat-icon>
+            </div>
+          </div>
+         <div class="stat-card green">
+            <div class="stat-info">
+              <span class="stat-value"> dias </span>
+              <span class="stat-label">Dias de Uso</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <mat-icon>calendar_today</mat-icon>
+            </div>
+          </div>
+
+       <div class="stat-card purple">
+            <div class="stat-info">
+              <span class="stat-value">{{ tempoLogadoFormatado }}</span> 
+              <span class="stat-label">Tempo nesta Sessão</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <mat-icon>timer</mat-icon>
+            </div>
+          </div>
+          </div>
+      </section>
+
+    </main>
+  </div>
+</div><input 
+  type="file" 
+  hidden 
+  #fileInput 
+  (change)="onAvatarSelecionado($event)" 
+  accept="image/png, image/jpeg, image/gif">

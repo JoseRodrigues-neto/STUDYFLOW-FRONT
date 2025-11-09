@@ -1,0 +1,40 @@
+<div class="dialog-header-danger">
+  <mat-icon>warning</mat-icon>
+  <h2 mat-dialog-title>Você tem certeza?</h2>
+</div>
+
+<mat-dialog-content class="dialog-content-custom">
+  <p>
+    Esta ação é **permanente e irreversível**. 
+    Todos os seus dados, projetos e informações serão excluídos.
+  </p>
+  <p class="confirm-text">
+    Para confirmar a exclusão da conta associada a <strong>{{ data.email }}</strong>, 
+    por favor, digite sua senha:
+  </p>
+
+  <mat-form-field appearance="outline" class="password-field">
+    <mat-label>Digite sua senha</mat-label>
+    <input matInput 
+           [type]="hidePassword ? 'password' : 'text'" 
+           [(ngModel)]="password"
+           name="password"
+           cdkFocusInitial>
+    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+      <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions-custom">
+  <button mat-button class="btn-cancel-custom" (click)="onCancel()">
+    Cancelar
+  </button>
+  <button mat-button 
+          class="btn-danger-custom" 
+          (click)="onConfirm()"
+          [disabled]="!password">
+    Excluir Minha Conta
+  </button>
+</mat-dialog-actions>

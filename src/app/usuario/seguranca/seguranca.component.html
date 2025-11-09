@@ -1,0 +1,125 @@
+<!-- O layout principal é IDÊNTICO ao do perfil -->
+<div class="page-container">
+
+  <!-- 1. Header Superior -->
+  <header class="header">
+    <div class="header-title">
+      <!-- O ícone muda para "Segurança" -->
+      <div class="header-icon-wrapper">
+        <mat-icon>lock</mat-icon> 
+      </div>
+      <div>
+        <!-- O título muda -->
+        <h1>Segurança</h1>
+        <p>Gerencie suas senhas e segurança da conta</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon">
+        <mat-icon>notifications</mat-icon>
+      </button>
+      <button class="btn-text-icon" (click)="sair()">
+        <mat-icon>logout</mat-icon>
+        <span>Sair</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 2. Conteúdo Principal (Sidebar + Área de Conteúdo) -->
+  <div class="main-layout">
+
+    <!-- 2.1. Sidebar da Esquerda (Botão Ativo Mudou) -->
+    <aside class="sidebar">
+      
+      <!-- O perfil da sidebar (foto, etc.) pode ser removido ou 
+           mantido. Vou manter por consistência. -->
+      <div class="sidebar-profile">
+       <div class="avatar-wrapper">
+          
+          <img [src]="usuario?.avatarUrl || 'https://i.imgur.com/k2p6GBD.png'" 
+               alt="Avatar" 
+               class="avatar-image">
+        </div>
+        <div class="tag tag-user">
+          <mat-icon>shield</mat-icon>
+          <span>{{ usuario?.perfil }}</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- Perfil agora está INATIVO -->
+        <button class="nav-button" (click)="navigateTo('perfil')">
+          <mat-icon>person_outline</mat-icon>
+          <span>Perfil</span>
+        </button>
+        <button class="nav-button" (click)="navigateTo('configuracoes')">
+          <mat-icon>settings</mat-icon>
+          <span>Configurações</span>
+        </button>
+        <!-- Segurança agora está ATIVO -->
+        <button class="nav-button active" (click)="navigateTo('seguranca')">
+          <mat-icon>lock_outline</mat-icon>
+          <span>Segurança</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- 2.2. Área de Conteúdo (Direita) - NOVO CONTEÚDO -->
+    <main class="content-area">
+      
+      <!-- Seção: Redefinir Senha -->
+      <form (ngSubmit)="enviarEmailRedefinicao()">
+        <section class="content-section">
+          <div class="section-header">
+            <h2>Alterar Senha</h2>
+            <!-- O botão de submit do formulário -->
+            <button type="submit" class="btn-primary" [disabled]="loading">
+              <span *ngIf="!loading">Enviar Email</span>
+              <span *ngIf="loading">Enviando...</span>
+            </button>
+          </div>
+          <p class="section-subheader">
+            Enviaremos um link seguro para o seu email para você criar uma nova senha.
+          </p>
+
+          <!-- Mensagens de Sucesso ou Erro -->
+          <div *ngIf="successMessage" class="success-message-inline">
+            {{ successMessage }}
+          </div>
+          <div *ngIf="errorMessage" class="error-message-inline">
+            {{ errorMessage }}
+          </div>
+
+          <!-- O Formulário em si -->
+          <div class="info-grid" style="grid-template-columns: 1fr;">
+            <div class="info-field">
+              <label for="email">Seu Email de Login</label>
+              <!-- Usamos o estilo .info-input que já existe no CSS do perfil -->
+              <input type="email" id="email" class="info-input" 
+                     [(ngModel)]="email" name="email"
+                     placeholder="seuemail@provedor.com"
+                     [disabled]="true"> <!-- Desabilitado para o usuário não mudar -->
+            </div>
+          </div>
+
+        </section>
+      </form> 
+
+      <!-- Seção: Deletar Conta (Placeholder) -->
+      <section class="content-section">
+        <h2>Excluir Conta</h2>
+        <p class="section-subheader">
+          A exclusão da sua conta é permanente e não pode ser revertida.
+        </p>
+        <button type="button" 
+                class="btn-danger"
+                (click)="abrirDialogExclusao()"
+                [disabled]="loading">
+      <mat-icon>delete_forever</mat-icon>
+       <span>Excluir minha conta permanentemente</span>
+      </button>
+      </section>
+
+    </main>
+  </div>
+</div>

@@ -1,0 +1,107 @@
+/* --- Estilos base (do tema escuro) --- */
+:host {
+  --dialog-bg: #12226c; /* Fundo preto azulado */
+  --dialog-text-primary: #A0A9D3;
+  --dialog-text-secondary: #5e659d;
+  --dialog-text-accent: #3E80FF;
+  --btn-cancel-text: #3E80FF;
+  --btn-danger-bg: #D32F2F; /* Vermelho Perigo */
+  --btn-danger-bg-hover: #B71C1C; /* Vermelho Perigo (Hover) */
+}
+
+/* Painel (vem do CSS global ou do componente que chama) */
+:host-context(.dialog-custom-panel) .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: var(--dialog-bg);
+  color: var(--dialog-text-primary);
+  border-radius: 12px;
+  padding: 0;
+}
+
+/* --- Estilos do Componente --- */
+
+.dialog-header-danger {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--btn-danger-bg); /* Título em vermelho */
+  padding: 24px 24px 0px 24px;
+}
+.dialog-header-danger mat-icon {
+  font-size: 1.75rem;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.dialog-header-danger h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.dialog-content-custom {
+  padding: 16px 24px 24px 24px;
+  color: var(--dialog-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.dialog-content-custom p {
+  margin: 0;
+  padding-bottom: 0.5rem;
+}
+.confirm-text {
+  margin-top: 1rem;
+  color: var(--dialog-text-primary);
+}
+.confirm-text strong {
+  color: var(--dialog-text-accent);
+}
+
+.dialog-actions-custom {
+  padding: 8px 24px 24px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Campo de Senha */
+.password-field {
+  width: 100%;
+  margin-top: 1rem;
+}
+/* Altera a cor dos elementos do Form Field para o tema escuro */
+:host-context(.dialog-custom-panel) .password-field {
+  --mdc-outlined-text-field-label-text-color: var(--dialog-text-secondary);
+  --mdc-outlined-text-field-input-text-color: var(--dialog-text-primary);
+  --mdc-outlined-text-field-outline-color: var(--dialog-text-secondary);
+  --mdc-outlined-text-field-hover-outline-color: var(--dialog-text-primary);
+  --mdc-outlined-text-field-focus-outline-color: var(--dialog-text-accent);
+  --mdc-icon-button-icon-color: var(--dialog-text-secondary);
+}
+
+/* Botões */
+.btn-cancel-custom {
+  background: none;
+  border: none;
+  color: var(--btn-cancel-text);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+.btn-cancel-custom:hover {
+  background-color: rgba(62, 128, 255, 0.1);
+}
+
+.btn-danger-custom {
+  background-color: var(--btn-danger-bg);
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 25px;
+}
+.btn-danger-custom:hover {
+  background-color: var(--btn-danger-bg-hover);
+}
+.btn-danger-custom:disabled {
+  background-color: var(--dialog-text-secondary);
+  opacity: 0.5;
+  color: var(--dialog-bg);
+}

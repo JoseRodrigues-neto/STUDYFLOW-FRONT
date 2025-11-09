@@ -6,6 +6,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +14,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+
+    provideStorage(() => getStorage())
   ]
 };

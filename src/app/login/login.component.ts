@@ -49,6 +49,7 @@ export class LoginComponent {
     ).subscribe({
       next: () => {
         this.successMessage = "Login realizado com sucesso!";
+         localStorage.setItem('sessionLoginTime', Date.now().toString());
         this.router.navigate(['/app']);
       },
       error: (error) => {
@@ -66,6 +67,7 @@ export class LoginComponent {
     ).subscribe({
       next: () => {
         this.successMessage = "Login com Google realizado com sucesso!";
+         localStorage.setItem('sessionLoginTime', Date.now().toString());
         this.router.navigate(['/app']);
       },
       error: (error) => {
