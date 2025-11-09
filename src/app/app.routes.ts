@@ -10,6 +10,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LayoutComponent } from './components/layout/layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AtividadeListComponent } from './component/atividade/atividade-list/atividade-list.component';
+import { AnotacaoListComponent } from './component/anotacao/anotacao-list/anotacao-list.component';
 
 export const routes: Routes = [
 
@@ -31,6 +32,10 @@ export const routes: Routes = [
       { 
         path: 'atividades',
         component: AtividadeListComponent 
+      },
+      {
+        path: 'anotacoes',
+        component: AnotacaoListComponent
       },
       { 
         path: '', 

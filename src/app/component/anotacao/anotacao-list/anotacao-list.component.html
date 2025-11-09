@@ -1,0 +1,33 @@
+<div class="anotacaos-page-container">
+  <div class="list-wrapper">
+    <div class="add-task-input" (click)="abrirPainelDetalhes()">
+      <span>+</span>
+      <input type="text" placeholder="Adicionar uma tarefa" readonly>
+    </div>
+
+    <div *ngIf="!isLoading && anotacaos.length > 0" class="task-list">
+      
+      <div *ngFor="let anotacao of anotacaos" class="task-item" (click)="abrirPainelDetalhes(anotacao)">
+        <div class="task-content">
+          <p>{{ anotacao.conteudo }}</p>
+        </div>
+        <div class="task-actions">
+          <span class="star-icon">☆</span>
+        </div>
+      </div>
+
+    </div>
+    
+    </div>
+
+  <div class="detail-wrapper" *ngIf="isDetailPanelVisible">
+    
+    <app-anotacao-detail 
+      [anotacaoParaEditar]="anotacaoSelecionada"
+      [atividadeId]="atividadeId" 
+      (close)="fecharPainelDetalhes()"
+      (save)="handleSave()">
+    </app-anotacao-detail>
+
+  </div>
+</div>
