@@ -62,12 +62,22 @@
 .header-icon-wrapper {
   background-color: rgba(62, 128, 255, 0.1);
   color: var(--accent-blue);
-  padding: 0.75rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  width: 50px;  
+  height: 50px;
 }
+
+.header-icon-wrapper .avatar-image-up {
+  width: 100%; 
+  height: 100%;
+  border-radius: 50%; 
+  object-fit: cover; 
+}
+
 .header-title h1 {
   font-size: 1.5rem;
   font-weight: 600;
@@ -128,6 +138,11 @@
 }
 .avatar-wrapper {
   position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .avatar-wrapper img {
   width: 80px;
@@ -151,7 +166,34 @@
   justify-content: center;
   cursor: pointer;
 }
-.avatar-edit-btn mat-icon { font-size: 16px; }
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;         /* deixa a imagem redonda */
+  object-fit: cover;          /* garante que a imagem se ajuste sem distorcer */
+  border: 3px solid #3E80FF;  /* cor e espessura da borda */
+}
+.avatar-edit-btn:hover {
+  background-color: var(--accent-blue-hover);
+  transform: scale(1.1);
+}
+.avatar-placeholder-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-blue);
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px; /* tamanho proporcional dentro do círculo */
+}
+.avatar-edit-btn mat-icon {
+   font-size: 16px;
+  width: 16px;       /* Força a largura do ícone */
+  height: 16px;      /* Força a altura do ícone */
+  line-height: 19px; }
 
 .tag {
   display: inline-flex;

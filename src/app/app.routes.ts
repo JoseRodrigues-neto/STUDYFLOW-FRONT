@@ -10,7 +10,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LayoutComponent } from './components/layout/layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AtividadeListComponent } from './component/atividade/atividade-list/atividade-list.component';
-
+import { SegurancaComponent } from './usuario/seguranca/seguranca.component';
+ 
 export const routes: Routes = [
 
 // ROTAS PÚBLICAS
@@ -20,14 +21,17 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
    { path: 'dashboard', component: DashboardComponent },
    { path: 'inicio', component: InicioComponent },
+   
    {   path: 'perfil', loadComponent: () => import('./usuario/perfil/perfil.component').then(m => m.PerfilComponent) },
-  // ROTAS DA APLICAÇÃO INTERNA
+
+   { path: 'seguranca', component: SegurancaComponent },
+   // ROTAS DA APLICAÇÃO INTERNA
   {
     path: 'app',
     component: LayoutComponent,
     children: [
       {
-        path: 'dashboard',
+        path: 'dashboard', 
         component: DashboardComponent 
       },
       { 

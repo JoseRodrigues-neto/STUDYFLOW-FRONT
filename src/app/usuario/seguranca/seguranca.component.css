@@ -1,0 +1,40 @@
+/* --- Importa o CSS do Perfil --- */
+/* Isso garante que o layout (sidebar, header, etc.) 
+   seja IDÊNTICO ao da página de perfil. */
+@import '../perfil/perfil.component.css';
+
+
+/* --- ESTILOS NOVOS SÓ PARA A PÁGINA DE SEGURANÇA --- */
+
+/* Mensagem de Sucesso (Verde) */
+.success-message-inline {
+  color: #c8e6c9; /* Verde claro (texto) */
+  background-color: rgba(102, 187, 106, 0.1); /* Verde (fundo) */
+  border: 1px solid rgba(102, 187, 106, 0.3); /* Verde (borda) */
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Botão de Perigo (Excluir Conta) */
+.btn-danger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #D32F2F; /* Vermelho */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.btn-danger:hover {
+  background-color: #B71C1C; /* Vermelho escuro */
+}
+.btn-danger mat-icon { font-size: 1.1rem; }

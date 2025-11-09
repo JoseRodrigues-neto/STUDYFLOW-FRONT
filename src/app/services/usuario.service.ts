@@ -72,4 +72,51 @@ export class UsuarioService {
       })
     );
   }
+
+  salvarAvatarUrl(url: string): Observable<Usuario> {
+    
+    return this.authService.getIdToken().pipe(
+      switchMap(idToken => {
+        if (!idToken) {
+          return throwError(() => new Error('Usuário não autenticado.'));
+        }
+
+        // Header simples para enviar texto
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${idToken}`,
+          'Content-Type': 'text/plain' // Envia como texto puro
+        });
+
+        // Chama o NOVO endpoint do Java
+        const endpointUrl = `${this.apiUrl}/avatar`; // -> /usuarios/avatar
+        
+        // Faz um PUT, enviando a URL no BODY
+        return this.http.put<Usuario>(endpointUrl, url, { headers });
+      }),
+      catchError(error => {
+        console.error("Erro ao salvar URL do avatar:", error);
+        return throwError(() => new Error('Falha ao salvar a URL da foto.'));
+      })
+    );
+  }
+
+  deleteSelf(): Observable<any> {
+    return this.authService.getIdToken().pipe(
+      switchMap(idToken => {
+        if (!idToken) {
+          return throwError(() => new Error('Usuário não autenticado.'));
+        }
+        const headers = new HttpHeaders({ 'Authorization': `Bearer ${idToken}` });
+        
+        // Chama o endpoint que você já tem no UsuarioResource.java
+        const url = `${this.apiUrl}/me`; 
+        
+        return this.http.delete(url, { headers });
+      }),
+      catchError(error => {
+        console.error("Erro ao deletar usuário no backend:", error);
+        return throwError(() => new Error('Falha ao deletar dados no backend.'));
+      })
+    );
+  }
 }

@@ -12,9 +12,14 @@
 
   <header class="header">
     <div class="header-title">
-      <div class="header-icon-wrapper">
-        <mat-icon>person</mat-icon>
-      </div>
+   <div class="header-icon-wrapper">
+          <img *ngIf="usuario.avatarUrl" 
+             [src]="usuario.avatarUrl" 
+             alt="Avatar do Usuário"
+             class="avatar-image-up">
+        
+        <mat-icon *ngIf="!usuario.avatarUrl">account_circle</mat-icon>
+     </div>
       <div>
         <h1>Meu Perfil</h1>
         <p>Gerencie suas informações pessoais</p>
@@ -35,12 +40,22 @@
 
     <aside class="sidebar">
       <div class="sidebar-profile">
-        <div class="avatar-wrapper">
-          <img src="https://i.imgur.com/k2p6GBD.png" alt="Avatar">
-          <button class="avatar-edit-btn">
-            <mat-icon>photo_camera</mat-icon>
-          </button>
-        </div>
+  <div class="avatar-wrapper"> 
+
+       <img *ngIf="usuario.avatarUrl"
+             [src]="usuario.avatarUrl" 
+             alt="Avatar do Usuário"
+             class="avatar-image">
+        
+        <mat-icon *ngIf="!usuario.avatarUrl" class="avatar-placeholder-icon">
+          account_circle
+        </mat-icon>
+ 
+       <button type="button" class="avatar-edit-btn" (click)="fileInput.click()">
+          <mat-icon>photo_camera</mat-icon>
+        </button>
+        
+ </div>
         <div class="tag tag-user">
           <mat-icon>shield</mat-icon>
           <span>{{ usuario.perfil }}</span>
@@ -144,7 +159,7 @@
           </div>
          <div class="stat-card green">
             <div class="stat-info">
-              <span class="stat-value">{{ usuario.diasDeUso }}</span>
+              <span class="stat-value"> dias </span>
               <span class="stat-label">Dias de Uso</span>
             </div>
             <div class="stat-icon-wrapper">
@@ -166,4 +181,9 @@
 
     </main>
   </div>
-</div>
+</div><input 
+  type="file" 
+  hidden 
+  #fileInput 
+  (change)="onAvatarSelecionado($event)" 
+  accept="image/png, image/jpeg, image/gif">

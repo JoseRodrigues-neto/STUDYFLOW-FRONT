@@ -1,8 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Auth, GoogleAuthProvider, User, UserCredential, authState, createUserWithEmailAndPassword, getAdditionalUserInfo, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
+import { Auth, EmailAuthProvider, GoogleAuthProvider, User, UserCredential, authState, createUserWithEmailAndPassword,
+   deleteUser,
+   getAdditionalUserInfo, reauthenticateWithCredential, sendPasswordResetEmail, signInWithEmailAndPassword,
+    signInWithPopup, signOut,} from '@angular/fire/auth';
 import { Observable, from, of, throwError } from 'rxjs'; 
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap, catchError, map } from 'rxjs/operators';
+import { UsuarioService } from './usuario.service';
 
 export interface RegisterData {
   email: string;
@@ -21,7 +25,8 @@ export class AuthService {
 
   constructor(
     private auth: Auth,
-    private http: HttpClient
+    private http: HttpClient,
+   private injector: Injector
   ) {
     this.authState$ = authState(this.auth);
   }
@@ -113,4 +118,48 @@ export class AuthService {
       })
     );
   }
+
+  reauthenticate(password: string): Observable<void> {
+    const user = this.auth.currentUser;
+    if (!user || !user.email) {
+      return throwError(() => new Error('Nenhum usuário logado.'));
+    }
+
+    // Cria a credencial de senha
+    const credential = EmailAuthProvider.credential(user.email, password);
+    
+    // Tenta re-autenticar
+    return from(reauthenticateWithCredential(user, credential)).pipe(
+      // --- ESTA É A CORREÇÃO ---
+      // 'reauthenticateWithCredential' retorna um UserCredential.
+      // Usamos 'map' para transformar esse retorno em 'void'.
+      map(() => void 0));
+  }
+
+  /**
+   * Exclui a conta do usuário em AMBOS os sistemas:
+   * 1. Primeiro no nosso Backend (PostgreSQL)
+   * 2. Depois no Firebase Authentication
+   */
+  deleteUserAccount(): Observable<any> {
+    const user = this.auth.currentUser;
+    if (!user) {
+      return throwError(() => new Error('Nenhum usuário para deletar.'));
+    }
+   const usuarioService = this.injector.get(UsuarioService);
+    // Fluxo encadeado:
+    return usuarioService.deleteSelf().pipe(
+      switchMap(() => {
+        // Sucesso no Backend, agora deleta do Firebase
+        return from(deleteUser(user));
+      }),
+      catchError(err => {
+        // Se a falha foi no backend, o Firebase não será chamado.
+        // Se a falha foi no Firebase, o backend já foi deletado.
+        console.error("Erro na exclusão da conta:", err);
+        return throwError(() => err); // Repassa o erro
+      })
+    );
+  }
 }
+

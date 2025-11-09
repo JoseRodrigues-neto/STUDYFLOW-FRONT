@@ -1,6 +1,7 @@
 import { Perfil } from './perfil.enum';
 
 export interface Usuario {
+  uid: string;
   id: string;
   nome: string;
   email: string;
@@ -14,4 +15,5 @@ export interface UsuarioRequest {
   email: string;
   dataNascimento: string;
   perfil: Perfil;
+  avatarUrl?: string;
 }
