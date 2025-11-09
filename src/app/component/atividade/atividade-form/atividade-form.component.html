@@ -1,0 +1,49 @@
+<div class="form-container">
+  <header class="form-header">
+    <h2>{{ isEditMode ? 'Editar Atividade' : 'Nova Atividade' }}</h2>
+    <span class="icon-close" (click)="onClose()">X</span>
+  </header>
+
+  <form [formGroup]="atividadeForm" (ngSubmit)="onSubmit()">
+    <main class="form-body">
+      
+      <div class="form-field">
+        <label for="titulo">Título</label>
+        <input id="titulo" type="text" formControlName="titulo" placeholder="Ex: Estudar Angular">
+      </div>
+
+      <div class="form-field">
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao" formControlName="descricao" placeholder="Ex: Fazer o capítulo 5 do curso..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="dataInicio">Data de Início</label>
+          <input id="dataInicio" type="date" formControlName="dataInicio">
+        </div>
+        <div class="form-field">
+          <label for="dataFim">Data de Término</label>
+          <input id="dataFim" type="date" formControlName="dataFim">
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="status">Status</label>
+        <select id="status" formControlName="status">
+          <option *ngFor="let status of statusOptions" [value]="status">
+            {{ status | titlecase }}
+          </option>
+        </select>
+      </div>
+
+    </main>
+
+    <footer class="form-footer">
+      <button type="button" class="button-secondary" (click)="onClose()">Cancelar</button>
+      <button type="submit" class="button-primary" [disabled]="atividadeForm.invalid">
+        {{ isEditMode ? 'Salvar Alterações' : 'Criar Atividade' }}
+      </button>
+    </footer>
+  </form>
+</div>

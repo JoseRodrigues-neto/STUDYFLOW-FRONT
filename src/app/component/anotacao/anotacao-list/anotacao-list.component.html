@@ -1,33 +1,47 @@
-<div class="anotacaos-page-container">
-  <div class="list-wrapper">
-    <div class="add-task-input" (click)="abrirPainelDetalhes()">
-      <span>+</span>
-      <input type="text" placeholder="Adicionar uma tarefa" readonly>
-    </div>
 
-    <div *ngIf="!isLoading && anotacaos.length > 0" class="task-list">
+<div class="anotacoes-container">
+  
+  <div class="new-anotacao-form">
+    <form [formGroup]="newAnotacaoForm" (ngSubmit)="createAnotacao()">
+      <textarea 
+        formControlName="conteudo" 
+        placeholder="Adicionar uma anotação..."
+        rows="3">
+      </textarea>
+      <button type="submit" [disabled]="newAnotacaoForm.invalid">Salvar</button>
+    </form>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <p>Carregando anotações...</p>
+  </div>
+
+  <div *ngIf="!isLoading && anotacoes.length > 0" class="anotacoes-list">
+    <div *ngFor="let anotacao of anotacoes" class="anotacao-card">
       
-      <div *ngFor="let anotacao of anotacaos" class="task-item" (click)="abrirPainelDetalhes(anotacao)">
-        <div class="task-content">
-          <p>{{ anotacao.conteudo }}</p>
-        </div>
-        <div class="task-actions">
-          <span class="star-icon">☆</span>
-        </div>
+      <div *ngIf="editingAnotacaoId === anotacao.id; else displayMode">
+        <form [formGroup]="editAnotacaoForm" (ngSubmit)="saveEdit(anotacao)" class="edit-form">
+          <textarea formControlName="conteudo" rows="4"></textarea>
+          <div class="edit-actions">
+            <button type="button" (click)="cancelEdit()">Cancelar</button>
+            <button type="submit" [disabled]="editAnotacaoForm.invalid">Salvar</button>
+          </div>
+        </form>
       </div>
 
-    </div>
-    
-    </div>
+      <ng-template #displayMode>
+        <p class="anotacao-conteudo">{{ anotacao.conteudo }}</p>
+        <div class="anotacao-actions">
+          <span class="icon-button" (click)="startEdit(anotacao)">✏️</span>
+          <span class="icon-button" (click)="deleteAnotacao(anotacao.id!)">🗑️</span>
+        </div>
+      </ng-template>
 
-  <div class="detail-wrapper" *ngIf="isDetailPanelVisible">
-    
-    <app-anotacao-detail 
-      [anotacaoParaEditar]="anotacaoSelecionada"
-      [atividadeId]="atividadeId" 
-      (close)="fecharPainelDetalhes()"
-      (save)="handleSave()">
-    </app-anotacao-detail>
-
+    </div>
   </div>
+
+  <div *ngIf="!isLoading && anotacoes.length === 0" class="no-data">
+    <p>Nenhuma anotação para esta atividade ainda.</p>
+  </div>
+
 </div>

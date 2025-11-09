@@ -15,7 +15,8 @@ export class AnotacaoService {
   constructor(private http: HttpClient) { }
 
   getAnotacoesByAtividade(atividadeId: number): Observable<Anotacao[]> {
-    const url = `${this.apiUrl}/atividade/${atividadeId}`; 
+    // Corrigido para o endpoint correto encontrado no backend
+    const url = `${this.apiUrl}/search/atividade/${atividadeId}`; 
     
     return this.http.get<Anotacao[]>(url).pipe(
       catchError(this.handleError)

@@ -1,68 +1,110 @@
-import { Component, OnInit, Input } from '@angular/core'; // Adicione Input
-import { AnotacaoService } from '../anotacao.service'; 
-import { Anotacao } from '../../../models/anotacao.model';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AnotacaoDetailComponent } from '../anotacao-detail/anotacao-detail.component';
+import { AnotacaoService } from '../anotacao.service';
+import { Anotacao } from '../../../models/anotacao.model';
 
 @Component({
   selector: 'app-anotacao-list',
   standalone: true,
   imports: [
     CommonModule,
-    AnotacaoDetailComponent
+    ReactiveFormsModule
   ],
   templateUrl: './anotacao-list.component.html',
   styleUrls: ['./anotacao-list.component.css']
 })
-export class AnotacaoListComponent implements OnInit {
+export class AnotacaoListComponent implements OnChanges {
 
-  @Input() atividadeId!: number; 
-  anotacaos: Anotacao[] = [];
+  @Input() atividadeId!: number;
+  
+  anotacoes: Anotacao[] = [];
   isLoading = true;
-  isDetailPanelVisible = false;
+  
+  newAnotacaoForm: FormGroup;
 
-  anotacaoSelecionada: Anotacao | null = null;
+  editAnotacaoForm: FormGroup;
+  editingAnotacaoId: number | null = null;
 
-  constructor(private anotacaoService: AnotacaoService) { }
+  constructor(
+    private anotacaoService: AnotacaoService,
+    private fb: FormBuilder
+  ) {
+    this.newAnotacaoForm = this.fb.group({
+      conteudo: ['', Validators.required]
+    });
 
-  ngOnInit(): void {
-    if (this.atividadeId) {
-      this.carregarAnotacaos(this.atividadeId);
-    } else {
-      console.error('Atividade ID não foi fornecido para AnotacaoListComponent!');
-      this.isLoading = false;
+    this.editAnotacaoForm = this.fb.group({
+      conteudo: ['', Validators.required]
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['atividadeId'] && this.atividadeId) {
+      this.carregarAnotacoes();
     }
   }
 
-  carregarAnotacaos(id: number): void {
+  carregarAnotacoes(): void {
     this.isLoading = true;
-    
-    this.anotacaoService.getAnotacoesByAtividade(id).subscribe({
-        next: (dados) => {
-          this.anotacaos = dados;
-          this.isLoading = false;
-        },
-        error: (erro) => {
-          console.error(`Erro ao buscar anotacaos para atividade ${id}:`, erro);
-          this.isLoading = false; 
-        }
+    this.anotacaoService.getAnotacoesByAtividade(this.atividadeId).subscribe({
+      next: (dados) => {
+        console.log(`Anotações recebidas para atividade ${this.atividadeId}:`, dados);
+        this.anotacoes = dados;
+        this.isLoading = false;
+      },
+      error: (erro) => {
+        console.error(`Erro ao buscar anotações para atividade ${this.atividadeId}:`, erro);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  createAnotacao(): void {
+    if (this.newAnotacaoForm.invalid) return;
+
+    const novaAnotacao = {
+      conteudo: this.newAnotacaoForm.value.conteudo,
+      atividadeId: this.atividadeId
+    };
+
+    this.anotacaoService.create(novaAnotacao as Anotacao).subscribe((anotacaoCriada) => {
+      this.anotacoes.push(anotacaoCriada);
+      this.newAnotacaoForm.reset();
+    });
+  }
+
+  startEdit(anotacao: Anotacao): void {
+    this.editingAnotacaoId = anotacao.id!;
+    this.editAnotacaoForm.setValue({ conteudo: anotacao.conteudo });
+  }
+
+  cancelEdit(): void {
+    this.editingAnotacaoId = null;
+  }
+
+  saveEdit(anotacao: Anotacao): void {
+    if (this.editAnotacaoForm.invalid) return;
+
+    const anotacaoAtualizada = {
+      ...anotacao,
+      conteudo: this.editAnotacaoForm.value.conteudo
+    };
+
+    this.anotacaoService.update(anotacaoAtualizada).subscribe((anotacaoRetornada) => {
+      const index = this.anotacoes.findIndex(a => a.id === anotacaoRetornada.id);
+      if (index !== -1) {
+        this.anotacoes[index] = anotacaoRetornada;
+      }
+      this.editingAnotacaoId = null;
+    });
+  }
+
+  deleteAnotacao(id: number): void {
+    if (confirm('Tem certeza que deseja excluir esta anotação?')) {
+      this.anotacaoService.delete(id).subscribe(() => {
+        this.anotacoes = this.anotacoes.filter(a => a.id !== id);
       });
-  }
-
-  abrirPainelDetalhes(anotacao: Anotacao | null = null): void {
-    this.anotacaoSelecionada = anotacao;
-    this.isDetailPanelVisible = true;
-  }
-
-  fecharPainelDetalhes(): void {
-    this.isDetailPanelVisible = false;
-    this.anotacaoSelecionada = null;
-  }
-
-  handleSave(): void {
-    this.fecharPainelDetalhes();
-    if (this.atividadeId) {
-      this.carregarAnotacaos(this.atividadeId);
     }
   }
 }

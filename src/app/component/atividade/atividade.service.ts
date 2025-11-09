@@ -30,8 +30,8 @@ export class AtividadeService {
     return this.http.put<Atividade>(`${this.apiUrl}/${atividade.id}`, atividade);
   }
 
-  delete(atividade: Atividade): Observable<any> {
-    return this.http.delete<Atividade>(`${this.apiUrl}/${atividade.id}`);
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 
   private handleError(error: any) {
