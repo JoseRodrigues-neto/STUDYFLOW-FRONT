@@ -1,0 +1,31 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Meus Roadmaps</h1>
+    <button (click)="createRoadmap()" class="btn-adicionar">
+      <span class="icon-add">+</span>
+      Novo Roadmap
+    </button>
+  </div>
+
+  <div class="roadmap-grid">
+    
+    <div *ngFor="let roadmap of roadmaps" class="roadmap-card" (click)="openRoadmap(roadmap.id)">
+      <div class="card-header">
+        <span class="folder-icon">📁</span>
+        <div class="actions">
+          <button class="btn-icon" (click)="editRoadmap(roadmap.id); $event.stopPropagation();">
+            ✏️
+          </button>
+          <button class="btn-icon btn-danger" (click)="deleteRoadmap(roadmap.id); $event.stopPropagation();">
+            🗑️
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>{{ roadmap.titulo }}</h3>
+        <p>{{ roadmap.descricao | slice:0:100 }}...</p>
+      </div>
+    </div>
+
+  </div>
+</div>

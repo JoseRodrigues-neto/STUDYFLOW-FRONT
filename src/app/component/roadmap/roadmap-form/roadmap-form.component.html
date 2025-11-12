@@ -1,0 +1,14 @@
+<div class="container">
+  <h1>{{ roadmapId ? 'Editar Roadmap' : 'Novo Roadmap' }}</h1>
+  <form [formGroup]="roadmapForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="titulo" class="form-label">Título</label>
+      <input type="text" id="titulo" formControlName="titulo" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label for="descricao" class="form-label">Descrição</label>
+      <textarea id="descricao" formControlName="descricao" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="roadmapForm.invalid">Salvar</button>
+  </form>
+</div>

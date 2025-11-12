@@ -1,0 +1,139 @@
+/* Container geral da página */
+.page-container {
+  padding: 20px 30px;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+/* Cabeçalho principal (Nome do Conteúdo) */
+.page-header h1 {
+  font-size: 2.2em;
+  margin: 0;
+  font-weight: 500;
+}
+.page-header p {
+  color: #aaa;
+  margin-top: 5px;
+}
+
+/* Secção de Atividades */
+.atividades-section {
+  margin-top: 30px;
+}
+
+/* Cabeçalho da secção (título, filtros, botão) */
+.atividades-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #444;
+  padding-bottom: 15px;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.header-left h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+.filtros {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.filtros span {
+  color: #aaa;
+  font-size: 0.9em;
+}
+
+/* Botões de filtro */
+.btn-filtro {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.btn-filtro:hover {
+  background-color: #444;
+}
+
+/* Botão de Adicionar Atividade */
+.btn-adicionar {
+  background-color: #3e3e42;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-adicionar .icon-add {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #979CF9; /* Cor da sua logo! */
+}
+.btn-adicionar:hover {
+  background-color: #555;
+}
+
+/* Lista de Atividades */
+.atividades-list {
+  margin-top: 20px;
+}
+
+/* Item da tarefa (copiado e adaptado do seu AtividadeList) */
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #252526;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border: 1px solid #444;
+}
+.task-item:hover {
+  background-color: #3e3e42;
+}
+.task-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1em;
+}
+.task-content p {
+  margin: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}
+.task-actions .star-icon {
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #aaa;
+}
+.empty-list {
+  color: #888;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Rodapé da secção */
+.atividades-footer {
+  margin-top: 20px;
+}
+.btn-secundario {
+  background-color: #252526;
+  border: 1px solid #555;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-secundario:hover {
+  background-color: #333;
+}

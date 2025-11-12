@@ -1,9 +1,10 @@
 import { Atividade } from "./atividade.model";
+import { Usuario } from "./usuario.model";
 
-export class Roadmap {
-    id!: number;
-    titulo!: string;
-    descricao!: string;
-    atividades!: Atividade[];
-    usuarioId!: number;
+export interface Roadmap {
+  id: number;
+  titulo: string;
+  descricao: string;
+  atividades: Atividade[];
+  usuario: Usuario;
 }

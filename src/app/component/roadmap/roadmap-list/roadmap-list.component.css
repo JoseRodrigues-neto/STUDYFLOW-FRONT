@@ -1,0 +1,107 @@
+/* Container geral da página */
+.page-container {
+  padding: 20px 30px;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+/* Cabeçalho (Título e Botão Novo) */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.page-header h1 {
+  margin: 0;
+  font-size: 2.2em;
+}
+
+/* Botão de Adicionar (reutilizado do outro CSS) */
+.btn-adicionar {
+  background-color: #3e3e42;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 10px 15px;
+  font-size: 1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-adicionar .icon-add {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #979CF9;
+}
+.btn-adicionar:hover {
+  background-color: #555;
+}
+
+/* Grelha de Pastinhas */
+.roadmap-grid {
+  display: grid;
+  /* Cria colunas de 250px, quantas couberem, com um mínimo de 200px */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* O Cartão/Pastinha */
+.roadmap-card {
+  background-color: #252526;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.roadmap-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Cabeçalho do Cartão */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.folder-icon {
+  font-size: 2.5em;
+}
+
+/* Botões de Ação do Cartão (Editar/Excluir) */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+.btn-icon {
+  background: #333;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+.btn-icon:hover {
+  background: #444;
+}
+.btn-icon.btn-danger:hover {
+  background: #d9534f;
+}
+
+/* Corpo do Cartão */
+.card-body {
+  margin-top: 15px;
+}
+.card-body h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+}
+.card-body p {
+  margin: 0;
+  color: #aaa;
+  font-size: 0.9em;
+}

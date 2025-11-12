@@ -7,6 +7,9 @@ import { PerfilComponent } from './usuario/perfil/perfil.component';
 import { SegurancaComponent } from './usuario/seguranca/seguranca.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AtividadeListComponent } from './component/atividade/atividade-list/atividade-list.component';
+import { RoadmapListComponent } from './component/roadmap/roadmap-list/roadmap-list.component';
+import { RoadmapFormComponent } from './component/roadmap/roadmap-form/roadmap-form.component';
+import { RoadmapDetailComponent } from './component/roadmap/roadmap-detail/roadmap-detail.component';
 
 export const routes: Routes = [
   // Rotas públicas com lazy loading
@@ -47,6 +50,22 @@ export const routes: Routes = [
       {
         path: 'atividades',
         component: AtividadeListComponent
+      },
+      {
+        path: 'roadmaps',
+        component: RoadmapListComponent
+      },
+      { 
+        path: 'roadmap/:id',
+        component: RoadmapDetailComponent 
+      },
+      {
+        path: 'roadmap-form',
+        component: RoadmapFormComponent
+      },
+      {
+        path: 'roadmap-form/:id',
+        component: RoadmapFormComponent
       },
       {
         path: '',
