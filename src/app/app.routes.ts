@@ -26,10 +26,7 @@ export const routes: Routes = [
     path: 'forgot-password',
     component: ForgotPasswordComponent
   },
-  {
-    path: 'perfil',
-    component: PerfilComponent
-  },
+   
   {
     path: 'seguranca',
     component: SegurancaComponent
@@ -43,7 +40,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent
-      },
+      },{
+    path: 'perfil',
+    component: PerfilComponent
+  },
       {
         path: 'atividades',
         component: AtividadeListComponent

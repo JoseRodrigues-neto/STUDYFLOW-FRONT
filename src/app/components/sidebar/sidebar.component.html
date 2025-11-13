@@ -1,22 +1,101 @@
-<div class="sidebar-container">
-  <div class="logo">
-    <img 
-      src="assets/images/logo-roxa.png" 
-      alt="Logo Study Flow" 
-      class="logo-img">
+<nav class="main-sidebar" 
+     [class.collapsed]="isCollapsed" 
+     role="navigation" 
+     aria-label="Navegação principal">
+  
+  <!-- Cabeçalho com logo e botão de recolher -->
+  <div class="sidebar-header">
+    <div class="logo-container">
+      <img src="logo_studyflowsgv.svg" alt="Logo StudyFlow" class="logo"> 
+      <span *ngIf="!isCollapsed" class="app-name">StudyFlow</span>
+    </div>
     
-    <h2>Study Flow</h2>
   </div>
-  <nav class="menu">
-    <ul>
-      <li class="menu-item active">
-        <span class="icon">☰</span>
-        <a routerLink="/app/atividades">Minhas atividades</a>
+
+  <!-- Navegação principal -->
+  <div class="nav-section">
+    <h2 class="sr-only">Navegação principal</h2>
+    <ul class="nav-list-top" role="menubar" aria-label="Navegação principal">
+      <li role="none">
+        <a routerLink="/atividades" 
+           routerLinkActive="active" 
+           matTooltip="Atividades" 
+           [matTooltipDisabled]="!isCollapsed"
+           role="menuitem"
+           aria-current="page">
+          <mat-icon aria-hidden="true">list_alt</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed">Atividades</span>
+        </a>
       </li>
-      <li class="menu-item">
-        <span class="icon">☰</span>
-        <a href="#">Conteúdo</a>
-      </li>
-       </ul>
-  </nav>
-</div>
+    </ul>
+  </div>
+
+  <!-- Navegação de conta -->
+  <div class="sidebar-bottom">
+    <div class="nav-section">
+      <h3 class="nav-list-title" *ngIf="!isCollapsed" id="account-nav-title">
+        Conta
+      </h3>
+      <ul class="nav-list-bottom" role="menubar" aria-labelledby="account-nav-title">
+        <li role="none">
+          <a routerLink="/perfil" 
+             routerLinkActive="active" 
+             matTooltip="Perfil" 
+             [matTooltipDisabled]="!isCollapsed"
+             role="menuitem">
+            <mat-icon aria-hidden="true">person_outline</mat-icon>
+            <span class="nav-label" *ngIf="!isCollapsed">Perfil</span>
+          </a>
+        </li>
+       
+        <li role="none">
+          <a routerLink="/seguranca" 
+             routerLinkActive="active" 
+             matTooltip="Segurança" 
+             [matTooltipDisabled]="!isCollapsed"
+             role="menuitem">
+            <mat-icon aria-hidden="true">lock_outline</mat-icon>
+            <span class="nav-label" *ngIf="!isCollapsed">Segurança</span>
+          </a>
+        </li>
+        
+        <li role="none">
+          <a routerLink="/configuracoes" 
+             routerLinkActive="active" 
+             matTooltip="Configurações" 
+             [matTooltipDisabled]="!isCollapsed"
+             role="menuitem">
+            <mat-icon aria-hidden="true">settings</mat-icon>
+            <span class="nav-label" *ngIf="!isCollapsed">Configurações</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Perfil do usuário e logout -->
+    <div class="sidebar-footer">
+      <a routerLink="/perfil" 
+         class="profile-link" 
+         matTooltip="{{ usuario?.nome || 'Usuário' }}" 
+         [matTooltipDisabled]="!isCollapsed"
+         role="button"
+         aria-label="Ver perfil do usuário">
+        <div class="avatar-small-wrapper">
+          <img *ngIf="usuario?.avatarUrl" [src]="usuario?.avatarUrl" alt="Avatar do usuário" class="avatar-small">
+          <mat-icon *ngIf="!usuario?.avatarUrl" class="avatar-small-icon" aria-hidden="true">account_circle</mat-icon>
+        </div>
+        <div class="user-info" *ngIf="!isCollapsed">
+          <span class="user-name">{{ usuario?.nome || 'Usuário' }}</span>
+<span class="user-status" *ngIf="usuario?.perfil">{{ usuario?.perfil }}</span>        </div>
+      </a>
+      <button *ngIf="!isCollapsed" 
+              (click)="sair()" 
+              class="btn-icon-exit" 
+              mat-icon-button 
+              aria-label="Sair do sistema"
+              type="button">
+        <mat-icon aria-hidden="true">logout</mat-icon>
+      </button>
+    </div>
+  </div>
+</nav>
