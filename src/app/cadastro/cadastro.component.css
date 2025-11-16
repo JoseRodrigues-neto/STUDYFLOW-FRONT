@@ -1,5 +1,7 @@
+ 
 /* Importando uma fonte do Google Fonts para um visual mais moderno (Opcional) */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
 
 /* :host é o seletor para o próprio componente Angular */
 :host {
@@ -10,22 +12,25 @@
   background-color: #1e1e24; /* Fundo cinza escuro */
   font-family: 'Inter', sans-serif;
 
-/* background-image: url('/book.png'); 
-  background-size: cover; 
-  background-position: center; 
+
+/* background-image: url('/book.png');
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;   */
-  
+ 
 }
 
+
 #auth-card {
-  background-color: transparent; 
-  box-shadow: none; 
+  background-color: transparent;
+  box-shadow: none;
   padding: 25px;  
   border-radius: 12px;
   width: 100%;
    width: 450px;
   text-align: center;
 }
+
 
 #logo-container {
   display: inline-flex;
@@ -37,6 +42,7 @@
   margin-bottom: 20px; /* Reduzido de 25px */
 }
 
+
 #auth-title {
   color: #ffffff;
   font-size: 24px;
@@ -44,16 +50,19 @@
   margin-bottom: 25px; /* Reduzido de 30px */
 }
 
+
 #logo-img {
   width: 80px; /* Ajuste o tamanho da sua logo conforme necessário */
   height: auto;
-  
+ 
+
 
 }
  
 .form-group {
   margin-bottom: 12px; /* Reduzido de 15px */
 }
+
 
 /* Estilo unificado para inputs e select */
 input[type="text"],
@@ -71,10 +80,12 @@ select {
   box-sizing: border-box;
 }
 
+
 /* Estilo para o placeholder dos inputs */
 ::placeholder {
   color: #a0a0a0;
 }
+
 
 /* Garante que o select tenha uma aparência consistente */
 select {
@@ -87,27 +98,39 @@ select {
   background-size: 1em;
 }
 #auth-button {
-  width: 100%;
-  padding: 12px;  
-  border: none;
-  border-radius: 8px;
-  background-color: #8097FF;
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;  
+ width: 100%;
+ padding: 12px; 
+ border: none;
+ border-radius: 8px;
+ background-color: #8097FF;
+ color: #ffffff;
+ font-size: 16px;
+ font-weight: bold;
+ cursor: pointer;
+ transition: background-color 0.3s ease;
+ margin-top: 10px; 
+  
+  /* --- ADICIONADO: Para centralizar o spinner --- */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px; /* Altura mínima para o spinner */
 }
 
 #auth-button:hover:not(:disabled) {
-  background-color: #8097FF; /* Cor um pouco mais escura ao passar o mouse */
+ background-color: #6a85ff; /* Cor um pouco mais escura */
 }
 
 #auth-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+ opacity: 0.6;
+ cursor: not-allowed;
 }
+
+/* --- ADICIONADO: Cor do Spinner --- */
+#auth-button mat-spinner {
+  --mdc-circular-progress-active-indicator-color: #FFFFFF;
+}
+ 
 
 #login-link {
   margin-top: 20px; /* Reduzido de 25px */
@@ -115,15 +138,18 @@ select {
   font-size: 14px;
 }
 
+
 #login-link a {
   color: #8097FF; /* Cor azul-arroxeado para o link */
   text-decoration: none;
   font-weight: bold;
 }
 
+
 #login-link a:hover {
   text-decoration: underline;
 }
+
 
 /* Estilos para mensagens de erro/sucesso */
 #error-message, #success-message {
@@ -135,18 +161,22 @@ select {
   box-sizing: border-box;
 }
 
+
 #error-message {
   background-color: #ff4d4d20;
   color: #ff4d4d;
 }
+
 
 #success-message {
   background-color: #4caf5020;
   color: #4caf50;
 }
 
+
  
  /* Adicione no final do seu arquivo cadastro.component.css */
+
 
 .validation-error {
   text-align: left; /* Alinha o texto à esquerda */
@@ -156,3 +186,4 @@ select {
   margin-bottom: 12px; /* Espaço antes do próximo campo */
   padding-left: 5px; /* Pequeno recuo */
 }
+

@@ -7,46 +7,51 @@ import { PerfilComponent } from './usuario/perfil/perfil.component';
 import { SegurancaComponent } from './usuario/seguranca/seguranca.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AtividadeListComponent } from './component/atividade/atividade-list/atividade-list.component';
+import { authGuard } from './guards/auth.guard';
+import { loginGuard } from './guards/login.guard';
+import { NotFoundComponent } from './error/nao-encontrado/not-found.component';
+ export const routes: Routes = [
 
-export const routes: Routes = [
-  // Rotas públicas com lazy loading
   {
     path: 'inicio',
     component: InicioComponent
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [loginGuard]
   },
   {
     path: 'cadastro',
-    component: CadastroComponent
+    component: CadastroComponent,
+    canActivate: [loginGuard] 
   },
   {
     path: 'forgot-password',
-    component: ForgotPasswordComponent
-  },
-   
-  {
-    path: 'seguranca',
-    component: SegurancaComponent
+    component: ForgotPasswordComponent,
+    canActivate: [loginGuard]
   },
 
-  // Rotas da aplicação interna (dentro do Layout)
   {
     path: 'app',
     loadComponent: () => import('./components/layout/layout.component').then(m => m.LayoutComponent),
+    canActivate: [authGuard], 
     children: [
       {
         path: 'dashboard',
         component: DashboardComponent
-      },{
-    path: 'perfil',
-    component: PerfilComponent
-  },
+      },
+      {
+        path: 'perfil',
+        component: PerfilComponent
+      },
       {
         path: 'atividades',
         component: AtividadeListComponent
+      },
+      {
+        path: 'seguranca',
+        component: SegurancaComponent
       },
       {
         path: '',
@@ -56,16 +61,14 @@ export const routes: Routes = [
     ]
   },
 
-  // Redirecionamento padrão para a página de início
+
   {
     path: '',
-    redirectTo: '/inicio',
+    redirectTo: '/inicio', 
     pathMatch: 'full'
   },
-
-  // Rota curinga para páginas não encontradas
   {
     path: '**',
-    redirectTo: '/inicio'
+   component: NotFoundComponent
   }
 ];

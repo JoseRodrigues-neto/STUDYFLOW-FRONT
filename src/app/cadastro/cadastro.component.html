@@ -58,16 +58,19 @@
         As senhas não coincidem.
       </div>
 
-      <button type="submit" [disabled]="loading || form.invalid || password !== confirmPassword" id="auth-button">
-        {{ loading ? 'Processando...' : 'Criar conta' }}
-      </button>
-    </form>
-    
-    <div *ngIf="errorMessage" id="error-message">{{ errorMessage }}</div>
-    <div *ngIf="successMessage" id="success-message">{{ successMessage }}</div>
+     <button type="submit" 
+            [disabled]="loading || form.invalid || password !== confirmPassword" 
+            id="auth-button">
+<mat-spinner *ngIf="loading" [diameter]="24"></mat-spinner>
+        <span *ngIf="!loading">Criar conta</span>
+</button>
+</form>
 
-    <p id="login-link">
-      Já possui uma conta? <a routerLink="/login">Entre agora</a>
-    </p>
-  </div>
+ <div *ngIf="errorMessage" id="error-message">{{ errorMessage }}</div>
+<div *ngIf="successMessage" id="success-message">{{ successMessage }}</div>
+
+ <p id="login-link">
+ Já possui uma conta? <a routerLink="/login">Entre agora</a>
+ </p>
+ </div>
 </div>
