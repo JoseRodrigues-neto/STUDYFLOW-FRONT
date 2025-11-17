@@ -18,8 +18,7 @@
     <div *ngIf="!isLoading && atividades.length > 0" class="task-list">
       <div *ngFor="let atividade of atividades" 
            class="task-item" 
-           (click)="selecionarAtividade(atividade)"
-           [class.selected]="atividade === atividadeSelecionada">
+           (click)="verDetalhesAtividade(atividade)">
         
         <div class="task-status-indicator" [ngClass]="getStatusClass(atividade.status)"></div>
 
@@ -30,7 +29,8 @@
           </p>
         </div>
         <div class="task-actions">
-          <span class="star-icon">☆</span>
+          <span class="icon-button" (click)="editarAtividade(atividade); $event.stopPropagation()">✏️</span>
+          <span class="icon-button" (click)="excluirAtividade(atividade.id); $event.stopPropagation()">🗑️</span>
         </div>
       </div>
     </div>
@@ -40,52 +40,4 @@
     </div>
   </div>
 
-  <div class="panel-wrapper">
-
-    <div class="detail-wrapper" *ngIf="isDetailPanelVisible && atividadeSelecionada">
-      <header class="detail-header">
-        <div class="header-content">
-          <h2>{{ atividadeSelecionada.titulo }}</h2>
-        </div>
-        <div class="header-actions">
-          <span class="icon-button" (click)="editarAtividade(atividadeSelecionada)">✏️</span>
-          <span class="icon-button" (click)="excluirAtividade(atividadeSelecionada.id)">🗑️</span>
-          <span class="icon-close" (click)="fecharPainelDetalhes()">X</span>
-        </div>
-      </header>
-
-      <main class="detail-body">
-        <div class="detail-section">
-          <h4 class="section-title">Status</h4>
-          <div class="status-badge" [ngClass]="getStatusClass(atividadeSelecionada.status)">
-            {{ atividadeSelecionada.status | titlecase }}
-          </div>
-        </div>
-        <div class="detail-section">
-          <h4 class="section-title">Datas</h4>
-          <div class="date-group">
-            <p><strong>Início:</strong> {{ formatarData(atividadeSelecionada.dataInicio) }}</p>
-            <p><strong>Término:</strong> {{ formatarData(atividadeSelecionada.dataFim) }}</p>
-          </div>
-        </div>
-        <div class="detail-section" *ngIf="atividadeSelecionada.descricao">
-          <h4 class="section-title">Descrição</h4>
-          <p>{{ atividadeSelecionada.descricao }}</p>
-        </div>
-        <div class="detail-section anotacoes-section">
-          <h4 class="section-title">Anotações</h4>
-          <app-anotacao-list [atividadeId]="atividadeSelecionada.id"></app-anotacao-list>
-        </div>
-      </main>
-    </div>
-
-    <div class="form-wrapper" *ngIf="isFormPanelVisible">
-      <app-atividade-form
-        [atividade]="atividadeParaEditar"
-        (save)="handleFormSave()"
-        (close)="handleFormClose()">
-      </app-atividade-form>
-    </div>
-
-  </div>
 </div>

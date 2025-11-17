@@ -2,7 +2,7 @@
   
   <header class="page-header" *ngIf="!isLoadingRoadmap && roadmap">
     <h1>{{ roadmap.titulo }}</h1>
-    <p>{{ dataAtual }}</p> </header>
+    <p>{{ roadmap.descricao }}</p> </header>
 
   <section class="atividades-section">
     
@@ -25,12 +25,12 @@
 
     <div class="atividades-list" *ngIf="!isLoadingAtividades">
       <div *ngIf="atividades.length > 0; else noAtividades">
-        <div *ngFor="let atividade of atividades" class="task-item">
+        <div *ngFor="let atividade of atividades" class="task-item" (click)="verDetalhesAtividade(atividade)">
           <div class="task-content">
             <h3>{{ atividade.titulo }}</h3>
             <p>{{ atividade.descricao | slice:0:100 }}...</p> </div>
           <div class="task-actions">
-            <span class="star-icon">☆</span>
+            <span class="edit-icon" (click)="editarAtividade(atividade); $event.stopPropagation()">✎</span>
           </div>
         </div>
       </div>

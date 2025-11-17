@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RoadmapService } from '../../../services/roadmap.service';
 import { Roadmap } from '../../../models/roadmap.model';
 import { Atividade } from '../../../models/atividade.model';
@@ -22,24 +22,18 @@ export class RoadmapDetailComponent implements OnInit {
   isLoadingRoadmap = true;
   isLoadingAtividades = true;
 
-  dataAtual: string;
-
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private roadmapService: RoadmapService,
-    private atividadeService: AtividadeService // Terá de injetar o seu AtividadeService
+    private atividadeService: AtividadeService
   ) {
-    const hoje = new Date();
-    this.dataAtual = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-    this.dataAtual = this.dataAtual.charAt(0).toUpperCase() + this.dataAtual.slice(1);
    }
 
   ngOnInit(): void {
-    // 1. Obter o ID da URL
     const roadmapId = Number(this.route.snapshot.paramMap.get('id'));
 
     if (roadmapId) {
-      // 2. Carregar os dados do Roadmap
       this.roadmapService.getRoadmap(roadmapId).subscribe({
         next: (dados) => {
           this.roadmap = dados;
@@ -51,7 +45,6 @@ export class RoadmapDetailComponent implements OnInit {
         }
       });
 
-      // 3. Carregar as atividades desse Roadmap
       this.atividadeService.getAtividadesByRoadmap(roadmapId).subscribe({
         next: (dados) => {
           this.atividades = dados;
@@ -65,9 +58,19 @@ export class RoadmapDetailComponent implements OnInit {
     }
   }
 
-  // Futuramente, esta função abrirá o painel que criámos
   adicionarAtividade(): void {
-    console.log("Abrir painel de nova atividade...");
-    // Aqui você implementaria a lógica para mostrar o painel de detalhes da tarefa
+    if (this.roadmap) {
+      this.router.navigate(['/app/atividade-form'], { queryParams: { roadmapId: this.roadmap.id } });
+    } else {
+      console.error('Roadmap não carregado, não é possível adicionar atividade.');
+    }
+  }
+
+  verDetalhesAtividade(atividade: Atividade): void {
+    this.router.navigate(['/app/atividade-form', atividade.id], { queryParams: { view: 'true' } });
+  }
+
+  editarAtividade(atividade: Atividade): void {
+    this.router.navigate(['/app/atividade-form', atividade.id]);
   }
 }

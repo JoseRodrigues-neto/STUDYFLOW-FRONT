@@ -9,7 +9,6 @@ import { Atividade } from '../../models/atividade.model';
 })
 export class AtividadeService {
 
-  // A URL base da sua API para o recurso de atividades
   private apiUrl = 'http://localhost:8080/atividades';
 
   constructor(private http: HttpClient) { }
@@ -18,6 +17,13 @@ export class AtividadeService {
     const url = `${this.apiUrl}?roadmapId=${roadmapId}`;
     
     return this.http.get<Atividade[]>(url).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getById(id: number): Observable<Atividade> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<Atividade>(url).pipe(
       catchError(this.handleError)
     );
   }

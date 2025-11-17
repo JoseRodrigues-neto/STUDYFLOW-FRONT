@@ -7,49 +7,54 @@ import { PerfilComponent } from './usuario/perfil/perfil.component';
 import { SegurancaComponent } from './usuario/seguranca/seguranca.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AtividadeListComponent } from './component/atividade/atividade-list/atividade-list.component';
+import { loginGuard } from './guards/login.guard';
+import { authGuard } from './guards/auth.guard';
 import { RoadmapListComponent } from './component/roadmap/roadmap-list/roadmap-list.component';
-import { RoadmapFormComponent } from './component/roadmap/roadmap-form/roadmap-form.component';
 import { RoadmapDetailComponent } from './component/roadmap/roadmap-detail/roadmap-detail.component';
+import { RoadmapFormComponent } from './component/roadmap/roadmap-form/roadmap-form.component';
+import { AtividadeFormComponent } from './component/atividade/atividade-form/atividade-form.component';
 
 export const routes: Routes = [
-  // Rotas públicas com lazy loading
   {
     path: 'inicio',
     component: InicioComponent
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [loginGuard]
   },
   {
     path: 'cadastro',
-    component: CadastroComponent
+    component: CadastroComponent,
+    canActivate: [loginGuard] 
   },
   {
     path: 'forgot-password',
-    component: ForgotPasswordComponent
-  },
-   
-  {
-    path: 'seguranca',
-    component: SegurancaComponent
+    component: ForgotPasswordComponent,
+    canActivate: [loginGuard]
   },
 
-  // Rotas da aplicação interna (dentro do Layout)
   {
     path: 'app',
     loadComponent: () => import('./components/layout/layout.component').then(m => m.LayoutComponent),
+    canActivate: [authGuard], 
     children: [
       {
         path: 'dashboard',
         component: DashboardComponent
-      },{
-    path: 'perfil',
-    component: PerfilComponent
-  },
+      },
+      {
+        path: 'perfil',
+        component: PerfilComponent
+      },
       {
         path: 'atividades',
         component: AtividadeListComponent
+      },
+      {
+        path: 'seguranca',
+        component: SegurancaComponent
       },
       {
         path: 'roadmaps',
@@ -68,6 +73,14 @@ export const routes: Routes = [
         component: RoadmapFormComponent
       },
       {
+        path: 'atividade-form',
+        component: AtividadeFormComponent
+      },
+      {
+        path: 'atividade-form/:id',
+        component: AtividadeFormComponent
+      },
+      {
         path: '',
         redirectTo: 'atividades',
         pathMatch: 'full'
@@ -75,16 +88,10 @@ export const routes: Routes = [
     ]
   },
 
-  // Redirecionamento padrão para a página de início
+
   {
     path: '',
-    redirectTo: '/inicio',
+    redirectTo: '/inicio', 
     pathMatch: 'full'
-  },
-
-  // Rota curinga para páginas não encontradas
-  {
-    path: '**',
-    redirectTo: '/inicio'
   }
 ];

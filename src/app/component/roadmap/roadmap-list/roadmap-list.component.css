@@ -1,11 +1,9 @@
-/* Container geral da página */
 .page-container {
   padding: 20px 30px;
   color: #fff;
   font-family: sans-serif;
 }
 
-/* Cabeçalho (Título e Botão Novo) */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -17,7 +15,6 @@
   font-size: 2.2em;
 }
 
-/* Botão de Adicionar (reutilizado do outro CSS) */
 .btn-adicionar {
   background-color: #3e3e42;
   color: #fff;
@@ -39,15 +36,12 @@
   background-color: #555;
 }
 
-/* Grelha de Pastinhas */
 .roadmap-grid {
   display: grid;
-  /* Cria colunas de 250px, quantas couberem, com um mínimo de 200px */
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
 }
 
-/* O Cartão/Pastinha */
 .roadmap-card {
   background-color: #252526;
   border: 1px solid #444;
@@ -61,7 +55,6 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Cabeçalho do Cartão */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -71,7 +64,6 @@
   font-size: 2.5em;
 }
 
-/* Botões de Ação do Cartão (Editar/Excluir) */
 .actions {
   display: flex;
   gap: 8px;
@@ -92,7 +84,6 @@
   background: #d9534f;
 }
 
-/* Corpo do Cartão */
 .card-body {
   margin-top: 15px;
 }
@@ -104,4 +95,9 @@
   margin: 0;
   color: #aaa;
   font-size: 0.9em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

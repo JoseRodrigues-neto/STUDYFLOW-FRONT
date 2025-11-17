@@ -33,17 +33,13 @@ export class RoadmapListComponent implements OnInit {
   }
 
   editRoadmap(id: number): void {
-    // ATUALIZADO: Usar a rota correta com /app
     this.router.navigate(['/app/roadmap-form', id]); 
   }
 
-  // Navega para o formulário de CRIAÇÃO
   createRoadmap(): void {
-    // ATUALIZADO: Usar a rota correta com /app
     this.router.navigate(['/app/roadmap-form']); 
   }
 
-  // NOVO: Navega para a página de DETALHE (a sua imagem)
   openRoadmap(id: number): void {
     this.router.navigate(['/app/roadmap', id]);
   }

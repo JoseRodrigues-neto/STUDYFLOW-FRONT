@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AtividadeService } from '../atividade.service';
 import { Atividade } from '../../../models/atividade.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { AnotacaoListComponent } from '../../anotacao/anotacao-list/anotacao-list.component';
 import { StatusAtividade } from '../../../models/status-atividade.model';
-import { AtividadeFormComponent } from '../atividade-form/atividade-form.component'; // Importar o novo formulário
 
 @Component({
   selector: 'app-atividade-list',
   standalone: true,
   imports: [
     CommonModule,
-    AnotacaoListComponent,
-    AtividadeFormComponent
+    AnotacaoListComponent
   ],
   providers: [DatePipe],
   templateUrl: './atividade-list.component.html',
@@ -22,18 +21,12 @@ export class AtividadeListComponent implements OnInit {
 
   atividades: Atividade[] = [];
   isLoading = true;
-  
-  isDetailPanelVisible = false;
-  isFormPanelVisible = false;
-
-  atividadeSelecionada: Atividade | null = null;
-  atividadeParaEditar: Atividade | null = null;
-
   dataAtual: string;
 
   constructor(
     private atividadeService: AtividadeService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private router: Router
   ) {
     const hoje = new Date();
     this.dataAtual = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -60,46 +53,23 @@ export class AtividadeListComponent implements OnInit {
     });
   }
 
-  selecionarAtividade(atividade: Atividade): void {
-    this.atividadeSelecionada = atividade;
-    this.isDetailPanelVisible = true;
-    this.isFormPanelVisible = false;
-  }
-
-  fecharPainelDetalhes(): void {
-    this.isDetailPanelVisible = false;
-    this.atividadeSelecionada = null;
-  }
-
   iniciarNovaAtividade(): void {
-    this.atividadeParaEditar = null;
-    this.isFormPanelVisible = true;
-    this.isDetailPanelVisible = false;
+    const roadmapIdParaTeste = 1;
+    this.router.navigate(['/app/atividade-form'], { queryParams: { roadmapId: roadmapIdParaTeste } });
+  }
+
+  verDetalhesAtividade(atividade: Atividade): void {
+    this.router.navigate(['/app/atividade-form', atividade.id], { queryParams: { view: 'true' } });
   }
 
   editarAtividade(atividade: Atividade): void {
-    this.atividadeParaEditar = atividade;
-    this.isFormPanelVisible = true;
-    this.isDetailPanelVisible = false;
-  }
-
-  handleFormSave(): void {
-    this.isFormPanelVisible = false;
-    this.atividadeParaEditar = null;
-    this.carregarAtividades();
-  }
-
-  handleFormClose(): void {
-    this.isFormPanelVisible = false;
-    this.atividadeParaEditar = null;
+    this.router.navigate(['/app/atividade-form', atividade.id]);
   }
 
   excluirAtividade(id: number): void {
-    // Adicionar um dialog 
     if (confirm('Tem certeza que deseja excluir esta atividade?')) {
       this.atividadeService.delete(id).subscribe({
         next: () => {
-          this.fecharPainelDetalhes();
           this.carregarAtividades();
         },
         error: (err) => console.error('Erro ao excluir atividade', err)
