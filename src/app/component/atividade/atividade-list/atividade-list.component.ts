@@ -36,7 +36,7 @@ export class AtividadeListComponent implements OnInit {
     private datePipe: DatePipe
   ) {
     const hoje = new Date();
-    this.dataAtual = this.datePipe.transform(hoje, 'EEEE, d \'de\' MMMM') || '';
+    this.dataAtual = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
     this.dataAtual = this.dataAtual.charAt(0).toUpperCase() + this.dataAtual.slice(1);
   }
 

@@ -1,14 +1,54 @@
-<div class="container">
-  <h1>{{ roadmapId ? 'Editar Roadmap' : 'Novo Roadmap' }}</h1>
-  <form [formGroup]="roadmapForm" (ngSubmit)="onSubmit()">
-    <div class="mb-3">
-      <label for="titulo" class="form-label">Título</label>
-      <input type="text" id="titulo" formControlName="titulo" class="form-control">
+<div class="form-container">
+  <h2 class="form-title">{{ roadmapId ? 'Editar Roadmap' : 'Criar Roadmap' }}</h2>
+  <p class="form-subtitle">Preencha os detalhes do seu plano de estudos.</p>
+
+  <form *ngIf="roadmapForm" [formGroup]="roadmapForm" (ngSubmit)="onSubmit()" novalidate>
+    
+    <div class="form-group">
+      <label for="titulo">Título do Roadmap</label>
+      <input 
+        type="text" 
+        id="titulo" 
+        class="form-control" 
+        formControlName="titulo"
+        placeholder="Ex: Trilha de Estudos para Angular"
+        required
+        [ngClass]="{ 'is-invalid': roadmapForm.get('titulo')?.invalid && roadmapForm.get('titulo')?.touched }">
+      <div *ngIf="roadmapForm.get('titulo')?.invalid && roadmapForm.get('titulo')?.touched" class="invalid-feedback">
+        O título é obrigatório.
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="descricao" class="form-label">Descrição</label>
-      <textarea id="descricao" formControlName="descricao" class="form-control"></textarea>
+
+    <div class="form-group">
+      <label for="descricao">Descrição</label>
+      <textarea 
+        id="descricao" 
+        class="form-control" 
+        formControlName="descricao"
+        rows="4"
+        placeholder="Descreva o objetivo principal deste roadmap..."
+        required
+        [ngClass]="{ 'is-invalid': roadmapForm.get('descricao')?.invalid && roadmapForm.get('descricao')?.touched }"></textarea>
+      <div *ngIf="roadmapForm.get('descricao')?.invalid && roadmapForm.get('descricao')?.touched" class="invalid-feedback">
+        A descrição é obrigatória.
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary" [disabled]="roadmapForm.invalid">Salvar</button>
+
+    <div class="form-actions">
+      <button 
+        type="button" 
+        class="btn btn-secondary" 
+        routerLink="/app/roadmaps">
+        Cancelar
+      </button>
+      <button 
+        type="submit" 
+        class="btn btn-primary" 
+        [disabled]="roadmapForm.invalid || isLoading">
+        <span *ngIf="isLoading">Carregando...</span>
+        <span *ngIf="!isLoading">{{ roadmapId ? 'Salvar Alterações' : 'Criar Roadmap' }}</span>
+      </button>
+    </div>
+
   </form>
 </div>

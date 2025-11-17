@@ -22,11 +22,17 @@ export class RoadmapDetailComponent implements OnInit {
   isLoadingRoadmap = true;
   isLoadingAtividades = true;
 
+  dataAtual: string;
+
   constructor(
     private route: ActivatedRoute,
     private roadmapService: RoadmapService,
     private atividadeService: AtividadeService // Terá de injetar o seu AtividadeService
-  ) { }
+  ) {
+    const hoje = new Date();
+    this.dataAtual = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+    this.dataAtual = this.dataAtual.charAt(0).toUpperCase() + this.dataAtual.slice(1);
+   }
 
   ngOnInit(): void {
     // 1. Obter o ID da URL

@@ -2,7 +2,7 @@
   
   <header class="page-header" *ngIf="!isLoadingRoadmap && roadmap">
     <h1>{{ roadmap.titulo }}</h1>
-    <p>{{ "Dia da semana, DD mês" }}</p> </header>
+    <p>{{ dataAtual }}</p> </header>
 
   <section class="atividades-section">
     
@@ -39,10 +39,6 @@
         <p class="empty-list">Nenhuma atividade encontrada para este roadmap.</p>
       </ng-template>
     </div>
-
-    <footer class="atividades-footer">
-      <button class="btn-secundario">Ver quadros fechados</button>
-    </footer>
 
   </section>
 </div>

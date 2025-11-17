@@ -1,26 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { RoadmapService } from '../../../services/roadmap.service';
 import { Roadmap } from '../../../models/roadmap.model';
 import { CommonModule } from '@angular/common';
+import { UsuarioService } from '../../../services/usuario.service';
+import { Usuario } from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-roadmap-form',
-  templateUrl: './roadmap-form.component.html',
+  standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
+  templateUrl: './roadmap-form.component.html',
   styleUrls: ['./roadmap-form.component.css']
 })
 export class RoadmapFormComponent implements OnInit {
   roadmapForm: FormGroup;
   roadmapId?: number;
+  currentUser!: Usuario;
+  isLoading = true; // Flag para controlar o estado de carregamento
 
   constructor(
     private fb: FormBuilder,
     private roadmapService: RoadmapService,
+    private usuarioService: UsuarioService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -31,30 +38,69 @@ export class RoadmapFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.roadmapId = this.route.snapshot.params['id'];
+    const idParam = this.route.snapshot.params['id'];
+    this.isLoading = true; // Inicia o carregamento
+    if (idParam) {
+      this.roadmapId = +idParam;
+      this.loadRoadmapData();
+    } else {
+      this.loadCurrentUser();
+    }
+  }
+
+  loadRoadmapData(): void {
     if (this.roadmapId) {
-      this.roadmapService.getRoadmap(this.roadmapId).subscribe(roadmap => {
-        this.roadmapForm.patchValue(roadmap);
+      this.roadmapService.getRoadmap(this.roadmapId).subscribe({
+        next: roadmap => {
+          this.roadmapForm.patchValue(roadmap);
+          this.currentUser = roadmap.usuario;
+          this.isLoading = false;
+        },
+        error: err => {
+          console.error('Erro ao carregar dados do roadmap:', err);
+          this.isLoading = false;
+          this.router.navigate(['/app/roadmaps']);
+        }
       });
     }
   }
 
-  onSubmit(): void {
-    if (this.roadmapForm.valid) {
-      const roadmapData = this.roadmapForm.value;
-      
-      // Criamos uma rota de retorno para evitar repetição
-      const returnUrl = '/app/roadmaps'; // ATUALIZADO
-
-      if (this.roadmapId) {
-        this.roadmapService.updateRoadmap(this.roadmapId, roadmapData).subscribe(() => {
-          this.router.navigate([returnUrl]);
-        });
-      } else {
-        this.roadmapService.createRoadmap(roadmapData).subscribe(() => {
-          this.router.navigate([returnUrl]);
-        });
+  loadCurrentUser(): void {
+    this.usuarioService.getMeuPerfil().subscribe({
+      next: user => {
+        this.currentUser = user;
+        this.isLoading = false;
+      },
+      error: err => {
+        console.error('Erro ao carregar dados do usuário:', err);
+        this.isLoading = false;
+        this.router.navigate(['/app/roadmaps']);
       }
+    });
+  }
+
+  onSubmit(): void {
+    if (this.roadmapForm.invalid) {
+      return;
+    }
+
+    const formValues = this.roadmapForm.value;
+    const roadmapData: Partial<Roadmap> = {
+      titulo: formValues.titulo,
+      descricao: formValues.descricao,
+      usuario: this.currentUser
+    };
+
+    const returnUrl = '/app/roadmaps';
+
+    if (this.roadmapId) {
+      this.roadmapService.updateRoadmap(this.roadmapId, roadmapData as Roadmap).subscribe(() => {
+        this.router.navigate([returnUrl]);
+      });
+    } else {
+      this.roadmapService.createRoadmap(roadmapData as Roadmap).subscribe(() => {
+        this.router.navigate([returnUrl]);
+      });
     }
   }
 }

@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { RoadmapService } from '../../../services/roadmap.service';
 import { Roadmap } from '../../../models/roadmap.model';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-roadmap-list',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './roadmap-list.component.html',
-  imports: [CommonModule],
   styleUrls: ['./roadmap-list.component.css']
 })
 export class RoadmapListComponent implements OnInit {

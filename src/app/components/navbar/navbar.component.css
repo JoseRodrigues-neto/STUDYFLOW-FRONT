@@ -1,14 +1,440 @@
-.navbar-container {
-  display: flex;
-  justify-content: flex-end; /* Alinha itens à direita */
-  align-items: center;
-  padding: 0 20px;
-  background-color: #979CF9;
-  border-bottom: 1px solid #1e1e1e;
-  color: #fff;
-  height: 80%;
+ :host {
+  /* --- Cores Sincronizadas (Tema Apple Dark / Atividades) --- */
+  --bg-main: #1c1c1e;
+  --bg-content: #3c3e40;
+  --bg-card: #3a3a3c;      /* (Card/Hover/Ativo) */
+  --bg-hover: #3a3a3c;
+  --bg-active: #3a3a3c;
+  
+  --text-primary: #f2f2f7;
+  --text-secondary: #8e8e93;
+  --text-muted: #8e8e93;
+  --text-disabled: #6B7280;
+
+  --accent-blue: #007aff;
+  --accent-blue-hover: #0062cc;
+  --accent-red: #ff3b30;
+  
+  --border-color: #3a3a3c;
+  --border-light: #3a3a3c;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --border-radius: 8px;
+  --border-radius-sm: 4px;
+  
+  /* (Variáveis de layout mantidas) */
+  --sidebar-width: 280px;
+  --sidebar-collapsed: 72px;
+   
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-duration: 0.3s;
+
+  /* --- Configurações do Host --- */
+  display: block;
+ 
+  background-color: var(--bg-content); /* Fundo da navbar */
+  border-bottom: 1px solid var(--border-color);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+  z-index: 1000;
 }
 
-.user-profile {
-  font-weight: bold;
+.main-toolbar {
+  height: 100%;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  /* (Removido o gradiente para uma cor sólida) */
+  background-color: var(--bg-content);
 }
+
+/* --- Seção Esquerda --- */
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+  min-width: 200px;
+}
+
+.btn-toggle-navbar {
+  color: var(--text-secondary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-toggle-navbar:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+  transform: scale(1.05);
+}
+
+.btn-toggle-navbar:active {
+  transform: scale(0.95);
+}
+
+/* --- Seção Central: Busca --- */
+.toolbar-center {
+  flex: 1;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--bg-main); /* Fundo mais escuro para a busca */
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  overflow: hidden;
+}
+
+.search-bar:focus-within {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1); /* Cor azul corrigida */
+  transform: translateY(-1px);
+}
+
+.search-icon {
+  color: var(--text-muted);
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.search-input {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  width: 100%;
+  font-family: inherit;
+  outline: none;
+  flex: 1;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.search-actions {
+  width: 28px;
+  height: 28px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.search-actions:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+/* --- Seção Direita --- */
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+  min-width: 300px;
+  justify-content: flex-end;
+}
+
+.actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Botão de Notificações */
+.notification-btn {
+  position: relative;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+.notification-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-hover);
+  transform: scale(1.05);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--accent-red);
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-content);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Botão Primário */
+.btn-primary-new {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* Gradiente com as novas cores */
+  background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-hover) 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Sombra com a nova cor azul */
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-new::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary-new:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+}
+
+.btn-primary-new:hover::before {
+  left: 100%;
+}
+
+.btn-primary-new:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+}
+
+.btn-primary-new mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+/* Divisor */
+.divider {
+  width: 1px;
+  height: 32px;
+  /* Gradiente com a nova cor de borda */
+  background: linear-gradient(to bottom, transparent 0%, var(--border-color) 50%, transparent 100%);
+  margin: 0 0.5rem;
+}
+
+/* Seção de Perfil */
+.profile-section {
+  position: relative;
+}
+
+.profile-link-navbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text-primary);
+  min-width: 0;
+  transition: all 0.3s ease;
+  outline: none;
+  border: 1px solid transparent;
+  background: var(--bg-card); /* Fundo do perfil */
+}
+
+.profile-link-navbar:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-small-wrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--bg-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid var(--border-light);
+  transition: all 0.3s ease;
+}
+
+.profile-link-navbar:hover .avatar-small-wrapper {
+  border-color: var(--accent-blue);
+  transform: scale(1.05);
+}
+
+.avatar-small {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.profile-link-navbar:hover .avatar-small {
+  transform: scale(1.1);
+}
+
+.avatar-small-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.profile-link-navbar:hover .avatar-small-icon {
+  color: var(--accent-blue);
+}
+
+.user-info-navbar {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin-right: 0.5rem;
+  text-align: left;
+}
+
+.user-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+}
+
+.user-status {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.dropdown-arrow {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  color: var(--text-muted);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.profile-link-navbar:hover .dropdown-arrow {
+  color: var(--accent-blue);
+  transform: rotate(180deg);
+}
+
+/* --- Estados de Foco (Acessibilidade) --- */
+.btn-toggle-navbar:focus-visible,
+.search-input:focus-visible,
+.search-actions:focus-visible,
+.notification-btn:focus-visible,
+.btn-primary-new:focus-visible,
+.profile-link-navbar:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 1024px) {
+  .main-toolbar {
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+  
+  .toolbar-left {
+    min-width: auto;
+  }
+  
+  .toolbar-right {
+    min-width: auto;
+  }
+  
+  .user-info-navbar {
+    display: none;
+  }
+  
+  .app-name-navbar {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    max-width: 200px;
+  }
+  
+  .btn-primary-new span {
+    display: none;
+  }
+  
+  .btn-primary-new {
+    padding: 0.6rem;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-toolbar {
+    padding: 0 0.5rem;
+  }
+  
+  .search-bar {
+    display: none;
+  }
+  
+  .notification-btn {
+    display: none;
+  }
+}
+
+
