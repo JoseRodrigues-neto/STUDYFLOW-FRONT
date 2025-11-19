@@ -34,6 +34,11 @@ export const routes: Routes = [
     component: ForgotPasswordComponent,
     canActivate: [loginGuard]
   },
+  {
+    path: 'selecionar-perfil',
+    loadComponent: () => import('./profile-selection/profile-selection.component').then(m => m.ProfileSelectionComponent),
+    canActivate: [authGuard]
+  },
 
   {
     path: 'app',
@@ -82,7 +87,7 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'atividades',
+        redirectTo: 'dashboard',
         pathMatch: 'full'
       }
     ]

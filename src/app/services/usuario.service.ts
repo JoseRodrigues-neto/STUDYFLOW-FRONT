@@ -45,12 +45,57 @@ export class UsuarioService {
       }),
       catchError(error => {
         console.error("Erro ao buscar perfil no backend:", error);
-        return throwError(() => new Error('Falha ao buscar dados do perfil no backend.'));
+        return throwError(() => error);
       })
     );
   }
 
-  atualizarPerfil(id: string, dados: UsuarioRequest): Observable<Usuario> {
+  getMeuPerfilComToken(idToken: string): Observable<Usuario> {
+    const headers = new HttpHeaders({
+        'Authorization': `Bearer ${idToken}`,
+        'Content-Type': 'application/json'
+    });
+    const url = `${this.apiUrl}/me`; 
+    return this.http.get<Usuario>(url, { headers }).pipe(
+        catchError(error => {
+            console.error("Erro ao buscar perfil no backend com token:", error);
+            return throwError(() => error);
+        })
+    );
+  }
+
+  verificarLogin(idToken: string): Observable<Usuario> {
+    const headers = new HttpHeaders({
+        'Authorization': `Bearer ${idToken}`,
+        'Content-Type': 'application/json'
+    });
+    const url = `${this.apiUrl}/login`; 
+    return this.http.get<Usuario>(url, { headers }).pipe(
+        catchError(error => {
+            console.error("Erro ao verificar login no backend:", error);
+            return throwError(() => error);
+        })
+    );
+  }
+
+  // Versão para ser usada em guardas, que pega o token automaticamente
+  verificarLoginGuard(): Observable<Usuario> {
+    return this.authService.getIdToken().pipe(
+      switchMap(idToken => {
+        if (!idToken) {
+          return throwError(() => new Error('Usuário não autenticado para guarda.'));
+        }
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${idToken}`,
+          'Content-Type': 'application/json'
+        });
+        const url = `${this.apiUrl}/login`;
+        return this.http.get<Usuario>(url, { headers });
+      })
+    );
+  }
+
+  atualizarPerfil(uid: string, dados: UsuarioRequest): Observable<Usuario> {
     return this.authService.getIdToken().pipe(
       switchMap(idToken => {
         if (!idToken) {
@@ -62,7 +107,7 @@ export class UsuarioService {
         });
         
         // Chama o endpoint PUT /{uid} que você tem no backend
-        const url = `${this.apiUrl}/${id}`; 
+        const url = `${this.apiUrl}/${uid}`; 
         
         return this.http.put<Usuario>(url, dados, { headers });
       }),

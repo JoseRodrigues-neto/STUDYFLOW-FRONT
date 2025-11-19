@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { switchMap, catchError } from 'rxjs/operators';
 import { Roadmap } from '../models/roadmap.model';
+import { AuthService } from './auth.service'; // <--- 1. Importamos o AuthService
 
 @Injectable({
   providedIn: 'root'
@@ -9,25 +11,81 @@ import { Roadmap } from '../models/roadmap.model';
 export class RoadmapService {
   private apiUrl = 'http://localhost:8080/roadmaps';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService // <--- 2. Injetamos aqui
+  ) { }
+
+  // Método auxiliar para gerar os headers
+  private getHeaders(token: string): HttpHeaders {
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+  }
 
   getRoadmaps(): Observable<Roadmap[]> {
-    return this.http.get<Roadmap[]>(this.apiUrl);
+    // 3. Usamos switchMap para pegar o token antes da chamada
+    return this.authService.getIdToken().pipe(
+      switchMap(token => {
+        if (!token) return throwError(() => new Error('Não autenticado'));
+        
+        return this.http.get<Roadmap[]>(this.apiUrl, {
+          headers: this.getHeaders(token)
+        });
+      })
+    );
   }
 
   getRoadmap(id: number): Observable<Roadmap> {
-    return this.http.get<Roadmap>(`${this.apiUrl}/${id}`);
+    return this.authService.getIdToken().pipe(
+      switchMap(token => {
+        if (!token) return throwError(() => new Error('Não autenticado'));
+
+        return this.http.get<Roadmap>(`${this.apiUrl}/${id}`, {
+          headers: this.getHeaders(token)
+        });
+      })
+    );
   }
 
   createRoadmap(roadmap: Roadmap): Observable<Roadmap> {
-    return this.http.post<Roadmap>(this.apiUrl, roadmap);
+    return this.authService.getIdToken().pipe(
+      switchMap(token => {
+        if (!token) {
+            console.error("Erro: Tentativa de criar roadmap sem login.");
+            return throwError(() => new Error('Não autenticado'));
+        }
+
+        // AQUI ESTÁ A MÁGICA: Enviamos o roadmap + o token
+        return this.http.post<Roadmap>(this.apiUrl, roadmap, {
+          headers: this.getHeaders(token)
+        });
+      })
+    );
   }
 
   updateRoadmap(id: number, roadmap: Roadmap): Observable<Roadmap> {
-    return this.http.put<Roadmap>(`${this.apiUrl}/${id}`, roadmap);
+    return this.authService.getIdToken().pipe(
+      switchMap(token => {
+        if (!token) return throwError(() => new Error('Não autenticado'));
+
+        return this.http.put<Roadmap>(`${this.apiUrl}/${id}`, roadmap, {
+          headers: this.getHeaders(token)
+        });
+      })
+    );
   }
 
   deleteRoadmap(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.authService.getIdToken().pipe(
+      switchMap(token => {
+        if (!token) return throwError(() => new Error('Não autenticado'));
+
+        return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+          headers: this.getHeaders(token)
+        });
+      })
+    );
   }
 }

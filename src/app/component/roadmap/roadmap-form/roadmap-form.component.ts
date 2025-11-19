@@ -23,6 +23,7 @@ export class RoadmapFormComponent implements OnInit {
   roadmapId?: number;
   currentUser!: Usuario;
   isLoading = true; // Flag para controlar o estado de carregamento
+  errorMessage: string | null = null; // Para exibir mensagens de erro
 
   constructor(
     private fb: FormBuilder,
@@ -40,6 +41,7 @@ export class RoadmapFormComponent implements OnInit {
   ngOnInit(): void {
     const idParam = this.route.snapshot.params['id'];
     this.isLoading = true; // Inicia o carregamento
+    this.errorMessage = null; // Limpa erros anteriores
     if (idParam) {
       this.roadmapId = +idParam;
       this.loadRoadmapData();
@@ -58,8 +60,8 @@ export class RoadmapFormComponent implements OnInit {
         },
         error: err => {
           console.error('Erro ao carregar dados do roadmap:', err);
+          this.errorMessage = 'Falha ao carregar os dados do roadmap. Por favor, tente novamente mais tarde.';
           this.isLoading = false;
-          this.router.navigate(['/app/roadmaps']);
         }
       });
     }
@@ -73,8 +75,8 @@ export class RoadmapFormComponent implements OnInit {
       },
       error: err => {
         console.error('Erro ao carregar dados do usuário:', err);
+        this.errorMessage = 'Não foi possível carregar os dados do usuário. Sem isso, não é possível criar um roadmap.';
         this.isLoading = false;
-        this.router.navigate(['/app/roadmaps']);
       }
     });
   }

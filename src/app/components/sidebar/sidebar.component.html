@@ -17,7 +17,7 @@
     <h2 class="sr-only">Navegação principal</h2>
     <ul class="nav-list-top" role="menubar" aria-label="Navegação principal">
       <li role="none">
-        <a routerLink="/atividades" 
+        <a routerLink="/app/atividades" 
            routerLinkActive="active" 
            matTooltip="Atividades" 
            [matTooltipDisabled]="!isCollapsed"
@@ -38,7 +38,7 @@
       </h3>
       <ul class="nav-list-bottom" role="menubar" aria-labelledby="account-nav-title">
         <li role="none">
-          <a routerLink="/perfil" 
+          <a routerLink="/app/perfil" 
              routerLinkActive="active" 
              matTooltip="Perfil" 
              [matTooltipDisabled]="!isCollapsed"
@@ -49,7 +49,7 @@
         </li>
        
         <li role="none">
-          <a routerLink="/seguranca" 
+          <a routerLink="/app/seguranca" 
              routerLinkActive="active" 
              matTooltip="Segurança" 
              [matTooltipDisabled]="!isCollapsed"
@@ -60,7 +60,7 @@
         </li>
         
         <li role="none">
-          <a routerLink="/configuracoes" 
+          <a routerLink="/app/configuracoes" 
              routerLinkActive="active" 
              matTooltip="Configurações" 
              [matTooltipDisabled]="!isCollapsed"
@@ -74,7 +74,7 @@
 
     <!-- Perfil do usuário e logout -->
     <div class="sidebar-footer">
-      <a routerLink="/perfil" 
+      <a routerLink="/app/perfil" 
          class="profile-link" 
          matTooltip="{{ usuario?.nome || 'Usuário' }}" 
          [matTooltipDisabled]="!isCollapsed"

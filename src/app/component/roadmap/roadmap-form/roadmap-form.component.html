@@ -2,7 +2,23 @@
   <h2 class="form-title">{{ roadmapId ? 'Editar Roadmap' : 'Novo Roadmap' }}</h2>
   <p class="form-subtitle">Preencha os detalhes do seu plano de estudos.</p>
 
-  <form *ngIf="roadmapForm" [formGroup]="roadmapForm" (ngSubmit)="onSubmit()" novalidate>
+  <!-- 1. Indicador de Carregamento -->
+  <div *ngIf="isLoading" class="loading-indicator">
+    <p>Carregando dados...</p>
+    <!-- Você pode adicionar um spinner aqui -->
+  </div>
+
+  <!-- 2. Mensagem de Erro -->
+  <div *ngIf="errorMessage" class="error-message">
+    <h4>Ocorreu um Erro</h4>
+    <p>{{ errorMessage }}</p>
+    <button type="button" class="btn btn-secondary" routerLink="/app/roadmaps">
+      Voltar para a Lista
+    </button>
+  </div>
+
+  <!-- 3. Formulário (só aparece se não estiver carregando e não houver erro) -->
+  <form *ngIf="!isLoading && !errorMessage && roadmapForm" [formGroup]="roadmapForm" (ngSubmit)="onSubmit()" novalidate>
     
     <div class="form-group">
       <label for="titulo">Título do Roadmap</label>
@@ -44,7 +60,7 @@
       <button 
         type="submit" 
         class="btn btn-primary" 
-        [disabled]="roadmapForm.invalid || isLoading">
+        [disabled]="roadmapForm.invalid || isLoading || errorMessage">
         <span *ngIf="isLoading">Carregando...</span>
         <span *ngIf="!isLoading">{{ roadmapId ? 'Salvar Alterações' : 'Criar Roadmap' }}</span>
       </button>

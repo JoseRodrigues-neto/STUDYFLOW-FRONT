@@ -14,9 +14,9 @@ export const loginGuard: CanActivateFn = (route, state) => {
       
       // O usuário JÁ está logado
       if (user) {
-        console.log('LoginGuard: Usuário já logado. Redirecionando para /atividades');
+        console.log('LoginGuard: Usuário já logado. Redirecionando para /app/dashboard');
         // Redireciona para o app
-        return router.createUrlTree(['/atividades']);
+        return router.createUrlTree(['/app/dashboard']);
       }
       return true;  
     })

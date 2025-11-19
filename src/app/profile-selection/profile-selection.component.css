@@ -1,0 +1,84 @@
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+  }
+  
+  .container {
+    text-align: center;
+  }
+  
+  .selection-card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .logo {
+    max-width: 150px;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .btn {
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  
+  .btn-aluno {
+    background-color: #6a1b9a; /* Roxo principal */
+    color: white;
+  }
+  
+  .btn-aluno:hover {
+    background-color: #581483;
+  }
+  
+  .btn-professor {
+    background-color: #8e24aa; /* Um tom de roxo um pouco mais claro */
+    color: white;
+  }
+  
+  .btn-professor:hover {
+    background-color: #7b1fa2;
+  }
+  
+  .btn i {
+    font-size: 20px;
+  }
+  

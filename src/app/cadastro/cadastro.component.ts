@@ -60,8 +60,9 @@ export class CadastroComponent {
       finalize(() => this.loading = false)
     ).subscribe({
       next: () => {
-        this.successMessage = 'Cadastro realizado com sucesso!';
-        setTimeout(() => this.router.navigate(['/login']), 2000);
+        this.successMessage = 'Cadastro realizado com sucesso! Redirecionando...';
+        // Redireciona para o dashboard, pois o usuário já está logado
+        setTimeout(() => this.router.navigate(['/app/dashboard']), 2000);
       },
       error: (error) => {
         console.error('Erro no processo de cadastro:', error);

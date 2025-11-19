@@ -65,10 +65,19 @@ export class LoginComponent {
     this.authService.loginComGoogle().pipe(
       finalize(() => this.loading = false)
     ).subscribe({
-      next: () => {
-        this.successMessage = "Login com Google realizado com sucesso!";
-         localStorage.setItem('sessionLoginTime', Date.now().toString());
-        this.router.navigate(['/app']);
+      next: (result) => {
+        if (result && result.status) {
+          switch (result.status) {
+            case 'COMPLETO':
+              this.successMessage = "Login com Google realizado com sucesso!";
+              localStorage.setItem('sessionLoginTime', Date.now().toString());
+              this.router.navigate(['/app']);
+              break;
+            case 'SELECIONAR_PERFIL':
+              this.router.navigate(['/selecionar-perfil']);
+              break;
+          }
+        }
       },
       error: (error) => {
         console.error("Erro no login com Google:", error);
