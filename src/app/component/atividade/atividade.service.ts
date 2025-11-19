@@ -14,7 +14,7 @@ export class AtividadeService {
   constructor(private http: HttpClient) { }
 
   getAtividadesByRoadmap(roadmapId: number): Observable<Atividade[]> {
-    const url = `${this.apiUrl}?roadmapId=${roadmapId}`;
+    const url = `${this.apiUrl}/roadmap/${roadmapId}`;
     
     return this.http.get<Atividade[]>(url).pipe(
       catchError(this.handleError)

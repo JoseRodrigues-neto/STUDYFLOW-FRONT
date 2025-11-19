@@ -1,139 +1,183 @@
-/* Container geral da página */
+/* --- Container Geral (Dark Mode) --- */
 .page-container {
-  padding: 20px 30px;
-  color: #fff;
-  font-family: sans-serif;
+  padding: 2rem;
+  color: #e0e0e0; /* Texto claro */
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-/* Cabeçalho principal (Nome do Conteúdo) */
-.page-header h1 {
-  font-size: 2.2em;
-  margin: 0;
-  font-weight: 500;
+/* --- Cabeçalho do Roadmap --- */
+.page-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1.5rem;
 }
+
+.page-header h1 {
+  font-size: 2.2rem;
+  color: #ffffff; /* Roxo claro/Neon para destaque */
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
 .page-header p {
   color: #aaa;
-  margin-top: 5px;
+  font-size: 1.1rem;
+  line-height: 1.5;
 }
 
-/* Secção de Atividades */
-.atividades-section {
-  margin-top: 30px;
-}
-
-/* Cabeçalho da secção (título, filtros, botão) */
+/* --- Header da Seção (Título e Botão) --- */
 .atividades-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #444;
-  padding-bottom: 15px;
+  margin-bottom: 1.5rem;
 }
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.header-left h2 {
+
+.atividades-header h2 {
+  font-size: 1.5rem;
+  color: #fff;
   margin: 0;
-  font-size: 1.5em;
-}
-.filtros {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.filtros span {
-  color: #aaa;
-  font-size: 0.9em;
 }
 
-/* Botões de filtro */
-.btn-filtro {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #555;
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-.btn-filtro:hover {
-  background-color: #444;
-}
-
-/* Botão de Adicionar Atividade */
+/* Botão Adicionar */
 .btn-adicionar {
-  background-color: #3e3e42;
+  background-color: #6c5ce7; /* Roxo vibrante */
   color: #fff;
-  border: 1px solid #555;
+  border: none;
   border-radius: 6px;
-  padding: 8px 12px;
-  font-size: 0.9em;
+  padding: 10px 20px;
+  font-size: 0.95rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
+  transition: background-color 0.2s;
 }
-.btn-adicionar .icon-add {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #979CF9; /* Cor da sua logo! */
-}
+
 .btn-adicionar:hover {
-  background-color: #555;
+  background-color: #5849c2;
 }
 
-/* Lista de Atividades */
+.icon-add {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* --- Lista de Tarefas --- */
 .atividades-list {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-/* Item da tarefa (copiado e adaptado do seu AtividadeList) */
+/* --- Card da Tarefa (Dark & Status) --- */
 .task-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #252526;
-  padding: 15px;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  border: 1px solid #444;
+  background-color: #252526; /* Fundo cinza escuro (VS Code style) */
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: 1px solid #3e3e42;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  
+  /* Prepara a barra lateral */
+  border-left: 5px solid #555; /* Cor padrão se não tiver status */
 }
+
 .task-item:hover {
-  background-color: #3e3e42;
+  background-color: #2d2d2e;
+  transform: translateX(5px); /* Efeito de movimento suave */
 }
+
+/* --- CORES DOS STATUS (Barra Lateral) --- */
+
+/* Pendente: Amarelo/Laranja */
+.task-item.status-pendente {
+  border-left-color: #f1c40f; 
+}
+
+/* Em Andamento: Azul */
+.task-item.status-andamento {
+  border-left-color: #3498db;
+}
+
+/* Concluída: Verde */
+.task-item.status-concluida {
+  border-left-color: #2ecc71;
+  opacity: 0.8; /* Levemente apagado para indicar finalizado */
+}
+.task-item.status-concluida h3 {
+  text-decoration: line-through; /* Riscado */
+  color: #888;
+}
+
+/* --- Conteúdo do Card --- */
+.task-content {
+  flex: 1;
+  padding-right: 20px;
+}
+
 .task-content h3 {
   margin: 0 0 5px 0;
-  font-size: 1.1em;
+  font-size: 1.1rem;
+  color: #fff;
 }
+
 .task-content p {
   margin: 0;
   color: #aaa;
-  font-size: 0.9em;
-}
-.task-actions .star-icon {
-  font-size: 1.5em;
-  cursor: pointer;
-  color: #aaa;
-}
-.empty-list {
-  color: #888;
-  text-align: center;
-  padding: 20px;
+  font-size: 0.9rem;
 }
 
-/* Rodapé da secção */
-.atividades-footer {
-  margin-top: 20px;
+/* --- Ações (Editar e Excluir) --- */
+.task-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
+
+.icon-btn {
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  user-select: none;
+}
+
+.icon-btn:hover {
+  background-color: #3e3e42;
+}
+
+.delete-icon:hover {
+  background-color: #4a2b2b; /* Fundo avermelhado no hover */
+}
+
+/* --- Estado Vazio --- */
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: #777;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  border: 1px dashed #444;
+}
+
 .btn-secundario {
-  background-color: #252526;
+  margin-top: 15px;
+  background: transparent;
   border: 1px solid #555;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 6px;
+  color: #ccc;
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
 }
+
 .btn-secundario:hover {
-  background-color: #333;
+  border-color: #888;
+  color: #fff;
 }

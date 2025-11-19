@@ -5,12 +5,16 @@ import { Roadmap } from '../../../models/roadmap.model';
 import { Atividade } from '../../../models/atividade.model';
 import { CommonModule } from '@angular/common';
 import { AtividadeService } from '../../atividade/atividade.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../../../dialogs/confimar/confirm-dialog.component';
 
 @Component({
   selector: 'app-roadmap-detail',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    MatDialogModule,
+    ConfirmDialogComponent
   ],
   templateUrl: './roadmap-detail.component.html',
   styleUrls: ['./roadmap-detail.component.css']
@@ -26,7 +30,8 @@ export class RoadmapDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private roadmapService: RoadmapService,
-    private atividadeService: AtividadeService
+    private atividadeService: AtividadeService,
+    private dialog: MatDialog
   ) {
    }
 
@@ -72,5 +77,44 @@ export class RoadmapDetailComponent implements OnInit {
 
   editarAtividade(atividade: Atividade): void {
     this.router.navigate(['/app/atividade-form', atividade.id]);
+  }
+
+  excluirAtividade(atividade: Atividade): void {
+    const dialogData: ConfirmDialogData = {
+      title: 'Confirmar Exclusão',
+      message: `Tem certeza de que deseja excluir a atividade "${atividade.titulo}"?`,
+      confirmText: 'Excluir',
+      cancelText: 'Cancelar'
+    };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.atividadeService.delete(atividade.id).subscribe({
+          next: () => {
+            this.atividades = this.atividades.filter(a => a.id !== atividade.id);
+          },
+          error: (err) => {
+            console.error('Erro ao excluir atividade:', err);
+          }
+        });
+      }
+    });
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'PENDENTE':
+        return 'status-pendente';
+      case 'EM_ANDAMENTO':
+        return 'status-andamento';
+      case 'CONCLUIDA':
+        return 'status-concluida';
+      default:
+        return '';
+    }
   }
 }

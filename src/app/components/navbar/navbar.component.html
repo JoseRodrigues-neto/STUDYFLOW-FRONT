@@ -1,73 +1,37 @@
 <header class="main-toolbar">
   <!-- Seção Esquerda: Menu e Logo -->
   <div class="toolbar-left">
-    <button class="btn-toggle-navbar" 
-            mat-icon-button
-            (click)="onToggleClick()"
-            [attr.aria-label]="isCollapsed ? 'Expandir menu' : 'Recolher menu'"
-            [attr.aria-expanded]="!isCollapsed"
-            type="button">
+    <button class="btn-toggle-navbar" mat-icon-button (click)="onToggleClick()"
+      [attr.aria-label]="isCollapsed ? 'Expandir menu' : 'Recolher menu'" [attr.aria-expanded]="!isCollapsed"
+      type="button">
       <mat-icon [attr.aria-hidden]="true">{{isCollapsed ? 'menu' : 'menu_open'}}</mat-icon>
     </button>
-    
-    
-  </div>
 
-  <!-- Seção Central: Busca -->
-  <div class="toolbar-center">
-    <div class="search-bar">
-      <mat-icon class="search-icon" aria-hidden="true">search</mat-icon>
-      <input type="text" 
-             placeholder="Pesquisar atividades, roadmaps..." 
-             aria-label="Pesquisar"
-             class="search-input">
-      <button class="search-actions" mat-icon-button type="button" aria-label="Opções de pesquisa">
-        <mat-icon aria-hidden="true">expand_more</mat-icon>
-      </button>
-    </div>
+
   </div>
 
   <!-- Seção Direita: Ações e Perfil -->
   <div class="toolbar-right">
     <div class="actions-group">
-      <button class="icon-btn notification-btn" 
-              mat-icon-button
-              matTooltip="Notificações"
-              aria-label="Notificações">
+      <button class="icon-btn notification-btn" mat-icon-button matTooltip="Notificações" aria-label="Notificações">
         <mat-icon aria-hidden="true">notifications</mat-icon>
-       </button>
-      
-      <button class="btn-primary-new" mat-raised-button>
-        <mat-icon aria-hidden="true">add</mat-icon>
-        <span>Novo Roadmap</span>
       </button>
     </div>
 
-    <div class="divider" aria-hidden="true"></div>
-
     <div class="profile-section">
-      <a routerLink="/perfil" 
-         class="profile-link-navbar" 
-         matTooltip="Ver perfil"
-         role="button"
-         aria-label="Ver perfil do usuário">
-        
+      <a routerLink="/app/perfil" class="profile-link-navbar" matTooltip="Ver perfil" role="button"
+        aria-label="Ver perfil do usuário">
+
         <div class="avatar-small-wrapper">
-          <img *ngIf="usuario?.avatarUrl" 
-               [src]="usuario?.avatarUrl" 
-               alt="Avatar de {{ usuario?.nome || 'Usuário' }}" 
-               class="avatar-small">
-          <mat-icon *ngIf="!usuario?.avatarUrl" 
-                    class="avatar-small-icon" 
-                    aria-hidden="true">account_circle</mat-icon>
+          <img *ngIf="usuario?.avatarUrl" [src]="usuario?.avatarUrl" alt="Avatar de {{ usuario?.nome || 'Usuário' }}"
+            class="avatar-small">
+          <mat-icon *ngIf="!usuario?.avatarUrl" class="avatar-small-icon" aria-hidden="true">account_circle</mat-icon>
         </div>
-        
+
         <div class="user-info-navbar">
           <span class="user-name">{{ usuario?.nome || 'Usuário' }}</span>
           <span class="user-status">{{ usuario?.perfil }}</span>
         </div>
-        
-        <mat-icon class="dropdown-arrow" aria-hidden="true">expand_more</mat-icon>
       </a>
     </div>
   </div>
