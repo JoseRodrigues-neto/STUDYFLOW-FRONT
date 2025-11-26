@@ -81,10 +81,7 @@
     <div class="sidebar-footer">
       <a routerLink="/app/perfil" class="profile-link" matTooltip="{{ usuario?.nome || 'Usuário' }}"
         [matTooltipDisabled]="!isCollapsed" role="button" aria-label="Ver perfil do usuário">
-        <div class="avatar-small-wrapper">
-          <img *ngIf="usuario?.avatarUrl" [src]="usuario?.avatarUrl" alt="Avatar do usuário" class="avatar-small">
-          <mat-icon *ngIf="!usuario?.avatarUrl" class="avatar-small-icon" aria-hidden="true">account_circle</mat-icon>
-        </div>
+         
         <div class="user-info" *ngIf="!isCollapsed">
           <span class="user-name">{{ usuario?.nome || 'Usuário' }}</span>
           <span class="user-status" *ngIf="usuario?.perfil">{{ usuario?.perfil }}</span>
