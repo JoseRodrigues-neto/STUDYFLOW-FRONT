@@ -5,12 +5,13 @@ import { Atividade } from '../../../models/atividade.model';
 import { StatusAtividade } from '../../../models/status-atividade.model';
 import { AtividadeService } from '../atividade.service';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
+import { AnotacaoListComponent } from '../../anotacao/anotacao-list/anotacao-list.component';
 
 @Component({
   selector: 'app-atividade-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, AnotacaoListComponent],
   templateUrl: './atividade-form.component.html',
   styleUrls: ['./atividade-form.component.css']
 })
@@ -21,6 +22,7 @@ export class AtividadeFormComponent implements OnInit {
   isViewMode = false;
   statusOptions = Object.values(StatusAtividade);
   roadmapId: number | null = null;
+  usuarioId: number | null = null;
   atividadeId: number | null = null;
 
   constructor(
@@ -42,12 +44,13 @@ export class AtividadeFormComponent implements OnInit {
     combineLatest([this.route.params, this.route.queryParams]).subscribe(([params, queryParams]) => {
       this.atividadeId = params['id'] ? +params['id'] : null;
       this.roadmapId = queryParams['roadmapId'] ? +queryParams['roadmapId'] : null;
+      this.usuarioId = queryParams['usuarioId'] ? +queryParams['usuarioId'] : null;
       this.isViewMode = queryParams['view'] === 'true';
 
+      console.log('ngOnInit - roadmapId from queryParams:', this.roadmapId);
       if (this.atividadeId) {
         this.isEditMode = true;
         this.atividadeService.getById(this.atividadeId).subscribe((atividade: Atividade) => {
-          console.log('Atividade recebida do serviço:', atividade);
           this.setFormValues(atividade);
           if (this.isViewMode) {
             this.atividadeForm.disable();
@@ -88,31 +91,54 @@ export class AtividadeFormComponent implements OnInit {
     }
 
     const formValues = this.atividadeForm.value;
-    
-    if (this.isEditMode && this.atividadeId) {
-      const atividadeAtualizada = {
-        id: this.atividadeId,
-        ...formValues,
-      };
+    const effectiveUsuarioId = this.usuarioId;
 
-      this.atividadeService.update(atividadeAtualizada as Atividade).subscribe({
-        next: () => this.location.back(),
-        error: (err) => console.error('Erro ao atualizar atividade', err)
-      });
-
-    } else if (this.roadmapId) {
-      const novaAtividade = {
-        ...formValues,
-        roadmapId: this.roadmapId
-      };
-
-      this.atividadeService.create(novaAtividade as Atividade).subscribe({
-        next: () => this.location.back(),
-        error: (err) => console.error('Erro ao criar atividade', err)
-      });
-    } else {
-      console.error('ID do Roadmap ou da Atividade não encontrado.');
+    if (!effectiveUsuarioId) {
+      console.error('ERRO CRÍTICO: ID do usuário não fornecido para a operação.');
+      return;
     }
+
+    // Preparação correta do RoadmapId
+    // Se for nulo (atividade diária), transformamos em undefined para o Service entender
+    const roadmapIdParam = this.roadmapId ? this.roadmapId : undefined;
+
+    let operation$: Observable<Atividade[]>;
+
+    console.log(`Tentando salvar. UserID: ${effectiveUsuarioId}, RoadmapID: ${roadmapIdParam}`);
+
+    // 1. Lógica de Edição
+    if (this.isEditMode && this.atividadeId) {
+      const atividadeAtualizada = { 
+        id: this.atividadeId, 
+        ...formValues,
+        usuarioId: effectiveUsuarioId,
+        roadmapId: this.roadmapId ?? null 
+      };
+
+      console.log('Payload Update:', atividadeAtualizada);
+      
+      operation$ = this.atividadeService.update(atividadeAtualizada as Atividade, effectiveUsuarioId, roadmapIdParam);
+
+      // 2. Lógica de Criação (Roadmap ou Diária)
+    } else {
+      const novaAtividade: Atividade = {
+        ...formValues,
+        usuarioId: effectiveUsuarioId,
+        roadmapId: this.roadmapId ? this.roadmapId : null
+      };
+      console.log('onSubmit - Nova Atividade:', novaAtividade);
+      operation$ = this.atividadeService.create(novaAtividade, effectiveUsuarioId, roadmapIdParam);
+    }
+
+    operation$.subscribe({
+      next: (listaAtualizada) => {
+        console.log('Sucesso! Lista atualizada recebida do servidor:', listaAtualizada);
+        this.location.back();
+      },
+      error: (err) => {
+        console.error('Falha na operação:', err);
+      }
+    });
   }
 
   onClose(): void {

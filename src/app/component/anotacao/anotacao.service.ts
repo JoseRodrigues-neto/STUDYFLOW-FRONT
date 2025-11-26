@@ -50,6 +50,15 @@ export class AnotacaoService {
     );
   }
 
+  exportAnotacaoAsTxt(id: number): Observable<any> {
+    const url = `${this.apiUrl}/${id}/export/txt`;
+    
+    // Faz a requisição esperando um texto e a resposta completa para pegar headers
+    return this.http.get(url, { responseType: 'text', observe: 'response' }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: any) {
     console.error('Ocorreu um erro na chamada da API!', error);
     return throwError(() => new Error('Algo deu errado; por favor, tente novamente mais tarde.'));

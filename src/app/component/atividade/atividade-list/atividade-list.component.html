@@ -1,5 +1,4 @@
 <div class="atividades-page-container">
-
   <div class="list-wrapper">
     <div class="header">
       <h1>Minhas atividades</h1>
@@ -15,29 +14,30 @@
       <p>Carregando atividades...</p>
     </div>
     
-    <div *ngIf="!isLoading && atividades.length > 0" class="task-list">
-      <div *ngFor="let atividade of atividades" 
-           class="task-item" 
-           (click)="verDetalhesAtividade(atividade)">
-        
-        <div class="task-status-indicator" [ngClass]="getStatusClass(atividade.status)"></div>
+    <ng-container *ngIf="atividades$ | async as atividades">
+      <div *ngIf="!isLoading && atividades.length > 0" class="task-list">
+        <div *ngFor="let atividade of atividades" 
+             class="task-item" 
+             (click)="verDetalhesAtividade(atividade)">
+          
+          <div class="task-status-indicator" [ngClass]="getStatusClass(atividade.status)"></div>
 
-        <div class="task-content">
-          <h3>{{ atividade.titulo }}</h3>
-          <p class="task-due-date" *ngIf="atividade.dataFim">
-            Vence em: {{ formatarData(atividade.dataFim) }}
-          </p>
-        </div>
-        <div class="task-actions">
-          <span class="icon-button" (click)="editarAtividade(atividade); $event.stopPropagation()">✏️</span>
-          <span class="icon-button" (click)="excluirAtividade(atividade.id); $event.stopPropagation()">🗑️</span>
+          <div class="task-content">
+            <h3>{{ atividade.titulo }}</h3>
+            <p class="task-due-date" *ngIf="atividade.dataFim">
+              Vence em: {{ formatarData(atividade.dataFim) }}
+            </p>
+          </div>
+          <div class="task-actions">
+            <span class="icon-button" (click)="editarAtividade(atividade); $event.stopPropagation()">✏️</span>
+            <span class="icon-button" (click)="excluirAtividade(atividade.id); $event.stopPropagation()">🗑️</span>
+          </div>
         </div>
       </div>
-    </div>
-    
-    <div *ngIf="!isLoading && atividades.length === 0" class="no-data">
-      <p>Nenhuma atividade encontrada.</p>
-    </div>
+      
+      <div *ngIf="!isLoading && atividades.length === 0" class="no-data">
+        <p>Nenhuma atividade encontrada.</p>
+      </div>
+    </ng-container>
   </div>
-
 </div>

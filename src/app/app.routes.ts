@@ -58,6 +58,14 @@ export const routes: Routes = [
         component: AtividadeListComponent
       },
       {
+        path: 'atividades-diarias',
+        loadComponent: () => import('./component/atividade/daily-activities-list/daily-activities-list.component').then(m => m.DailyActivitiesListComponent)
+      },
+      {
+        path: 'atividades-concluidas',
+        loadComponent: () => import('./component/atividade/completed-activities-list/completed-activities-list.component').then(m => m.CompletedActivitiesListComponent)
+      },
+      {
         path: 'seguranca',
         component: SegurancaComponent
       },

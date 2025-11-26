@@ -38,6 +38,13 @@
           </select>
         </div>
 
+        <!-- Seção de Anotações (Apenas em modo de visualização) -->
+        <div *ngIf="isViewMode && atividadeId" class="anotacoes-section">
+          <hr>
+          <h3>Anotações</h3>
+          <app-anotacao-list [atividadeId]="atividadeId"></app-anotacao-list>
+        </div>
+
       </main>
 
       <footer class="form-footer">

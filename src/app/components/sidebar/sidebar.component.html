@@ -14,18 +14,19 @@
     <h2 class="sr-only">Navegação principal</h2>
     <ul class="nav-list-top" role="menubar" aria-label="Navegação principal">
       <li role="none">
-        <a routerLink="/app/dashboard" routerLinkActive="active" matTooltip="Dashboard"
+        <a routerLink="/app/atividades-diarias" routerLinkActive="active" matTooltip="Atividades"
           [matTooltipDisabled]="!isCollapsed" role="menuitem" aria-current="page">
-          <mat-icon aria-hidden="true">list_alt</mat-icon>
-          <span class="nav-label" *ngIf="!isCollapsed">Dashboard</span>
+          <mat-icon aria-hidden="true">today</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed">Atividades Diárias</span>
         </a>
       </li>
-    </ul>
-  </div>
-
-  <div class="nav-section">
-    <h2 class="sr-only">Navegação principal</h2>
-    <ul class="nav-list-top" role="menubar" aria-label="Navegação principal">
+      <li role="none">
+        <a routerLink="/app/atividades-concluidas" routerLinkActive="active" matTooltip="Atividades Concluídas"
+          [matTooltipDisabled]="!isCollapsed" role="menuitem" aria-current="page">
+          <mat-icon aria-hidden="true">archive</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed">Atividades Concluídas</span>
+        </a>
+      </li>
       <li role="none">
         <a routerLink="/app/roadmaps" routerLinkActive="active" matTooltip="Roadmaps"
           [matTooltipDisabled]="!isCollapsed" role="menuitem" aria-current="page">
@@ -33,17 +34,11 @@
           <span class="nav-label" *ngIf="!isCollapsed">Roadmaps</span>
         </a>
       </li>
-    </ul>
-  </div>
-
-  <div class="nav-section">
-    <h2 class="sr-only">Navegação principal</h2>
-    <ul class="nav-list-top" role="menubar" aria-label="Navegação principal">
       <li role="none">
-        <a routerLink="/app/atividades" routerLinkActive="active" matTooltip="Atividades"
+        <a routerLink="/app/dashboard" routerLinkActive="active" matTooltip="Dashboard"
           [matTooltipDisabled]="!isCollapsed" role="menuitem" aria-current="page">
-          <mat-icon aria-hidden="true">list_alt</mat-icon>
-          <span class="nav-label" *ngIf="!isCollapsed">Atividades</span>
+          <mat-icon aria-hidden="true">dashboard</mat-icon>
+          <span class="nav-label" *ngIf="!isCollapsed">Dashboard</span>
         </a>
       </li>
     </ul>

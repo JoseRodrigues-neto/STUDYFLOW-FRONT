@@ -7,8 +7,9 @@
   background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; /* Centraliza verticalmente */
   z-index: 1000;
+  /* Removemos o padding exagerado e o overflow daqui */
 }
 
 .form-container {
@@ -20,27 +21,28 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   width: 90%;
   max-width: 550px;
+  
+  /* --- A MÁGICA ACONTECE AQUI --- */
+  max-height: 90vh; /* Ocupa no máximo 90% da altura da tela */
+  height: auto;
+  overflow: hidden; /* Garante que nada saia das bordas arredondadas */
+  
   animation: fadeIn 0.3s ease-out;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .form-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 15px 20px;
   border-bottom: 1px solid #3a3a3c;
-  flex-shrink: 0;
+  flex-shrink: 0; /* Impede o cabeçalho de encolher */
+  background-color: #2c2c2e; /* Garante fundo opaco */
 }
 
 .form-header h2 {
@@ -55,19 +57,43 @@
   color: #8e8e93;
 }
 
+/* O Form precisa ocupar todo o espaço disponível dentro do container */
 form {
   display: flex;
   flex-direction: column;
+  flex: 1; /* Ocupa o espaço restante */
+  overflow: hidden; /* Necessário para o scroll filho funcionar */
 }
 
+/* O Body é quem vai ter a barra de rolagem */
 .form-body {
   padding: 20px;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  
+  /* --- SCROLL INTERNO --- */
+  flex: 1; /* Cresce para ocupar espaço */
+  overflow-y: auto; /* Adiciona scroll se o conteúdo for grande */
+  
+  /* Personalização da barra de rolagem (opcional, fica bonito no dark mode) */
+  scrollbar-width: thin;
+  scrollbar-color: #555 #2c2c2e;
 }
 
+/* Webkit scrollbar styling (Chrome/Safari) */
+.form-body::-webkit-scrollbar {
+  width: 8px;
+}
+.form-body::-webkit-scrollbar-track {
+  background: #2c2c2e;
+}
+.form-body::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/* Restante dos estilos mantém-se igual */
 .form-field {
   display: flex;
   flex-direction: column;
@@ -116,9 +142,10 @@ form {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding: 20px;
+  padding: 15px 20px;
   border-top: 1px solid #3a3a3c;
-  flex-shrink: 0;
+  flex-shrink: 0; /* Impede o rodapé de encolher ou sumir */
+  background-color: #2c2c2e;
 }
 
 .button-primary,
@@ -136,21 +163,27 @@ form {
   background-color: #007aff;
   color: #fff;
 }
-
 .button-primary:hover {
   background-color: #005ecb;
 }
-
 .button-primary:disabled {
   background-color: #555;
   cursor: not-allowed;
 }
-
 .button-secondary {
   background-color: #545458;
   color: #f2f2f7;
 }
-
 .button-secondary:hover {
   background-color: #636366;
+}
+
+/* Ajuste para as anotações */
+.anotacoes-section {
+    margin-top: 10px;
+}
+.anotacoes-section hr {
+    border: 0;
+    border-top: 1px solid #3a3a3c;
+    margin: 20px 0;
 }

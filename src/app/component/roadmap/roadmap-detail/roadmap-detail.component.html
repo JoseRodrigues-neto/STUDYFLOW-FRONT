@@ -24,7 +24,7 @@
       <div *ngIf="atividades.length > 0; else noAtividades">
 
         <div *ngFor="let atividade of atividades" class="task-item"
-          [ngClass]="getStatusClass(atividade.status.toString())" (click)="verDetalhesAtividade(atividade)">
+          [ngClass]="getStatusClass(atividade.status)" (click)="verDetalhesAtividade(atividade)">
 
           <div class="task-content">
             <h3>{{ atividade.titulo }}</h3>

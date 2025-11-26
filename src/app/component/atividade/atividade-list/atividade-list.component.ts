@@ -3,15 +3,16 @@ import { Router } from '@angular/router';
 import { AtividadeService } from '../atividade.service';
 import { Atividade } from '../../../models/atividade.model';
 import { CommonModule, DatePipe } from '@angular/common';
-import { AnotacaoListComponent } from '../../anotacao/anotacao-list/anotacao-list.component';
 import { StatusAtividade } from '../../../models/status-atividade.model';
+import { UsuarioService } from '../../../services/usuario.service';
+import { Usuario } from '../../../models/usuario.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-atividade-list',
   standalone: true,
   imports: [
-    CommonModule,
-    AnotacaoListComponent
+    CommonModule
   ],
   providers: [DatePipe],
   templateUrl: './atividade-list.component.html',
@@ -19,43 +20,49 @@ import { StatusAtividade } from '../../../models/status-atividade.model';
 })
 export class AtividadeListComponent implements OnInit {
 
-  atividades: Atividade[] = [];
+  atividades$: Observable<Atividade[]>;
   isLoading = true;
   dataAtual: string;
+  usuario: Usuario | null = null; // Adicionado propriedade de usuário
 
   constructor(
     private atividadeService: AtividadeService,
+    private usuarioService: UsuarioService, // Injetado UsuarioService
     private datePipe: DatePipe,
     private router: Router
   ) {
     const hoje = new Date();
     this.dataAtual = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
     this.dataAtual = this.dataAtual.charAt(0).toUpperCase() + this.dataAtual.slice(1);
+    this.atividades$ = this.atividadeService.atividades$;
   }
 
   ngOnInit(): void {
-    this.carregarAtividades();
-  }
-
-  carregarAtividades(): void {
-    this.isLoading = true;
-    const roadmapIdParaTeste = 1; 
-
-    this.atividadeService.getAtividadesByRoadmap(roadmapIdParaTeste).subscribe({
-      next: (dados) => {
-        this.atividades = dados;
-        this.isLoading = false;
+    this.usuarioService.getMeuPerfil().subscribe({
+      next: (usuario) => {
+        this.usuario = usuario;
+        if (usuario && usuario.id) {
+          this.atividadeService.loadInitialAtividades(usuario.id);
+          this.atividades$.subscribe(() => this.isLoading = false);
+        } else {
+          console.error('ID do usuário não encontrado.');
+          this.isLoading = false;
+        }
       },
       error: (erro) => {
-        console.error('Erro ao buscar atividades:', erro);
-        this.isLoading = false; 
+        console.error('Erro ao buscar perfil do usuário:', erro);
+        this.isLoading = false;
       }
     });
   }
 
   iniciarNovaAtividade(): void {
     const roadmapIdParaTeste = 1;
-    this.router.navigate(['/app/atividade-form'], { queryParams: { roadmapId: roadmapIdParaTeste } });
+    if (this.usuario && this.usuario.id) {
+      this.router.navigate(['/app/atividade-form'], { queryParams: { roadmapId: roadmapIdParaTeste, usuarioId: this.usuario.id } });
+    } else {
+      console.error("Não é possível criar atividade sem ID do usuário.");
+    }
   }
 
   verDetalhesAtividade(atividade: Atividade): void {
@@ -63,15 +70,16 @@ export class AtividadeListComponent implements OnInit {
   }
 
   editarAtividade(atividade: Atividade): void {
-    this.router.navigate(['/app/atividade-form', atividade.id]);
+    if (this.usuario && this.usuario.id) {
+      this.router.navigate(['/app/atividade-form', atividade.id], { queryParams: { usuarioId: this.usuario.id } });
+    } else {
+      console.error("Não é possível editar atividade sem ID do usuário.");
+    }
   }
 
   excluirAtividade(id: number): void {
-    if (confirm('Tem certeza que deseja excluir esta atividade?')) {
-      this.atividadeService.delete(id).subscribe({
-        next: () => {
-          this.carregarAtividades();
-        },
+    if (confirm('Tem certeza que deseja excluir esta atividade?') && this.usuario && this.usuario.id) {
+      this.atividadeService.delete(id, this.usuario.id).subscribe({
         error: (err) => console.error('Erro ao excluir atividade', err)
       });
     }
@@ -81,7 +89,7 @@ export class AtividadeListComponent implements OnInit {
     switch (status) {
       case StatusAtividade.PENDENTE: return 'status-pendente';
       case StatusAtividade.EM_ANDAMENTO: return 'status-andamento';
-      case StatusAtividade.CONCLUIDA: return 'status-concluida';
+      case StatusAtividade.CONCLUIDO: return 'status-concluido';
       default: return '';
     }
   }
