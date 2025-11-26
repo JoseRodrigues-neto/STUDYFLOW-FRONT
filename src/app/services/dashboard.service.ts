@@ -9,8 +9,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class DashboardService {
-  private apiUrl = 'https://9ec610758ec0.ngrok-free.app/dashboard/me';
-
+ // private apiUrl = 'https://9ec610758ec0.ngrok-free.app/dashboard/me';
+private apiUrl = 'http://localhost:8080/dashboard/me';
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   getDashboardData(filters?: {

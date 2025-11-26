@@ -10,7 +10,9 @@ import { StatusAtividade } from '../../models/status-atividade.model';
 })
 export class AtividadeService {
 
-  private apiUrl = 'https://9ec610758ec0.ngrok-free.app/atividades';
+  //private apiUrl = 'https://9ec610758ec0.ngrok-free.app/atividades';
+  private apiUrl = 'http://localhost:8080/atividades';
+
   private atividadesSubject = new ReplaySubject<Atividade[]>(1);
   public atividades$ = this.atividadesSubject.asObservable();
   

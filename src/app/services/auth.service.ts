@@ -23,7 +23,8 @@ export interface RegisterData {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'app/usuarios';
+  private apiUrl = 'http://localhost:8080/usuarios';
+  
   public readonly authState$: Observable<User | null>;
 
   constructor(
@@ -81,7 +82,8 @@ export class AuthService {
       switchMap(idToken => {
         const headers = new HttpHeaders({ 'Content-Type': 'text/plain' });
         // Apenas devolve o Observable para o componente subscrever
-        return this.http.post('https://9ec610758ec0.ngrok-free.app/auth/google-login', idToken, { headers });
+       // return this.http.post('https://9ec610758ec0.ngrok-free.app/auth/google-login', idToken, { headers });
+    return this.http.post('http://localhost:8080/auth/google-login', idToken, { headers });
       })
     );
   }
@@ -134,17 +136,11 @@ export class AuthService {
 
     // Tenta re-autenticar
     return from(reauthenticateWithCredential(user, credential)).pipe(
-      // --- ESTA É A CORREÇÃO ---
-      // 'reauthenticateWithCredential' retorna um UserCredential.
-      // Usamos 'map' para transformar esse retorno em 'void'.
+
       map(() => void 0));
   }
 
-  /**
-   * Exclui a conta do usuário em AMBOS os sistemas:
-   * 1. Primeiro no nosso Backend (PostgreSQL)
-   * 2. Depois no Firebase Authentication
-   */
+
   deleteUserAccount(): Observable<any> {
     const user = this.auth.currentUser;
     if (!user) {
