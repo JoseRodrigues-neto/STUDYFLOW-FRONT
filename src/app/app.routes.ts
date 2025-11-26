@@ -22,12 +22,12 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [loginGuard]
+   
   },
   {
     path: 'cadastro',
     component: CadastroComponent,
-    canActivate: [loginGuard] 
+ 
   },
   {
     path: 'forgot-password',

@@ -38,6 +38,19 @@
     <div *ngIf="!isLoading && atividades.length === 0" class="no-data">
       <p>Nenhuma atividade encontrada.</p>
     </div>
+
+    
+  </div>
+
+   <div class="tools-wrapper" [class.collapsed]="isTimerCollapsed">
+    
+    <button class="btn-toggle-timer" (click)="toggleTimer()" title="Abrir/Fechar Timer">
+  
+      <mat-icon>{{ isTimerCollapsed ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+      
+    </button>
+ <div class="tools-wrapper">
+    <app-timer></app-timer>
   </div>
 
 </div>

@@ -474,3 +474,164 @@
 }
 
 
+/* --- Responsividade Mobile Otimizada --- */
+
+@media (max-width: 900px) {
+  /* 1. Layout Geral: Removemos margens excessivas */
+  .main-layout {
+    flex-direction: column;
+    padding: 1rem; /* Reduz padding lateral */
+    gap: 1rem;
+  }
+
+  /* 2. Header: Ajuste para telas menores */
+  .header {
+    padding: 1rem; /* Header mais compacto */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .header-title {
+    width: 100%;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between; /* Botões espalhados uniformemente */
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+  }
+  
+  /* Botão de sair com texto fica muito grande no mobile, vamos ajustar */
+  .btn-text-icon span {
+    display: inline-block;
+  }
+
+  /* 3. Sidebar: Transformação Drástica */
+  .sidebar {
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box; /* Garante que padding não estoure a largura */
+  }
+
+  .sidebar-profile {
+    flex-direction: row; /* Avatar ao lado do nome/badge */
+    justify-content: flex-start;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: none; /* Remove linha para fluir melhor */
+  }
+
+  /* Ajuste do avatar na sidebar mobile */
+  .avatar-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .avatar-wrapper img, 
+  .avatar-placeholder-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 30px; /* Ícone menor */
+  }
+  
+  .avatar-edit-btn {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .avatar-edit-btn mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Badge de perfil ao lado da foto, não embaixo */
+  .sidebar-profile .tag {
+    margin-top: 0; 
+  }
+
+  /* 4. Navegação: Vira um Menu Horizontal (Scrollável) */
+  .sidebar-nav {
+    flex-direction: row; /* Botões lado a lado */
+    overflow-x: auto; /* Permite scroll lateral se não couber */
+    padding-bottom: 0.5rem; /* Espaço para scrollbar */
+    margin-top: 0.5rem;
+    gap: 0.5rem;
+    
+    /* Esconder scrollbar feia mas manter funcionalidade */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .sidebar-nav::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Webkit */
+  }
+
+  .nav-button {
+    flex: 0 0 auto; /* Botões não encolhem */
+    background-color: var(--bg-card); /* Fundo tipo "pill" */
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .nav-button.active {
+    border-color: var(--accent-blue);
+    background-color: rgba(0, 122, 255, 0.15);
+  }
+
+  /* 5. Área de Conteúdo */
+  .content-area {
+    padding: 1rem; /* Menos padding interno */
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .edit-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .edit-actions button {
+    flex: 1; /* Botões ocupam largura total e igual */
+    justify-content: center;
+  }
+
+  /* 6. Grids e Inputs */
+  .info-grid {
+    grid-template-columns: 1fr; /* 1 coluna */
+    gap: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr; /* Cards de estatística um embaixo do outro */
+    gap: 1rem;
+  }
+  
+ 
+  .stats-grid {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    grid-template-columns: none;
+  }
+  .stat-card {
+    min-width: 240px; 
+  }
+  
+}
+
+/* Telas muito pequenas (iPhone SE, Galaxy Fold fechado) */
+@media (max-width: 380px) {
+  .header-title h1 { font-size: 1.2rem; }
+  .header-icon-wrapper { width: 40px; height: 40px; }
+  .btn-text-icon span { display: none; } /* Esconde texto "Sair", deixa só ícone */
+  
+  .stat-value { font-size: 1.5rem; }
+}

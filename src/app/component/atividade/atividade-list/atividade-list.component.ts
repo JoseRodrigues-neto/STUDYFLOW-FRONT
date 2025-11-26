@@ -5,13 +5,19 @@ import { Atividade } from '../../../models/atividade.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { AnotacaoListComponent } from '../../anotacao/anotacao-list/anotacao-list.component';
 import { StatusAtividade } from '../../../models/status-atividade.model';
+import { TimerComponent } from '../../../components/timer/timer.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-atividade-list',
   standalone: true,
   imports: [
     CommonModule,
-    AnotacaoListComponent
+    AnotacaoListComponent,
+    TimerComponent,
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [DatePipe],
   templateUrl: './atividade-list.component.html',
@@ -22,6 +28,7 @@ export class AtividadeListComponent implements OnInit {
   atividades: Atividade[] = [];
   isLoading = true;
   dataAtual: string;
+  isTimerCollapsed = false;
 
   constructor(
     private atividadeService: AtividadeService,
@@ -36,6 +43,11 @@ export class AtividadeListComponent implements OnInit {
   ngOnInit(): void {
     this.carregarAtividades();
   }
+
+    toggleTimer(): void {
+    this.isTimerCollapsed = !this.isTimerCollapsed;
+  }
+  
 
   carregarAtividades(): void {
     this.isLoading = true;

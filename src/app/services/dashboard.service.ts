@@ -1,10 +1,8 @@
+// services/dashboard.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
-import { DashboardData } from '../models/dashboard-data.model';
-
-// 1. Importe o seu serviço de autenticação
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, switchMap, take, throwError, map } from 'rxjs';
+import { ApiRoadmapResumo, DashboardApiResponse, DashboardData, RoadmapResumo } from '../models/dashboard-data.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -13,30 +11,60 @@ import { AuthService } from './auth.service';
 export class DashboardService {
   private apiUrl = 'http://localhost:8080/dashboard/me';
 
-  // 2. Injete o AuthService no construtor
-  constructor(
-    private http: HttpClient, 
-    private authService: AuthService
-  ) { }
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
-  getDashboardData(): Observable<DashboardData> {
-    // 3. Usa o AuthService para obter o token de forma reativa e segura
-    return this.authService.getIdToken().pipe(
-      take(1), // Pega apenas o primeiro valor emitido (o token atual) e completa.
+  getDashboardData(filters?: {
+    roadmapId?: number;
+    from?: string;
+    to?: string;
+    order?: string;
+  }): Observable<DashboardData> {
+    return this.auth.getIdToken().pipe(
+      take(1),
       switchMap(token => {
-        // Se não houver token (usuário deslogado), lança um erro.
-        if (!token) {
-          return throwError(() => new Error('Usuário não autenticado. Token não encontrado.'));
+        if (!token) return throwError(() => new Error('Usuário não autenticado'));
+
+        let params = new HttpParams();
+        if (filters) {
+          if (filters.roadmapId != null) params = params.set('roadmapId', String(filters.roadmapId));
+          if (filters.from) params = params.set('from', filters.from);
+          if (filters.to) params = params.set('to', filters.to);
+          if (filters.order) params = params.set('order', filters.order);
         }
 
-        // O token agora é dinâmico e vem do usuário logado!
-        const headers = new HttpHeaders({
-          'Authorization': `Bearer ${token}`
-        });
-
-        // Continua com a chamada HTTP, agora com o token correto.
-        return this.http.get<DashboardData>(this.apiUrl, { headers: headers });
+        const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+        return this.http.get<DashboardApiResponse>(this.apiUrl, { headers, params })
+          .pipe(map(api => this.normalize(api)));
       })
     );
+  }
+
+  /** Normaliza nomes/estruturas do backend para o formato que o componente espera */
+  private normalize(api: DashboardApiResponse): DashboardData {
+    const roadmaps: RoadmapResumo[] = (api.roadmaps || []).map((r: ApiRoadmapResumo) => ({
+      id: r.id,
+      titulo: r.titulo,
+      total: (r.total ?? 0),
+      concluidas: (r.concluidas ?? 0)
+    }));
+
+    // backend uses outraCoisa and outraCoisa2 for created/concluded by month
+    const atividadesCriadasPorMes = api.outraCoisa ?? {};
+    const atividadesConcluidasPorMes = api.outraCoisa2 ?? {};
+
+    // normalize statusCounts keys order (optional)
+    const statusCounts = api.statusCounts ?? {};
+
+    return {
+      total: api.total ?? 0,
+      concluidas: api.concluidas ?? 0,
+      pendentes: api.pendentes ?? 0,
+      emAndamento: api.emAndamento ?? 0,
+      statusCounts,
+      roadmaps,
+      atividadesCriadasPorMes,
+      atividadesConcluidasPorMes,
+      usuario: api.usuario ?? null
+    };
   }
 }

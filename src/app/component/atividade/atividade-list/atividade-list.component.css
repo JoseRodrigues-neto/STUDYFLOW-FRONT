@@ -222,3 +222,103 @@
   padding: 40px 0;
   font-size: 16px;
 }
+
+.atividades-page-container {
+  display: flex;
+  gap: 24px;
+  height: 100%;
+ 
+}
+ 
+.list-wrapper {
+  flex-grow: 1;
+  min-width: 400px;
+  padding: 20px;
+  overflow-y: auto; 
+}
+ 
+.panel-wrapper {
+  flex-shrink: 0;
+  width: 350px;
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-content);
+}
+
+ 
+.tools-wrapper {
+  flex-shrink: 0;
+  width: 320px;  
+  padding: 20px;
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: var(--bg-content); 
+}
+ 
+@media (max-width: 1300px) {
+  .tools-wrapper {
+    display: none; 
+  }
+}
+.tools-wrapper {
+  flex-shrink: 0;
+  width: 320px; /* Largura Aberta */
+  height: 100%;
+  background-color: #2c2c2e;
+  border-left: #1c1c1e ;
+  position: relative;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
+  padding: 20px;
+  overflow: visible; 
+}
+
+/* --- ESTADO FECHADO --- */
+.tools-wrapper.collapsed {
+  width: 0;      /* Largura vira zero */
+  padding: 0;    /* Padding vira zero */
+  border-left: none; /* Remove a borda para não ficar uma linha feia */
+}
+
+/* Esconde o conteúdo do timer quando fechado para não vazar */
+.tools-wrapper.collapsed .timer-content {
+  display: none; 
+  /* Ou use opacity: 0 com transition se quiser fade-out */
+}
+
+
+/* --- O BOTÃO DE TOGGLE FLUTUANTE --- */
+.btn-toggle-timer {
+  position: absolute;
+  top: 20px; /* Distância do topo */
+  left: -32px; /* Joga o botão para a ESQUERDA do painel (fora dele) */
+  
+  width: 32px;
+  height: 32px;
+  border-radius: 8px 0 0 8px; /* Arredonda só a esquerda (estilo aba) */
+  
+  background-color: #2c2c2e;
+  border: 1px solid var(--border-color);
+  border-right: none; /* Remove a borda que cola no painel */
+  
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10; /* Fica acima da lista */
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-toggle-timer:hover {
+  background-color: var(--bg-hover); /* #3a3a3c */
+  color: var(--text-primary);
+}
+
+.btn-toggle-timer mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
