@@ -140,9 +140,9 @@ export class SegurancaComponent implements OnInit {
       switchMap(() => this.authService.deleteUserAccount())
     ).subscribe({
       next: () => {
-        // 4. Sucesso! Desloga e vai para o login.
+        // 4. Sucesso! Desloga e vai para a tela inicial.
         this.loading = false;
-        this.router.navigate(['/login']);
+        this.router.navigate(['/inicio']);
       },
       error: (err) => {
         // 5. Falha

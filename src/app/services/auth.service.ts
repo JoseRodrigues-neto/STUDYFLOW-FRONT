@@ -23,7 +23,7 @@ export interface RegisterData {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/usuarios';
+  private apiUrl = 'https://9ec610758ec0.ngrok-free.app/usuarios';
   public readonly authState$: Observable<User | null>;
 
   constructor(
@@ -81,7 +81,7 @@ export class AuthService {
       switchMap(idToken => {
         const headers = new HttpHeaders({ 'Content-Type': 'text/plain' });
         // Apenas devolve o Observable para o componente subscrever
-        return this.http.post('http://localhost:8080/auth/google-login', idToken, { headers });
+        return this.http.post('https://9ec610758ec0.ngrok-free.app/auth/google-login', idToken, { headers });
       })
     );
   }

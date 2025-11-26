@@ -11,7 +11,7 @@ import { Usuario, UsuarioRequest } from '../models/usuario.model'; // Importa se
 export class UsuarioService {
 
   // A URL do seu backend para dados do usuário
-  private apiUrl = 'http://localhost:8080/usuarios';
+  private apiUrl = 'https://9ec610758ec0.ngrok-free.app/usuarios';
 
   constructor(
     private http: HttpClient,
