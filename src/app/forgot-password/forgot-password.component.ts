@@ -45,7 +45,7 @@ export class ForgotPasswordComponent {
         this.successMessage = 'Um link para redefinição de senha foi enviado para o seu e-mail, caso ele esteja cadastrado.';
       },
       error: (error) => {
-        this.successMessage = 'Um link para redefinição de senha foi enviado para o seu e-mail, caso ele esteja cadastrado.';
+        this.errorMessage = 'Ocorreu um erro ao tentar redefinir a senha. Verifique o e-mail e tente novamente.';
         console.error('Erro ao solicitar redefinição:', error);
       }
     });
