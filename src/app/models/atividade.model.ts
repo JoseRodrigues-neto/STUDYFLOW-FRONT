@@ -9,5 +9,7 @@ export class Atividade{
     dataFim!: Date;
     status!: StatusAtividade;
     anotacoes!: Anotacao[];
-    roadmapId!: number;
+    roadmapId?: number;
+    usuarioId?: number;
+    roadmapTitle?: string; // Propriedade opcional para UI
 }

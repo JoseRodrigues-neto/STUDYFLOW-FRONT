@@ -1,0 +1,43 @@
+<div class="atividades-page-container">
+
+  <div class="list-wrapper">
+    <div class="header">
+      <h1>Minhas atividades</h1>
+      <p>{{ dataAtual }}</p>
+    </div>
+
+    <div class="add-task-input" (click)="iniciarNovaAtividade()" [class.disabled]="!usuario">
+      <span>+</span>
+      <input type="text" placeholder="Adicionar uma tarefa" readonly>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">
+      <p>Carregando atividades...</p>
+    </div>
+    
+    <div *ngIf="!isLoading && atividades.length > 0" class="task-list">
+      <div *ngFor="let atividade of atividades" 
+           class="task-item" 
+           (click)="verDetalhesAtividade(atividade)">
+        
+        <div class="task-status-indicator" [ngClass]="getStatusClass(atividade.status)"></div>
+
+        <div class="task-content">
+          <h3>{{ atividade.titulo }}</h3>
+          <p class="task-due-date" *ngIf="atividade.dataFim">
+            Vence em: {{ formatarData(atividade.dataFim) }}
+          </p>
+        </div>
+        <div class="task-actions">
+          <span class="icon-button" (click)="editarAtividade(atividade); $event.stopPropagation()">✏️</span>
+          <span class="icon-button" (click)="excluirAtividade(atividade.id); $event.stopPropagation()">🗑️</span>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="!isLoading && atividades.length === 0" class="no-data">
+      <p>Nenhuma atividade diária encontrada.</p>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,44 @@
+<div class="atividades-page-container">
+
+  <div class="list-wrapper">
+    <div class="header">
+      <h1>Atividades Concluídas</h1>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">
+      <p>Carregando atividades...</p>
+    </div>
+    
+    <div *ngIf="!isLoading && completedAtividades.length > 0" class="task-list">
+      <div *ngFor="let atividade of completedAtividades" 
+           class="task-item" 
+           (click)="verDetalhesAtividade(atividade)">
+        
+        <div class="task-status-indicator status-concluida"></div>
+
+        <div class="task-content">
+          <h3>{{ atividade.titulo }}</h3>
+          
+          <!-- Mostra o título do roadmap se existir -->
+          <p class="task-source" *ngIf="atividade.roadmapTitle">
+            do Roadmap: {{ atividade.roadmapTitle }}
+          </p>
+
+          <p class="task-due-date" *ngIf="atividade.dataFim">
+            Concluída em: {{ formatarData(atividade.dataFim) }}
+          </p>
+        </div>
+        
+        <!-- Ações podem ser adicionadas aqui, como desarquivar ou excluir permanentemente -->
+        <div class="task-actions">
+            <!-- Exemplo: <span class="icon-button" title="Excluir">🗑️</span> -->
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="!isLoading && completedAtividades.length === 0" class="no-data">
+      <p>Nenhuma atividade concluída encontrada.</p>
+    </div>
+  </div>
+
+</div>

@@ -107,4 +107,28 @@ export class AnotacaoListComponent implements OnChanges {
       });
     }
   }
+
+  exportarAnotacao(anotacao: Anotacao): void {
+    this.anotacaoService.exportAnotacaoAsTxt(anotacao.id!).subscribe(response => {
+      // O backend já nos dá um header para sugerir o nome do arquivo
+      const header = response.headers.get('Content-Disposition');
+      const match = header && header.match(/filename="(.+)"/);
+      const filename = match ? match[1] : `anotacao-${anotacao.id}.txt`;
+
+      // Cria um Blob com o conteúdo de texto
+      const blob = new Blob([response.body!], { type: 'text/plain' });
+
+      // Cria uma URL para o Blob e simula o clique em um link para baixar
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      
+      // Limpa a URL e o elemento
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    });
+  }
 }

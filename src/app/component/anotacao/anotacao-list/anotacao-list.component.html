@@ -32,8 +32,9 @@
       <ng-template #displayMode>
         <p class="anotacao-conteudo">{{ anotacao.conteudo }}</p>
         <div class="anotacao-actions">
-          <span class="icon-button" (click)="startEdit(anotacao)">✏️</span>
-          <span class="icon-button" (click)="deleteAnotacao(anotacao.id!)">🗑️</span>
+          <span class="icon-button" title="Exportar como .txt" (click)="exportarAnotacao(anotacao)">↓</span>
+          <span class="icon-button" title="Editar" (click)="startEdit(anotacao)">✏️</span>
+          <span class="icon-button" title="Excluir" (click)="deleteAnotacao(anotacao.id!)">🗑️</span>
         </div>
       </ng-template>
 
