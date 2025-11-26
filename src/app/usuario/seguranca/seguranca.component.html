@@ -24,21 +24,24 @@
       </button>
     </div>
   </header>
-
-  <!-- 2. Conteúdo Principal (Sidebar + Área de Conteúdo) -->
+ 
   <div class="main-layout">
 
-    <!-- 2.1. Sidebar da Esquerda (Botão Ativo Mudou) -->
+ 
     <aside class="sidebar">
       
-      <!-- O perfil da sidebar (foto, etc.) pode ser removido ou 
-           mantido. Vou manter por consistência. -->
+   
       <div class="sidebar-profile">
        <div class="avatar-wrapper">
-          
-          <img [src]="usuario?.avatarUrl || 'https://i.imgur.com/k2p6GBD.png'" 
-               alt="Avatar" 
-               class="avatar-image">
+           <img *ngIf="usuario?.avatarUrl"
+             [src]="usuario?.avatarUrl" 
+             alt="Avatar do Usuário"
+             class="avatar-image">
+        
+        <mat-icon *ngIf="!usuario?.avatarUrl" class="avatar-placeholder-icon">
+          account_circle
+        </mat-icon>
+               
         </div>
         <div class="tag tag-user">
           <mat-icon>shield</mat-icon>
@@ -48,7 +51,7 @@
 
       <nav class="sidebar-nav">
         <!-- Perfil agora está INATIVO -->
-        <button class="nav-button" (click)="navigateTo('perfil')">
+        <button class="nav-button" routerLink="/app/perfil">
           <mat-icon>person_outline</mat-icon>
           <span>Perfil</span>
         </button>

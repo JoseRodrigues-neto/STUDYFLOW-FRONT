@@ -103,3 +103,56 @@
   scrollbar-color: var(--border-color) var(--bg-main);
 }
 
+@media (max-width: 768px) {
+
+  /* 1. O Container deixa de ser lado-a-lado rígido */
+  .app-container {
+    position: relative; /* Necessário para elementos absolutos */
+  }
+
+  /* 2. A Sidebar sai do fluxo e vira "Flutuante" (Overlay) */
+  ::ng-deep app-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000; /* Fica por cima de tudo */
+    
+    /* No celular, quando fechada (collapsed), ela some totalmente */
+    /* Vamos sobrescrever a largura do desktop */
+  }
+
+  /* 3. Ajuste de comportamento da Sidebar no Mobile */
+  /* Quando estiver "fechada" (collapsed = true), ela sai da tela */
+  .app-container.sidebar-collapsed ::ng-deep app-sidebar {
+    transform: translateX(-100%); /* Esconde para a esquerda */
+    width: var(--sidebar-width-expanded); /* Mantém a largura normal quando abrir */
+  }
+
+  /* Quando estiver "aberta" (collapsed = false), ela aparece */
+  ::ng-deep app-sidebar {
+    transform: translateX(0);
+    width: var(--sidebar-width-expanded);
+    box-shadow: 4px 0 15px rgba(0,0,0,0.5); /* Sombra para destacar */
+  }
+
+  /* 4. O Conteúdo ocupa 100% da tela sempre */
+  .main-content-wrapper {
+    width: 100%;
+    margin-left: 0; /* Remove espaço da sidebar */
+  }
+
+  /* 5. O Overlay Escuro (Fundo quando o menu abre) */
+  /* Este é um truque visual: usamos um pseudo-elemento no container */
+  .app-container:not(.sidebar-collapsed)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Escurece o fundo */
+    z-index: 900; /* Fica abaixo da sidebar, mas acima do conteúdo */
+    pointer-events: all; /* Bloqueia cliques no fundo */
+  }
+}

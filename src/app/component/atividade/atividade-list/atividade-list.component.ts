@@ -4,15 +4,23 @@ import { AtividadeService } from '../atividade.service';
 import { Atividade } from '../../../models/atividade.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { StatusAtividade } from '../../../models/status-atividade.model';
+import { TimerComponent } from '../../../components/timer/timer.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { UsuarioService } from '../../../services/usuario.service';
 import { Usuario } from '../../../models/usuario.model';
 import { Observable } from 'rxjs';
+import { AnotacaoListComponent } from '../../anotacao/anotacao-list/anotacao-list.component';
 
 @Component({
   selector: 'app-atividade-list',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    AnotacaoListComponent,
+    TimerComponent,
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [DatePipe],
   templateUrl: './atividade-list.component.html',
@@ -23,6 +31,7 @@ export class AtividadeListComponent implements OnInit {
   atividades$: Observable<Atividade[]>;
   isLoading = true;
   dataAtual: string;
+  isTimerCollapsed = false;
   usuario: Usuario | null = null; // Adicionado propriedade de usuário
 
   constructor(
@@ -38,11 +47,26 @@ export class AtividadeListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.carregarAtividades();
+  }
+
+    toggleTimer(): void {
+    this.isTimerCollapsed = !this.isTimerCollapsed;
+  }
+  
+
+carregarAtividades(): void {
+    this.isLoading = true;
+
+ 
     this.usuarioService.getMeuPerfil().subscribe({
       next: (usuario) => {
         this.usuario = usuario;
+        
         if (usuario && usuario.id) {
+           
           this.atividadeService.loadInitialAtividades(usuario.id);
+        
           this.atividades$.subscribe(() => this.isLoading = false);
         } else {
           console.error('ID do usuário não encontrado.');

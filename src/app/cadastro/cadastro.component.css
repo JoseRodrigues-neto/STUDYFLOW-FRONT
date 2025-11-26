@@ -187,3 +187,52 @@ select {
   padding-left: 5px; /* Pequeno recuo */
 }
 
+/* --- RESPONSIVIDADE PARA CELULAR --- */
+@media (max-width: 480px) {
+
+  :host {
+    padding: 20px; /* Evita colar nas bordas do celular */
+    background-color: #1e1e24;
+  }
+
+  #auth-card {
+    width: 100%;
+    max-width: 370px; /* Garante que não estoure lateral */
+    padding: 20px 15px;
+  }
+
+  #logo-container {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+
+  #logo-img {
+    width: 60px; /* Logo menor em celular */
+  }
+
+  #auth-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  input,
+  select {
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  #auth-button {
+    padding: 10px;
+    font-size: 15px;
+    min-height: 44px;
+  }
+
+  .validation-error {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  #login-link {
+    font-size: 13px;
+  }
+}

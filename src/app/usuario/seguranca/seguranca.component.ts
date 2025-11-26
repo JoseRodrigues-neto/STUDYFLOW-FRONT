@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms'; // Para o input de email
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { filter, switchMap } from 'rxjs';
-
+import { RouterLink } from '@angular/router';
 // Serviços
 import { AuthService } from '../../services/auth.service';
 import { ConfirmDialogComponent } from '../../dialogs/confimar/confirm-dialog.component'; // (Ajuste o caminho se necessário)
@@ -21,7 +21,8 @@ import { Usuario } from '../../models/usuario.model';
     CommonModule,
     FormsModule, // Importa o FormsModule
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    RouterLink
   ],
   templateUrl: './seguranca.component.html',
   // Vamos REUTILIZAR o mesmo CSS da página de perfil!

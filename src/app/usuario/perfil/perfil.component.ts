@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { filter, switchMap } from 'rxjs';
 import { ConfirmDialogComponent } from '../../dialogs/confimar/confirm-dialog.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-perfil-editar',
@@ -21,7 +22,8 @@ import { ConfirmDialogComponent } from '../../dialogs/confimar/confirm-dialog.co
     CommonModule,
     MatIconModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
+    RouterLink
   ],
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.css']

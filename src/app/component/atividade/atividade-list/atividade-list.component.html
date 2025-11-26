@@ -1,43 +1,68 @@
-<div class="atividades-page-container">
-  <div class="list-wrapper">
-    <div class="header">
-      <h1>Minhas atividades</h1>
-      <p>{{ dataAtual }}</p>
+<div class="atividade-container">
+  <div class="header">
+    <div class="title-section">
+      <h1>Minhas Atividades</h1>
+      <p class="data-atual">{{ dataAtual }}</p>
     </div>
 
-    <div class="add-task-input" (click)="iniciarNovaAtividade()">
-      <span>+</span>
-      <input type="text" placeholder="Adicionar uma tarefa" readonly>
+    <div class="actions">
+      <button mat-icon-button (click)="toggleTimer()" title="Mostrar/Ocultar Timer">
+        <mat-icon>{{ isTimerCollapsed ? 'timer_off' : 'timer' }}</mat-icon>
+      </button>
+      
+      <button mat-raised-button color="primary" (click)="iniciarNovaAtividade()">
+        <mat-icon>add</mat-icon>
+        Nova Atividade
+      </button>
     </div>
+  </div>
 
-    <div *ngIf="isLoading" class="loading">
-      <p>Carregando atividades...</p>
-    </div>
+  <div class="timer-section" *ngIf="!isTimerCollapsed">
+    <app-timer></app-timer> 
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <p>Carregando atividades...</p>
+  </div>
+
+  <ng-container *ngIf="atividades$ | async as atividades">
     
-    <ng-container *ngIf="atividades$ | async as atividades">
-      <div *ngIf="!isLoading && atividades.length > 0" class="task-list">
-        <div *ngFor="let atividade of atividades" 
-             class="task-item" 
-             (click)="verDetalhesAtividade(atividade)">
-          
-          <div class="task-status-indicator" [ngClass]="getStatusClass(atividade.status)"></div>
+    <div *ngIf="!isLoading && atividades.length === 0" class="empty-state">
+      <mat-icon>assignment_late</mat-icon>
+      <p>Nenhuma atividade encontrada para hoje.</p>
+    </div>
 
-          <div class="task-content">
-            <h3>{{ atividade.titulo }}</h3>
-            <p class="task-due-date" *ngIf="atividade.dataFim">
-              Vence em: {{ formatarData(atividade.dataFim) }}
-            </p>
-          </div>
-          <div class="task-actions">
-            <span class="icon-button" (click)="editarAtividade(atividade); $event.stopPropagation()">✏️</span>
-            <span class="icon-button" (click)="excluirAtividade(atividade.id); $event.stopPropagation()">🗑️</span>
+    <div class="cards-grid" *ngIf="!isLoading && atividades.length > 0">
+      <div class="atividade-card" *ngFor="let atividade of atividades" [ngClass]="getStatusClass(atividade.status)">
+        
+        <div class="card-header">
+          <span class="status-badge">{{ atividade.status }}</span>
+          <div class="card-actions">
+            <button mat-icon-button (click)="verDetalhesAtividade(atividade)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button (click)="editarAtividade(atividade)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="excluirAtividade(atividade.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
         </div>
+
+        <div class="card-content">
+          <h3>{{ atividade.titulo }}</h3>
+          <p class="descricao">{{ atividade.descricao || 'Sem descrição' }}</p>
+          
+          <div class="meta-info">
+            <small>
+              <mat-icon class="tiny-icon">calendar_today</mat-icon> 
+              {{ formatarData(atividade.dataInicio) }}
+            </small>
+            </div>
+        </div>
+
       </div>
-      
-      <div *ngIf="!isLoading && atividades.length === 0" class="no-data">
-        <p>Nenhuma atividade encontrada.</p>
-      </div>
-    </ng-container>
-  </div>
+    </div>
+  </ng-container>
 </div>

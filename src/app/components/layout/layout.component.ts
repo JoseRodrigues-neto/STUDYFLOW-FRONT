@@ -17,8 +17,22 @@ export class LayoutComponent {
   // --- NOVO: Variável de estado ---
   isSidebarCollapsed = false;
 
+  
+  ngOnInit(): void {
+    // Verifica a largura da tela ao iniciar
+    this.checkScreenSize();
+  }
+
   // --- NOVO: Função que troca o estado ---
   toggleSidebar(): void {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
+
+  private checkScreenSize() {
+    if (window.innerWidth < 768) {
+      this.isSidebarCollapsed = true; // Começa fechado no celular
+    } else {
+      this.isSidebarCollapsed = false; // Começa aberto no PC
+    }
   }
 }
