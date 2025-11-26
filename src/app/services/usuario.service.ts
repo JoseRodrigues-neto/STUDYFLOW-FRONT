@@ -1,46 +1,40 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, EMPTY, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
-import { AuthService } from './auth.service'; // Importa o AuthService
-import { Usuario, UsuarioRequest } from '../models/usuario.model'; // Importa seu modelo
+import { AuthService } from './auth.service';
+import { Usuario, UsuarioRequest } from '../models/usuario.model';
+import { environment } from '../../environments/environment'; // <--- 1. Import do environment
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
 
-  // A URL do seu backend para dados do usuário
-  private apiUrl = 'https://9ec610758ec0.ngrok-free.app/usuarios';
+  // 2. URL dinâmica (agora pega do environment)
+  private apiUrl = `${environment.apiUrl}/usuarios`;
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService // Injete o AuthService para pegar o token
+    private authService: AuthService
   ) { }
 
-  /**
-   * Busca os dados do perfil do usuário logado no backend Java.
-   */
   getMeuPerfil(): Observable<Usuario> {
-    // 1. Pega o token do AuthService
     return this.authService.getIdToken().pipe(
       switchMap(idToken => {
-        // 2. Se não houver token, não faz a chamada
         if (!idToken) {
           console.error('getMeuPerfil: Usuário não autenticado.');
           return throwError(() => new Error('Usuário não autenticado.'));
         }
 
-        // 3. Cria os headers
+        // 3. Adicionado o header do Ngrok
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${idToken}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true'
         });
 
-        // 4. Faz a chamada GET para o endpoint "meu perfil"
-        // (Confirme este endpoint, /me é comum, ou /meuperfil)
         const url = `${this.apiUrl}/me`; 
-        
         return this.http.get<Usuario>(url, { headers });
       }),
       catchError(error => {
@@ -51,9 +45,11 @@ export class UsuarioService {
   }
 
   getMeuPerfilComToken(idToken: string): Observable<Usuario> {
+    // 3. Adicionado o header do Ngrok
     const headers = new HttpHeaders({
         'Authorization': `Bearer ${idToken}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
     });
     const url = `${this.apiUrl}/me`; 
     return this.http.get<Usuario>(url, { headers }).pipe(
@@ -65,9 +61,11 @@ export class UsuarioService {
   }
 
   verificarLogin(idToken: string): Observable<Usuario> {
+    // 3. Adicionado o header do Ngrok
     const headers = new HttpHeaders({
         'Authorization': `Bearer ${idToken}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
     });
     const url = `${this.apiUrl}/login`; 
     return this.http.get<Usuario>(url, { headers }).pipe(
@@ -78,16 +76,17 @@ export class UsuarioService {
     );
   }
 
-  // Versão para ser usada em guardas, que pega o token automaticamente
   verificarLoginGuard(): Observable<Usuario> {
     return this.authService.getIdToken().pipe(
       switchMap(idToken => {
         if (!idToken) {
           return throwError(() => new Error('Usuário não autenticado para guarda.'));
         }
+        // 3. Adicionado o header do Ngrok
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${idToken}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true'
         });
         const url = `${this.apiUrl}/login`;
         return this.http.get<Usuario>(url, { headers });
@@ -101,14 +100,14 @@ export class UsuarioService {
         if (!idToken) {
           return throwError(() => new Error('Usuário não autenticado.'));
         }
+        // 3. Adicionado o header do Ngrok
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${idToken}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true'
         });
         
-        // Chama o endpoint PUT /{uid} que você tem no backend
         const url = `${this.apiUrl}/${uid}`; 
-        
         return this.http.put<Usuario>(url, dados, { headers });
       }),
       catchError(error => {
@@ -119,23 +118,20 @@ export class UsuarioService {
   }
 
   salvarAvatarUrl(url: string): Observable<Usuario> {
-    
     return this.authService.getIdToken().pipe(
       switchMap(idToken => {
         if (!idToken) {
           return throwError(() => new Error('Usuário não autenticado.'));
         }
 
-        // Header simples para enviar texto
+        // 3. Adicionado o header do Ngrok (Mantendo Content-Type text/plain)
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${idToken}`,
-          'Content-Type': 'text/plain' // Envia como texto puro
+          'Content-Type': 'text/plain',
+          'ngrok-skip-browser-warning': 'true'
         });
 
-        // Chama o NOVO endpoint do Java
-        const endpointUrl = `${this.apiUrl}/avatar`; // -> /usuarios/avatar
-        
-        // Faz um PUT, enviando a URL no BODY
+        const endpointUrl = `${this.apiUrl}/avatar`; 
         return this.http.put<Usuario>(endpointUrl, url, { headers });
       }),
       catchError(error => {
@@ -151,11 +147,13 @@ export class UsuarioService {
         if (!idToken) {
           return throwError(() => new Error('Usuário não autenticado.'));
         }
-        const headers = new HttpHeaders({ 'Authorization': `Bearer ${idToken}` });
+        // 3. Adicionado o header do Ngrok
+        const headers = new HttpHeaders({ 
+            'Authorization': `Bearer ${idToken}`,
+            'ngrok-skip-browser-warning': 'true'
+        });
         
-        // Chama o endpoint que você já tem no UsuarioResource.java
         const url = `${this.apiUrl}/me`; 
-        
         return this.http.delete(url, { headers });
       }),
       catchError(error => {

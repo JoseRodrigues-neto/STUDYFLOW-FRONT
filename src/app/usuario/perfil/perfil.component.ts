@@ -181,6 +181,8 @@ export class PerfilComponent implements OnInit, OnDestroy {
         this.usuario = usuarioAtualizado;
         this.isEditing = false;
         this.loadingSave = false;
+        // Força a atualização do token para manter a sessão sincronizada
+        this.authService.forceTokenRefresh().subscribe();
       },
       error: (erro) => {
         console.error('Erro ao salvar:', erro);

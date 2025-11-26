@@ -4,37 +4,36 @@ import { Observable, throwError } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 import { DashboardData } from '../models/dashboard-data.model';
 
-// 1. Importe o seu serviço de autenticação
-import { AuthService } from './auth.service';
+import { AuthService } from './auth.service'; // Ajuste o caminho se necessário (ex: ../atividade/auth.service)
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
-  private apiUrl = 'https://9ec610758ec0.ngrok-free.app/dashboard/me';
+  
+  // 2. Usar a URL dinâmica do environment
+  private apiUrl = `${environment.apiUrl}/dashboard/me`;
 
-  // 2. Injete o AuthService no construtor
   constructor(
     private http: HttpClient, 
     private authService: AuthService
   ) { }
 
   getDashboardData(): Observable<DashboardData> {
-    // 3. Usa o AuthService para obter o token de forma reativa e segura
     return this.authService.getIdToken().pipe(
-      take(1), // Pega apenas o primeiro valor emitido (o token atual) e completa.
+      take(1),
       switchMap(token => {
-        // Se não houver token (usuário deslogado), lança um erro.
         if (!token) {
           return throwError(() => new Error('Usuário não autenticado. Token não encontrado.'));
         }
 
-        // O token agora é dinâmico e vem do usuário logado!
+        // 3. Adicionar o cabeçalho do Ngrok junto com o Authorization
         const headers = new HttpHeaders({
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'true' // <--- O "Passe Livre"
         });
 
-        // Continua com a chamada HTTP, agora com o token correto.
         return this.http.get<DashboardData>(this.apiUrl, { headers: headers });
       })
     );

@@ -10,6 +10,8 @@ import { Observable, from, of, throwError } from 'rxjs';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { UsuarioService } from './usuario.service';
 import { Router } from '@angular/router';
+// 1. IMPORTANTE: Importar o environment
+import { environment } from '../../environments/environment';
 
 export interface RegisterData {
   email: string;
@@ -23,7 +25,10 @@ export interface RegisterData {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://9ec610758ec0.ngrok-free.app/usuarios';
+  
+  // 2. MUDANÇA: Usa a variável do environment + o caminho do recurso
+  private apiUrl = `${environment.apiUrl}/usuarios`;
+  
   public readonly authState$: Observable<User | null>;
 
   constructor(
@@ -44,9 +49,11 @@ export class AuthService {
       .pipe(
         switchMap(userCredential => from(userCredential.user.getIdToken())),
         switchMap(idToken => {
+          // 3. MUDANÇA: Adicionado o header do Ngrok aqui
           const headers = new HttpHeaders({
             'Authorization': `Bearer ${idToken}`,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true' // <--- O "Passe Livre"
           });
           const requestBody = {
             nome: userData.name,
@@ -56,7 +63,6 @@ export class AuthService {
           };
           return this.http.post(this.apiUrl, requestBody, { headers });
         }),
-        // Força a atualização do token para obter os claims customizados
         switchMap(() => this.forceTokenRefresh()),
         catchError(error => {
           console.error("Erro na cadeia de registro:", error);
@@ -68,8 +74,8 @@ export class AuthService {
   logout() {
     return from(signOut(this.auth));
   }
-  redefinirSenha(email: string): Observable<void> {
 
+  redefinirSenha(email: string): Observable<void> {
     return from(sendPasswordResetEmail(this.auth, email));
   }
 
@@ -79,19 +85,29 @@ export class AuthService {
         return from(userCredential.user.getIdToken());
       }),
       switchMap(idToken => {
-        const headers = new HttpHeaders({ 'Content-Type': 'text/plain' });
-        // Apenas devolve o Observable para o componente subscrever
-        return this.http.post('https://9ec610758ec0.ngrok-free.app/auth/google-login', idToken, { headers });
+        // 4. MUDANÇA: Adicionado o header do Ngrok aqui
+        const headers = new HttpHeaders({ 
+            'Content-Type': 'text/plain',
+            'ngrok-skip-browser-warning': 'true' // <--- O "Passe Livre"
+        });
+        
+        // 5. MUDANÇA: URL dinâmica com environment
+        const googleLoginUrl = `${environment.apiUrl}/auth/google-login`;
+
+        return this.http.post(googleLoginUrl, idToken, { headers, responseType: 'text' as 'json' });
       })
     );
   }
 
+  // Método privado (se for usado internamente)
   private registerGoogleUser(user: User): Observable<any> {
     return from(user.getIdToken()).pipe(
       switchMap(idToken => {
+        // 6. MUDANÇA: Adicionado o header do Ngrok aqui também
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${idToken}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true' // <--- O "Passe Livre"
         });
         const requestBody = {
           nome: user.displayName || 'Nome não fornecido',
@@ -106,7 +122,6 @@ export class AuthService {
     return this.authState$.pipe(
       switchMap(user => {
         if (user) {
-
           return from(user.getIdToken());
         } else {
           return of(null);
@@ -129,41 +144,27 @@ export class AuthService {
       return throwError(() => new Error('Nenhum usuário logado.'));
     }
 
-    // Cria a credencial de senha
     const credential = EmailAuthProvider.credential(user.email, password);
 
-    // Tenta re-autenticar
     return from(reauthenticateWithCredential(user, credential)).pipe(
-      // --- ESTA É A CORREÇÃO ---
-      // 'reauthenticateWithCredential' retorna um UserCredential.
-      // Usamos 'map' para transformar esse retorno em 'void'.
       map(() => void 0));
   }
 
-  /**
-   * Exclui a conta do usuário em AMBOS os sistemas:
-   * 1. Primeiro no nosso Backend (PostgreSQL)
-   * 2. Depois no Firebase Authentication
-   */
   deleteUserAccount(): Observable<any> {
     const user = this.auth.currentUser;
     if (!user) {
       return throwError(() => new Error('Nenhum usuário para deletar.'));
     }
     const usuarioService = this.injector.get(UsuarioService);
-    // Fluxo encadeado:
+    
     return usuarioService.deleteSelf().pipe(
       switchMap(() => {
-        // Sucesso no Backend, agora deleta do Firebase
         return from(deleteUser(user));
       }),
       catchError(err => {
-        // Se a falha foi no backend, o Firebase não será chamado.
-        // Se a falha foi no Firebase, o backend já foi deletado.
         console.error("Erro na exclusão da conta:", err);
-        return throwError(() => err); // Repassa o erro
+        return throwError(() => err);
       })
     );
   }
 }
-
