@@ -10,8 +10,8 @@ import { Anotacao } from '../../models/anotacao.model';
 export class AnotacaoService {
 
   // A URL base da sua API para o recurso de anotacoes
-  private apiUrl = 'http://localhost:8080/anotacoes';
-
+  private apiUrl = 'https://9ec610758ec0.ngrok-free.app/anotacoes';
+ 
   constructor(private http: HttpClient) { }
 
   getAnotacoesByAtividade(atividadeId: number): Observable<Anotacao[]> {

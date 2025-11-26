@@ -9,7 +9,7 @@ import { AuthService } from './auth.service'; // <--- 1. Importamos o AuthServic
   providedIn: 'root'
 })
 export class RoadmapService {
-  private apiUrl = 'http://localhost:8080/roadmaps';
+  private apiUrl = 'https://9ec610758ec0.ngrok-free.app/roadmaps';
 
   constructor(
     private http: HttpClient,
