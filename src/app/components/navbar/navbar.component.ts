@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip'; // 3. Adicione Too
 
 import { UsuarioService } from '../../services/usuario.service';
 
+import { TimerComponent } from '../timer/timer.component';
 import { Usuario } from '../../models/usuario.model';
 
 
@@ -36,7 +37,9 @@ import { Usuario } from '../../models/usuario.model';
 
     RouterLink,      // 5. Adicione
 
-    MatTooltipModule // 5. Adicione
+    MatTooltipModule, // 5. Adicione
+    
+    TimerComponent
 
   ],
 

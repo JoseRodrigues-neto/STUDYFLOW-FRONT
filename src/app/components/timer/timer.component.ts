@@ -29,6 +29,11 @@ export class TimerComponent implements OnInit, OnDestroy {
   // r = 45, então C = 2 * 3.14159 * 45 ≈ 283
   readonly CIRCUMFERENCE = 565;
   strokeDashoffset = 0;
+  isPopupVisible = false;
+
+  togglePopup(): void {
+    this.isPopupVisible = !this.isPopupVisible;
+  }
 
   ngOnInit(): void {
     this.updateCircle();
