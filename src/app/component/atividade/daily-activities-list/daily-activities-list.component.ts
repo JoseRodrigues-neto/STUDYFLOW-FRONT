@@ -56,7 +56,8 @@ export class DailyActivitiesListComponent implements OnInit, OnDestroy {
         console.log('PERFIL CARREGADO NA LISTA. ID:', usuario.id);
         this.usuario = usuario;
         if (usuario && usuario.id) {
-          this.atividadeService.loadInitialAtividades(usuario.id);
+          const statuses = [StatusAtividade.PENDENTE, StatusAtividade.EM_ANDAMENTO];
+          this.atividadeService.loadDailyAtividades(statuses);
           this.subscribeToAtividades();
         } else {
           console.error('ID do usuário não encontrado.');
@@ -70,45 +71,16 @@ export class DailyActivitiesListComponent implements OnInit, OnDestroy {
     });
   }
 
-  // subscribeToAtividades(): void {
-  //   const statuses = [StatusAtividade.PENDENTE, StatusAtividade.EM_ANDAMENTO];
-  //   this.atividadesSubscription = this.atividadeService.atividades$.pipe(
-  //     map(atividades => atividades.filter(atividade => !atividade.roadmapId && statuses.includes(atividade.status)))
-  //   ).subscribe(filteredAtividades => {
-  //     this.atividades = filteredAtividades;
-  //     this.isLoading = false;
-  //   });
-  // }
-
   subscribeToAtividades(): void {
-    const statuses = [StatusAtividade.PENDENTE, StatusAtividade.EM_ANDAMENTO];
-
-    this.atividadesSubscription = this.atividadeService.atividades$.pipe(
-      map(atividades => {
-        console.log('Todas as atividades recebidas:', atividades); // <--- LOG 1
-
-        return atividades.filter(atividade => {
-          const semRoadmap = !atividade.roadmapId;
-          const statusValido = statuses.includes(atividade.status);
-
-          // Debug para ver porque é que uma atividade específica pode estar a falhar
-          if (!semRoadmap || !statusValido) {
-            console.log(`Atividade filtrada (ID: ${atividade.id}, Titulo: ${atividade.titulo}) - Roadmap: ${atividade.roadmapId}, Status: ${atividade.status}`);
-          }
-
-          return semRoadmap && statusValido;
-        });
-      })
-    ).subscribe(filteredAtividades => {
-      console.log('Atividades após filtro:', filteredAtividades); // <--- LOG 2
-      this.atividades = filteredAtividades;
+    this.atividadesSubscription = this.atividadeService.atividades$.subscribe(atividades => {
+      this.atividades = atividades;
       this.isLoading = false;
     });
   }
 
   iniciarNovaAtividade(): void {
     if (this.usuario && this.usuario.id) {
-      this.router.navigate(['/app/atividade-form'], { queryParams: { usuarioId: this.usuario.id } });
+      this.router.navigate(['/app/atividade-form']);
     } else {
       console.error("Não é possível criar atividade sem ID do usuário.");
     }
@@ -123,12 +95,12 @@ export class DailyActivitiesListComponent implements OnInit, OnDestroy {
       console.error("Usuário não carregado, não é possível editar a atividade.");
       return;
     }
-    this.router.navigate(['/app/atividade-form', atividade.id], { queryParams: { usuarioId: this.usuario.id } });
+    this.router.navigate(['/app/atividade-form', atividade.id]);
   }
 
   excluirAtividade(id: number): void {
     if (confirm('Tem certeza que deseja excluir esta atividade?') && this.usuario && this.usuario.id) {
-      this.atividadeService.delete(id, this.usuario.id).subscribe({
+      this.atividadeService.delete(id).subscribe({
         error: (err) => console.error('Erro ao excluir atividade', err)
       });
     }

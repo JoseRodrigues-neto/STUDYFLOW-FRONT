@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { finalize } from 'rxjs/operators';
-
- 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -11,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router'; 
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -39,6 +37,7 @@ export class LoginComponent {
     private router: Router
   ) { }
 
+  // Login com Email/Senha (Continua igual, pois usa Observable)
   login() {
     this.errorMessage = null;
     this.successMessage = null;
@@ -49,7 +48,7 @@ export class LoginComponent {
     ).subscribe({
       next: () => {
         this.successMessage = "Login realizado com sucesso!";
-         localStorage.setItem('sessionLoginTime', Date.now().toString());
+        localStorage.setItem('sessionLoginTime', Date.now().toString());
         this.router.navigate(['/app']);
       },
       error: (error) => {
@@ -57,35 +56,27 @@ export class LoginComponent {
       }
     });
   }
-  loginComGoogle() {
+  
+  // Login com Google (ALTERADO PARA REDIRECT)
+  async loginComGoogle() {
     this.errorMessage = null;
     this.successMessage = null;
-    this.loading = true;  
+    this.loading = true;   
 
-    this.authService.loginComGoogle().pipe(
-      finalize(() => this.loading = false)
-    ).subscribe({
-      next: (result) => {
-        if (result && result.status) {
-          switch (result.status) {
-            case 'COMPLETO':
-              this.successMessage = "Login com Google realizado com sucesso!";
-              localStorage.setItem('sessionLoginTime', Date.now().toString());
-              this.router.navigate(['/app']);
-              break;
-            case 'SELECIONAR_PERFIL':
-              this.router.navigate(['/selecionar-perfil']);
-              break;
-          }
-        }
-      },
-      error: (error) => {
-        console.error("Erro no login com Google:", error);
-        this.errorMessage = "Ocorreu um erro ao tentar fazer login com o Google.";
-      }
-    });
+    try {
+      // Aqui usamos await porque agora retorna uma Promise<void>
+      // O navegador vai sair desta página e ir para o Google
+      await this.authService.loginComGoogle();
+      
+      // Se chegar aqui, o redirecionamento começou.
+      // Não precisamos fazer nada, nem navegar, pois a página vai recarregar.
+    } catch (error: any) {
+      // Só entramos aqui se falhar AO TENTAR abrir o Google (ex: erro de config)
+      console.error("Erro ao iniciar login com Google:", error);
+      this.loading = false;
+      this.errorMessage = "Não foi possível conectar ao Google. Tente novamente.";
+    }
   }
-
 
   private getFirebaseErrorMessage(errorCode: string): string {
     switch (errorCode) {

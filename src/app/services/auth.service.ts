@@ -2,15 +2,13 @@ import { inject, Injectable, Injector } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import {
   Auth, EmailAuthProvider, GoogleAuthProvider, User, UserCredential, authState, createUserWithEmailAndPassword,
-  deleteUser,
-  getAdditionalUserInfo, reauthenticateWithCredential, sendPasswordResetEmail, signInWithEmailAndPassword,
-  signInWithPopup, signOut,
+  deleteUser, reauthenticateWithCredential, sendPasswordResetEmail, signInWithEmailAndPassword,
+  signInWithRedirect, getRedirectResult, signOut, 
 } from '@angular/fire/auth';
 import { Observable, from, of, throwError } from 'rxjs';
-import { switchMap, catchError, map, tap } from 'rxjs/operators';
+import { switchMap, catchError, map } from 'rxjs/operators';
 import { UsuarioService } from './usuario.service';
 import { Router } from '@angular/router';
-// 1. IMPORTANTE: Importar o environment
 import { environment } from '../../environments/environment';
 
 export interface RegisterData {
@@ -21,14 +19,19 @@ export interface RegisterData {
   perfil: string;
 }
 
+// Interface para saber o que o Java respondeu
+interface LoginGoogleResponse {
+  status: 'COMPLETO' | 'SELECIONAR_PERFIL';
+  token?: string;
+  usuario?: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   
-  // 2. MUDANÇA: Usa a variável do environment + o caminho do recurso
   private apiUrl = `${environment.apiUrl}/usuarios`;
-  
   public readonly authState$: Observable<User | null>;
 
   constructor(
@@ -38,8 +41,68 @@ export class AuthService {
     private router: Router
   ) {
     this.authState$ = authState(this.auth);
+
+    // Verifica se voltámos do Google
+    this.checkGoogleRedirect();
   }
 
+  // --- LÓGICA DO REDIRECT ---
+  private checkGoogleRedirect() {
+    getRedirectResult(this.auth).then((result) => {
+      if (result) {
+        console.log('Voltou do Google. Processando no backend...');
+        this.processarLoginGoogleNoBackend(result.user);
+      }
+    }).catch((error) => {
+      console.error('Erro ao processar retorno do Google:', error);
+    });
+  }
+
+  private processarLoginGoogleNoBackend(user: User) {
+    user.getIdToken().then(idToken => {
+        const headers = new HttpHeaders({ 
+            'Content-Type': 'text/plain', // Enviamos o token como texto puro
+            'ngrok-skip-browser-warning': 'true'
+        });
+        const googleLoginUrl = `${environment.apiUrl}/auth/google-login`;
+        
+        // --- AQUI ESTÁ A CORREÇÃO ---
+        // Agora esperamos um JSON (LoginGoogleResponse) e não texto
+        this.http.post<LoginGoogleResponse>(googleLoginUrl, idToken, { headers })
+            .subscribe({
+                next: (resposta) => {
+                    console.log('Resposta do Backend:', resposta);
+                    
+                    // Lógica de Redirecionamento movida para cá
+                    if (resposta && resposta.status) {
+                        switch (resposta.status) {
+                            case 'COMPLETO':
+                                localStorage.setItem('sessionLoginTime', Date.now().toString());
+                                this.router.navigate(['/app']);
+                                break;
+                            case 'SELECIONAR_PERFIL':
+                                this.router.navigate(['/selecionar-perfil']);
+                                break;
+                            default:
+                                console.warn('Status desconhecido:', resposta.status);
+                                this.router.navigate(['/app']);
+                        }
+                    }
+                },
+                error: (err) => console.error('Erro ao notificar backend:', err)
+            });
+    });
+  }
+
+  // --- MÉTODOS PÚBLICOS ---
+
+  async loginComGoogle(): Promise<void> {
+    const provider = new GoogleAuthProvider();
+    return signInWithRedirect(this.auth, provider);
+  }
+
+  // ... (Os outros métodos de login, register, logout continuam iguais ao que tinhas) ...
+  
   login(email: string, password: string): Observable<UserCredential> {
     return from(signInWithEmailAndPassword(this.auth, email, password));
   }
@@ -49,11 +112,10 @@ export class AuthService {
       .pipe(
         switchMap(userCredential => from(userCredential.user.getIdToken())),
         switchMap(idToken => {
-          // 3. MUDANÇA: Adicionado o header do Ngrok aqui
           const headers = new HttpHeaders({
             'Authorization': `Bearer ${idToken}`,
             'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'true' // <--- O "Passe Livre"
+            'ngrok-skip-browser-warning': 'true'
           });
           const requestBody = {
             nome: userData.name,
@@ -77,45 +139,6 @@ export class AuthService {
 
   redefinirSenha(email: string): Observable<void> {
     return from(sendPasswordResetEmail(this.auth, email));
-  }
-
-  loginComGoogle(): Observable<any> {
-    return from(signInWithPopup(this.auth, new GoogleAuthProvider())).pipe(
-      switchMap(userCredential => {
-        return from(userCredential.user.getIdToken());
-      }),
-      switchMap(idToken => {
-        // 4. MUDANÇA: Adicionado o header do Ngrok aqui
-        const headers = new HttpHeaders({ 
-            'Content-Type': 'text/plain',
-            'ngrok-skip-browser-warning': 'true' // <--- O "Passe Livre"
-        });
-        
-        // 5. MUDANÇA: URL dinâmica com environment
-        const googleLoginUrl = `${environment.apiUrl}/auth/google-login`;
-
-        return this.http.post(googleLoginUrl, idToken, { headers, responseType: 'text' as 'json' });
-      })
-    );
-  }
-
-  // Método privado (se for usado internamente)
-  private registerGoogleUser(user: User): Observable<any> {
-    return from(user.getIdToken()).pipe(
-      switchMap(idToken => {
-        // 6. MUDANÇA: Adicionado o header do Ngrok aqui também
-        const headers = new HttpHeaders({
-          'Authorization': `Bearer ${idToken}`,
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true' // <--- O "Passe Livre"
-        });
-        const requestBody = {
-          nome: user.displayName || 'Nome não fornecido',
-          email: user.email,
-        };
-        return this.http.post(this.apiUrl, requestBody, { headers });
-      })
-    );
   }
 
   getIdToken(): Observable<string | null> {
@@ -143,9 +166,7 @@ export class AuthService {
     if (!user || !user.email) {
       return throwError(() => new Error('Nenhum usuário logado.'));
     }
-
     const credential = EmailAuthProvider.credential(user.email, password);
-
     return from(reauthenticateWithCredential(user, credential)).pipe(
       map(() => void 0));
   }
@@ -156,7 +177,6 @@ export class AuthService {
       return throwError(() => new Error('Nenhum usuário para deletar.'));
     }
     const usuarioService = this.injector.get(UsuarioService);
-    
     return usuarioService.deleteSelf().pipe(
       switchMap(() => {
         return from(deleteUser(user));

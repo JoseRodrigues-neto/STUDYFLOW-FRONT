@@ -34,11 +34,38 @@ export class AtividadeService {
 
   // --- MÉTODOS DE BUSCA PRIVADOS ---
 
-  private fetchAndBroadcastByUser(usuarioId: number): Observable<Atividade[]> {
+  private fetchAndBroadcastByUser(statuses?: StatusAtividade[]): Observable<Atividade[]> {
     return this.authService.getIdToken().pipe(
       switchMap(token => {
         if (!token) return throwError(() => new Error('Sem token'));
-        return this.http.get<Atividade[]>(`${this.apiUrl}/usuario/${usuarioId}`, { headers: this.getHeaders(token) });
+
+        let params = new HttpParams();
+        if (statuses && statuses.length > 0) {
+          statuses.forEach(status => {
+            params = params.append('status', status);
+          });
+        }
+
+        return this.http.get<Atividade[]>(`${this.apiUrl}/usuario`, { headers: this.getHeaders(token), params });
+      }),
+      tap(atividades => this.atividadesSubject.next(atividades)),
+      catchError(this.handleError)
+    );
+  }
+
+  private fetchAndBroadcastDailyByUser(statuses?: StatusAtividade[]): Observable<Atividade[]> {
+    return this.authService.getIdToken().pipe(
+      switchMap(token => {
+        if (!token) return throwError(() => new Error('Sem token'));
+        
+        let params = new HttpParams();
+        if (statuses && statuses.length > 0) {
+          statuses.forEach(status => {
+            params = params.append('status', status);
+          });
+        }
+
+        return this.http.get<Atividade[]>(`${this.apiUrl}/diarias`, { headers: this.getHeaders(token), params });
       }),
       tap(atividades => this.atividadesSubject.next(atividades)),
       catchError(this.handleError)
@@ -54,8 +81,12 @@ export class AtividadeService {
 
   // --- MÉTODOS DE CARREGAMENTO PÚBLICOS ---
 
-  public loadInitialAtividades(usuarioId: number): void {
-     this.fetchAndBroadcastByUser(usuarioId).subscribe();
+  public loadInitialAtividades(statuses?: StatusAtividade[]): void {
+     this.fetchAndBroadcastByUser(statuses).subscribe();
+  }
+
+  public loadDailyAtividades(statuses?: StatusAtividade[]): void {
+    this.fetchAndBroadcastDailyByUser(statuses).subscribe();
   }
 
   public loadAtividadesByRoadmap(roadmapId: number): void {
@@ -96,17 +127,17 @@ export class AtividadeService {
 
   // --- MÉTODOS DE CRUD CONTEXTUAL ---
 
-  create(atividade: Atividade, usuarioId: number, roadmapId?: number): Observable<Atividade[]> {
+  create(atividade: Atividade, roadmapId?: number): Observable<Atividade[]> {
     return this.authService.getIdToken().pipe(
       switchMap(token => {
         if (!token) return throwError(() => new Error('Sem token'));
         
         // 1. Cria a atividade no backend
-        return this.http.post<Atividade>(this.apiUrl, atividade, { headers: this.getHeaders(token) }).pipe(
+        return this.http.post<Atividade>(`${this.apiUrl}`, atividade, { headers: this.getHeaders(token) }).pipe(
            // 2. Se der certo, atualiza a lista correta
            switchMap(() => roadmapId 
              ? this.fetchAndBroadcastByRoadmap(roadmapId) 
-             : this.fetchAndBroadcastByUser(usuarioId)
+             : this.fetchAndBroadcastByUser()
            )
         );
       }),
@@ -114,7 +145,7 @@ export class AtividadeService {
     );
   }
 
-  update(atividade: Atividade, usuarioId: number, roadmapId?: number): Observable<Atividade[]> {
+  update(atividade: Atividade, roadmapId?: number): Observable<Atividade[]> {
     return this.authService.getIdToken().pipe(
       switchMap(token => {
         if (!token) return throwError(() => new Error('Sem token'));
@@ -122,7 +153,7 @@ export class AtividadeService {
         return this.http.put<Atividade>(`${this.apiUrl}/${atividade.id}`, atividade, { headers: this.getHeaders(token) }).pipe(
           switchMap(() => roadmapId 
             ? this.fetchAndBroadcastByRoadmap(roadmapId) 
-            : this.fetchAndBroadcastByUser(usuarioId)
+            : this.fetchAndBroadcastByUser()
           )
         );
       }),
@@ -130,7 +161,7 @@ export class AtividadeService {
     );
   }
   
-  updateStatus(atividadeId: number, status: StatusAtividade, usuarioId: number, roadmapId?: number): Observable<Atividade[]> {
+  updateStatus(atividadeId: number, status: StatusAtividade, roadmapId?: number): Observable<Atividade[]> {
     return this.authService.getIdToken().pipe(
       switchMap(token => {
         if (!token) return throwError(() => new Error('Sem token'));
@@ -139,7 +170,7 @@ export class AtividadeService {
         return this.http.patch<Atividade>(url, { status }, { headers: this.getHeaders(token) }).pipe(
           switchMap(() => roadmapId 
             ? this.fetchAndBroadcastByRoadmap(roadmapId) 
-            : this.fetchAndBroadcastByUser(usuarioId)
+            : this.fetchAndBroadcastByUser()
           )
         );
       }),
@@ -147,7 +178,7 @@ export class AtividadeService {
     );
   }
 
-  delete(id: number, usuarioId: number, roadmapId?: number): Observable<Atividade[]> {
+  delete(id: number, roadmapId?: number): Observable<Atividade[]> {
     return this.authService.getIdToken().pipe(
       switchMap(token => {
         if (!token) return throwError(() => new Error('Sem token'));
@@ -155,7 +186,7 @@ export class AtividadeService {
         return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders(token) }).pipe(
           switchMap(() => roadmapId 
             ? this.fetchAndBroadcastByRoadmap(roadmapId) 
-            : this.fetchAndBroadcastByUser(usuarioId)
+            : this.fetchAndBroadcastByUser()
           )
         );
       }),

@@ -19,7 +19,7 @@
   --border-color: #3a3a3c;
   --border-radius: 12px;
 
-  /* Tema Angular Material */
+  /* Tema Angular Material Overrides */
   --mat-select-value-color: var(--text-primary);
   --mat-form-field-label-color: var(--text-secondary);
   --mat-input-color: var(--text-primary);
@@ -36,12 +36,11 @@
   padding: 0 24px;
   box-shadow: none;
   min-height: 80px;
-  min-height: 80px;      /* Altura mínima */
-  height: auto !important; /* Permite crescer se os filtros ocuparem 2 linhas */
-  display: flex;         /* Garante comportamento flex no container pai */
+  height: auto !important; /* Permite crescer conforme o conteúdo */
+  display: flex;
   flex-direction: column;
   justify-content: center;
-  z-index: 10;           /* Garante que fique acima do dashboard */
+  z-index: 10;
   position: relative;
 }
 
@@ -51,7 +50,8 @@
   align-items: center;
   padding: 16px 0;
   gap: 24px;
-  flex-wrap: wrap;
+  width: 100%;
+  flex-wrap: wrap; /* Permite quebrar linha se necessário */
 }
 
 .title {
@@ -61,6 +61,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
+  white-space: nowrap; /* Impede que o título quebre feio */
 }
 
 .title-icon {
@@ -74,53 +75,64 @@
 
 .filters-container {
   display: flex;
-  gap: 16px;
-  align-items: center;
+  gap: 12px;
+  /* O segredo: Alinha tudo pela base ou centro, mas vamos forçar o centro visual */
+  align-items: center; 
   flex-wrap: wrap;
-   margin-top: 17px; 
+  justify-content: flex-end;
+  flex: 1;
 }
 
 .filter-field,
 .date-field {
   width: 160px;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
+  /* Remove margens padrão que possam atrapalhar */
+  margin: 0; 
 }
 
-/* Texto selecionado/input */
+/* --- CORREÇÃO DO ALINHAMENTO (O TRUQUE) --- */
+
+/* 1. Remove o espaço reservado para erro/dica debaixo do input */
+::ng-deep .filters-container .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}
+
+/* 2. Ajusta a altura e bordas do input para ficar estilo "Apple" */
+::ng-deep .filters-container .mat-mdc-text-field-wrapper {
+  background-color: var(--bg-main) !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--border-color) !important;
+  height: 48px !important; /* Altura fixa igual ao botão */
+  padding: 0 12px !important;
+  display: flex;
+  align-items: center; /* Centraliza o texto dentro da caixa */
+}
+
+/* 3. Remove padding extra que o Material coloca no topo */
+::ng-deep .filters-container .mat-mdc-form-field-infix {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  min-height: 48px !important; /* Garante altura mínima */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Cores do texto */
 ::ng-deep .mat-mdc-select-value-text,
 ::ng-deep .mat-input-element {
   color: var(--text-primary) !important;
 }
 
-/* Labels flutuantes */
 ::ng-deep .mat-mdc-floating-label {
   color: var(--text-secondary) !important;
+  top: 24px !important; /* Ajuste fino da posição do label */
 }
 
-/* Wrapper dos inputs - deixado estilo Apple */
-::ng-deep .mat-mdc-text-field-wrapper {
-  background-color: var(--bg-main) !important;
-  border-radius: 10px !important;
-  border: 1px solid var(--border-color) !important;
-}
-
-/* Ícones Select e DatePicker */
-::ng-deep .mat-mdc-select-arrow,
-::ng-deep .mat-datepicker-toggle {
-  color: var(--accent-blue) !important;
-}
-
-/* Range de datas */
-.custom-range {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-/* Remove outline interno do Material */
+/* Remove outline feio */
 ::ng-deep .mat-mdc-form-field-focus-overlay {
   background: transparent !important;
-  box-shadow: none !important;
 }
 
 /* ----------------------------------- */
@@ -128,19 +140,19 @@
 /* ----------------------------------- */
 
 .apply-btn {
-  height: 56px;
+  height: 48px !important; /* Mesma altura exata do input */
   padding: 0 24px;
   border-radius: 10px;
   background-color: var(--accent-blue) !important;
   color: white !important;
   font-weight: 600;
   border: none;
-  margin-top: -25px;
-  transition: 0.2s;
-}
-
-.apply-btn:hover {
-  background-color: #0a84ff !important;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  /* Removemos margens negativas, agora o alinhamento é pelo height */
 }
 
 /* ----------------------------------- */
@@ -155,48 +167,14 @@
 }
 
 /* ----------------------------------- */
-/* ----------- USER CARD ------------- */
-/* ----------------------------------- */
-
-.user-card {
-  margin-bottom: 24px;
-  background-color: var(--bg-content);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 16px;
-}
-
-.user-content {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--accent-blue);
-}
-
-.user-name {
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.user-email {
-  color: var(--text-secondary);
-}
-
-/* ----------------------------------- */
 /* ------------- KPI GRID ------------ */
 /* ----------------------------------- */
 
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+  /* Responsividade mágica: ajusta colunas automaticamente */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: 16px;
   margin-bottom: 24px;
 }
 
@@ -207,9 +185,14 @@
   border: 1px solid var(--border-color);
   position: relative;
   overflow: hidden;
+  transition: transform 0.2s ease;
 }
 
-/* Borda colorida esquerda */
+.kpi-card:hover {
+  transform: translateY(-2px); /* Efeito sutil de hover */
+}
+
+/* Bordas coloridas */
 .kpi-card::before {
   content: "";
   position: absolute;
@@ -227,13 +210,40 @@
 .kpi-card mat-card-content {
   display: flex;
   gap: 16px;
-  padding: 20px !important;
+  padding: 16px 20px !important;
+  align-items: center;
 }
 
 .kpi-icon {
   background: var(--bg-hover);
-  padding: 12px;
+  padding: 10px;
   border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.kpi-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.kpi-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 /* ----------------------------------- */
@@ -242,7 +252,8 @@
 
 .charts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  /* Aqui estava o problema: 450px era muito largo para mobile */
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 24px;
 }
 
@@ -255,26 +266,20 @@
 
 .chart-wrapper {
   height: 300px;
-  padding: 0 16px 16px;
+  padding: 0 8px 16px;
+  position: relative;
+}
+
+.chart-icon {
+  margin-left: auto;
+  color: var(--text-muted);
 }
 
 /* ----------------------------------- */
 /* --------- RESPONSIVIDADE ---------- */
 /* ----------------------------------- */
 
-@media (max-width: 1024px) {
-  .toolbar-content {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .apply-btn {
-    width: 100%;
-  }
-}/* ----------------------------------- */
-/* --------- RESPONSIVIDADE ---------- */
-/* ----------------------------------- */
-
-/* Tablets e Telas Menores (iPad, Laptops pequenos) */
+/* Tablets e Laptops Pequenos (até 1024px) */
 @media (max-width: 1024px) {
   .toolbar-content {
     flex-direction: column;
@@ -284,84 +289,54 @@
 
   .filters-container {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start; /* Alinha filtros à esquerda */
   }
-
-  /* Ajusta os gráficos para não estourarem a tela se o espaço for reduzido */
+  
+  /* Gráficos ocupam a largura toda se não couberem dois */
   .charts-grid {
-    grid-template-columns: 1fr; /* Força uma coluna única se necessário */
+    grid-template-columns: 1fr; 
   }
 }
 
-/* Celulares (iPhone, Android) - Breakpoint principal */
+/* Celulares (até 768px) */
 @media (max-width: 768px) {
   
-  /* 1. Ajuste de Espaçamentos Gerais */
-  .toolbar {
-    padding: 0 16px; /* Reduz padding lateral */
-  }
-
   .dashboard-container {
-    padding: 16px; /* Reduz padding do container principal */
+    padding: 16px; /* Menos padding */
   }
 
-  /* 2. Filtros em Coluna (Pilha) */
+  /* Filtros empilhados */
   .filters-container {
     flex-direction: column;
-    align-items: stretch; /* Estica os inputs para 100% */
+    align-items: stretch; /* Inputs esticados */
     width: 100%;
-    margin-top: 12px;
-    gap: 12px;
   }
 
-  .filter-field, 
-  .date-field {
-    width: 100%; /* Input ocupa toda a largura */
+  .filter-field, .date-field {
+    width: 100% !important; /* Força largura total */
   }
 
   .custom-range {
-    flex-direction: column; /* Data de início e fim uma em cima da outra */
+    flex-direction: column;
     width: 100%;
   }
 
-  /* 3. Botão Aplicar */
   .apply-btn {
     width: 100%;
-    margin-top: 8px; /* Remove a margem negativa que quebrava o layout */
-    height: 48px; /* Altura mais confortável para toque */
+    height: 48px;
   }
 
-  /* 4. KPIs (Cartões de métricas) */
+  /* KPIs: 1 por linha (ou 2 pequenos se preferires) */
   .kpi-grid {
-    grid-template-columns: 1fr; /* Uma métrica por linha em telas muito pequenas */
-    gap: 12px;
-  }
-  
-  .kpi-card mat-card-content {
-    padding: 16px !important; /* Menos padding interno para economizar espaço */
+    grid-template-columns: 1fr; /* Um cartão abaixo do outro */
   }
 
-  /* 5. Gráficos */
+  /* Gráficos */
   .charts-grid {
-    grid-template-columns: 1fr; /* Garante que o gráfico ocupe 100% da largura */
-    gap: 16px;
-  }
-
-  .chart-wrapper {
-    height: 250px; /* Reduz levemente a altura em celulares */
-    padding: 0 8px 8px;
-  }
-
-  /* 6. User Card */
-  .user-content {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
+    grid-template-columns: 1fr;
   }
   
-  .user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .chart-wrapper {
+    height: 250px; /* Gráficos um pouco mais baixos no celular */
   }
 }

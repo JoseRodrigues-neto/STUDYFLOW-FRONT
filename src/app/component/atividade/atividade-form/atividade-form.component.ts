@@ -22,7 +22,6 @@ export class AtividadeFormComponent implements OnInit {
   isViewMode = false;
   statusOptions = Object.values(StatusAtividade);
   roadmapId: number | null = null;
-  usuarioId: number | null = null;
   atividadeId: number | null = null;
 
   constructor(
@@ -44,7 +43,6 @@ export class AtividadeFormComponent implements OnInit {
     combineLatest([this.route.params, this.route.queryParams]).subscribe(([params, queryParams]) => {
       this.atividadeId = params['id'] ? +params['id'] : null;
       this.roadmapId = queryParams['roadmapId'] ? +queryParams['roadmapId'] : null;
-      this.usuarioId = queryParams['usuarioId'] ? +queryParams['usuarioId'] : null;
       this.isViewMode = queryParams['view'] === 'true';
 
       console.log('ngOnInit - roadmapId from queryParams:', this.roadmapId);
@@ -91,12 +89,6 @@ export class AtividadeFormComponent implements OnInit {
     }
 
     const formValues = this.atividadeForm.value;
-    const effectiveUsuarioId = this.usuarioId;
-
-    if (!effectiveUsuarioId) {
-      console.error('ERRO CRÍTICO: ID do usuário não fornecido para a operação.');
-      return;
-    }
 
     // Preparação correta do RoadmapId
     // Se for nulo (atividade diária), transformamos em undefined para o Service entender
@@ -104,30 +96,28 @@ export class AtividadeFormComponent implements OnInit {
 
     let operation$: Observable<Atividade[]>;
 
-    console.log(`Tentando salvar. UserID: ${effectiveUsuarioId}, RoadmapID: ${roadmapIdParam}`);
+    console.log(`Tentando salvar. RoadmapID: ${roadmapIdParam}`);
 
     // 1. Lógica de Edição
     if (this.isEditMode && this.atividadeId) {
       const atividadeAtualizada = { 
         id: this.atividadeId, 
         ...formValues,
-        usuarioId: effectiveUsuarioId,
         roadmapId: this.roadmapId ?? null 
       };
 
       console.log('Payload Update:', atividadeAtualizada);
       
-      operation$ = this.atividadeService.update(atividadeAtualizada as Atividade, effectiveUsuarioId, roadmapIdParam);
+      operation$ = this.atividadeService.update(atividadeAtualizada as Atividade, roadmapIdParam);
 
       // 2. Lógica de Criação (Roadmap ou Diária)
     } else {
       const novaAtividade: Atividade = {
         ...formValues,
-        usuarioId: effectiveUsuarioId,
         roadmapId: this.roadmapId ? this.roadmapId : null
       };
       console.log('onSubmit - Nova Atividade:', novaAtividade);
-      operation$ = this.atividadeService.create(novaAtividade, effectiveUsuarioId, roadmapIdParam);
+      operation$ = this.atividadeService.create(novaAtividade, roadmapIdParam);
     }
 
     operation$.subscribe({
