@@ -295,73 +295,46 @@
 
 /* Celulares (iPhone, Android) - Breakpoint principal */
 @media (max-width: 768px) {
-  
-  /* 1. Ajuste de Espaçamentos Gerais */
-  .toolbar {
-    padding: 0 16px; /* Reduz padding lateral */
-  }
-
-  .dashboard-container {
-    padding: 16px; /* Reduz padding do container principal */
-  }
-
-  /* 2. Filtros em Coluna (Pilha) */
-  .filters-container {
-    flex-direction: column;
-    align-items: stretch; /* Estica os inputs para 100% */
-    width: 100%;
-    margin-top: 12px;
-    gap: 12px;
-  }
-
-  .filter-field, 
-  .date-field {
-    width: 100%; /* Input ocupa toda a largura */
-  }
-
-  .custom-range {
-    flex-direction: column; /* Data de início e fim uma em cima da outra */
-    width: 100%;
-  }
-
-  /* 3. Botão Aplicar */
-  .apply-btn {
-    width: 100%;
-    margin-top: 8px; /* Remove a margem negativa que quebrava o layout */
-    height: 48px; /* Altura mais confortável para toque */
-  }
-
-  /* 4. KPIs (Cartões de métricas) */
-  .kpi-grid {
-    grid-template-columns: 1fr; /* Uma métrica por linha em telas muito pequenas */
-    gap: 12px;
-  }
-  
-  .kpi-card mat-card-content {
-    padding: 16px !important; /* Menos padding interno para economizar espaço */
-  }
-
-  /* 5. Gráficos */
   .charts-grid {
-    grid-template-columns: 1fr; /* Garante que o gráfico ocupe 100% da largura */
+    grid-template-columns: 1fr !important;
     gap: 16px;
   }
 
+  .chart-card {
+    width: 100%;
+  }.chart-card mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
   .chart-wrapper {
-    height: 250px; /* Reduz levemente a altura em celulares */
-    padding: 0 8px 8px;
+    width: 100%;
+    height: auto;
+    padding: 0 0 16px 0;
   }
 
-  /* 6. User Card */
-  .user-content {
-    flex-direction: column;
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+  .toolbar-content {
+    align-items: center;
     text-align: center;
+  }
+
+  .filters-container {
+    width: 100%;
+    flex-direction: column;
     align-items: center;
   }
-  
-  .user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+  .filter-field,
+  .date-field,
+  .custom-range,
+  .apply-btn {
+    width: 100%;
+    max-width: 320px; /* opcional: deixa mais elegante */
   }
 }

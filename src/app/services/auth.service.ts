@@ -23,8 +23,8 @@ export interface RegisterData {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/usuarios';
-  
+ // private apiUrl = 'app/usuarios';
+   private apiUrl = 'http://localhost:8080/usuarios';
   public readonly authState$: Observable<User | null>;
 
   constructor(
