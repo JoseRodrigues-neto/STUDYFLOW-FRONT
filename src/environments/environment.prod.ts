@@ -1,7 +1,7 @@
- export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:8080',
-
+export const environment = {
+  production: true,
+  apiUrl: ' https://6051b68ed29f.ngrok-free.app', 
+  
   firebaseConfig: {
     apiKey: "AIzaSyDrN7f1IJ8ctKG3aYUfovWelIhhFrtoWzM",
     authDomain: "studyflow-pi.firebaseapp.com",

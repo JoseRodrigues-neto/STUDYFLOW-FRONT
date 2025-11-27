@@ -1,32 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Roadmap } from '../models/roadmap.model';
-import { AuthService } from './auth.service'; // <--- 1. Importamos o AuthService
+// 1. Importar Environment e AuthService (verifique se o caminho do AuthService está correto)
+import { AuthService } from './auth.service'; 
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoadmapService {
- // private apiUrl = 'https://9ec610758ec0.ngrok-free.app/roadmaps';
-private apiUrl = 'http://localhost:8080/roadmaps';
+
+  // 2. URL dinâmica baseada no arquivo de configuração
+  private apiUrl = `${environment.apiUrl}/roadmaps`;
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService // <--- 2. Injetamos aqui
+    private authService: AuthService
   ) { }
 
-  // Método auxiliar para gerar os headers
+  // 3. Método auxiliar atualizado para incluir o header do Ngrok
   private getHeaders(token: string): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'true' // <--- Importante para evitar erro 403 ou HTML
     });
   }
 
   getRoadmaps(): Observable<Roadmap[]> {
-    // 3. Usamos switchMap para pegar o token antes da chamada
     return this.authService.getIdToken().pipe(
       switchMap(token => {
         if (!token) return throwError(() => new Error('Não autenticado'));
@@ -58,7 +61,6 @@ private apiUrl = 'http://localhost:8080/roadmaps';
             return throwError(() => new Error('Não autenticado'));
         }
 
-        // AQUI ESTÁ A MÁGICA: Enviamos o roadmap + o token
         return this.http.post<Roadmap>(this.apiUrl, roadmap, {
           headers: this.getHeaders(token)
         });

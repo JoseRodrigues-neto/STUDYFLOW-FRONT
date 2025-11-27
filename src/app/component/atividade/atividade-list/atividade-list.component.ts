@@ -65,7 +65,7 @@ carregarAtividades(): void {
         
         if (usuario && usuario.id) {
            
-          this.atividadeService.loadInitialAtividades(usuario.id);
+          this.atividadeService.loadInitialAtividades();
         
           this.atividades$.subscribe(() => this.isLoading = false);
         } else {
@@ -83,7 +83,7 @@ carregarAtividades(): void {
   iniciarNovaAtividade(): void {
     const roadmapIdParaTeste = 1;
     if (this.usuario && this.usuario.id) {
-      this.router.navigate(['/app/atividade-form'], { queryParams: { roadmapId: roadmapIdParaTeste, usuarioId: this.usuario.id } });
+      this.router.navigate(['/app/atividade-form'], { queryParams: { roadmapId: roadmapIdParaTeste } });
     } else {
       console.error("Não é possível criar atividade sem ID do usuário.");
     }
@@ -95,7 +95,7 @@ carregarAtividades(): void {
 
   editarAtividade(atividade: Atividade): void {
     if (this.usuario && this.usuario.id) {
-      this.router.navigate(['/app/atividade-form', atividade.id], { queryParams: { usuarioId: this.usuario.id } });
+      this.router.navigate(['/app/atividade-form', atividade.id]);
     } else {
       console.error("Não é possível editar atividade sem ID do usuário.");
     }
@@ -103,7 +103,7 @@ carregarAtividades(): void {
 
   excluirAtividade(id: number): void {
     if (confirm('Tem certeza que deseja excluir esta atividade?') && this.usuario && this.usuario.id) {
-      this.atividadeService.delete(id, this.usuario.id).subscribe({
+      this.atividadeService.delete(id).subscribe({
         error: (err) => console.error('Erro ao excluir atividade', err)
       });
     }

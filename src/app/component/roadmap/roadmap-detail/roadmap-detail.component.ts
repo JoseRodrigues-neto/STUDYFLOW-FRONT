@@ -86,7 +86,7 @@ export class RoadmapDetailComponent implements OnInit, OnDestroy {
 
   adicionarAtividade(): void {
     if (this.roadmap && this.usuario) {
-      this.router.navigate(['/app/atividade-form'], { queryParams: { roadmapId: this.roadmap.id, usuarioId: this.usuario.id } });
+      this.router.navigate(['/app/atividade-form'], { queryParams: { roadmapId: this.roadmap.id } });
     } else {
       console.error('Roadmap ou usuário não carregado, não é possível adicionar atividade.');
     }
@@ -101,7 +101,7 @@ export class RoadmapDetailComponent implements OnInit, OnDestroy {
       console.error("Usuário não carregado, não é possível editar a atividade.");
       return;
     }
-    this.router.navigate(['/app/atividade-form', atividade.id], { queryParams: { usuarioId: this.usuario.id, roadmapId: this.roadmap?.id } });
+    this.router.navigate(['/app/atividade-form', atividade.id], { queryParams: { roadmapId: this.roadmap?.id } });
   }
 
   excluirAtividade(atividade: Atividade): void {
@@ -116,7 +116,7 @@ export class RoadmapDetailComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.usuario && this.usuario.id && this.roadmap) {
-        this.atividadeService.delete(atividade.id, this.usuario.id, this.roadmap.id).subscribe({
+        this.atividadeService.delete(atividade.id, this.roadmap.id).subscribe({
           error: (err) => console.error('Erro ao excluir atividade:', err)
         });
       }

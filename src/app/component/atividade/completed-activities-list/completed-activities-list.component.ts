@@ -38,7 +38,7 @@ export class CompletedActivitiesListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.usuarioService.getMeuPerfil().subscribe(usuario => {
       if (usuario && usuario.id) {
-        this.atividadeService.loadInitialAtividades(usuario.id);
+        this.atividadeService.loadInitialAtividades([StatusAtividade.CONCLUIDO]);
         this.subscribeToAtividadesConcluidas();
       } else {
         this.isLoading = false;
@@ -53,9 +53,7 @@ export class CompletedActivitiesListComponent implements OnInit, OnDestroy {
   }
 
   subscribeToAtividadesConcluidas(): void {
-    this.atividadesSubscription = this.atividadeService.atividades$.pipe(
-      map(atividades => atividades.filter(a => a.status === StatusAtividade.CONCLUIDO))
-    ).subscribe(completedActivities => {
+    this.atividadesSubscription = this.atividadeService.atividades$.subscribe(completedActivities => {
       this.completedAtividades = completedActivities;
       this.isLoading = false;
     });
