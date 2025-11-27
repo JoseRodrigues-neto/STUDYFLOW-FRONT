@@ -13,7 +13,8 @@ import { AuthService } from '../../services/auth.service';
 export class AtividadeService {
 
   // 3. URL dinâmica
-  private apiUrl = `${environment.apiUrl}/atividades`;
+ private apiUrl = `${environment.apiUrl}/atividades`;
+  //private apiUrl = 'http://localhost:8080/atividades';
   
   private atividadesSubject = new ReplaySubject<Atividade[]>(1);
   public atividades$ = this.atividadesSubject.asObservable();

@@ -29,6 +29,7 @@ export interface DashboardFilter {
 export class DashboardService {
   
   private apiUrl = `${environment.apiUrl}/dashboard/me`;
+ // private apiUrl = 'http://localhost:8080/dashboard/me';
 
   constructor(
     private http: HttpClient, 

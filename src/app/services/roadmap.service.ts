@@ -11,9 +11,10 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class RoadmapService {
-
+ 
   // 2. URL dinâmica baseada no arquivo de configuração
   private apiUrl = `${environment.apiUrl}/roadmaps`;
+ // private apiUrl = 'http://localhost:8080/roadmaps';
 
   constructor(
     private http: HttpClient,

@@ -13,6 +13,7 @@ import { RoadmapListComponent } from './component/roadmap/roadmap-list/roadmap-l
 import { RoadmapDetailComponent } from './component/roadmap/roadmap-detail/roadmap-detail.component';
 import { RoadmapFormComponent } from './component/roadmap/roadmap-form/roadmap-form.component';
 import { AtividadeFormComponent } from './component/atividade/atividade-form/atividade-form.component';
+import { NotFoundComponent } from './error/nao-encontrado/not-found.component';
 
 export const routes: Routes = [
   {
@@ -101,10 +102,11 @@ export const routes: Routes = [
     ]
   },
 
-
   {
     path: '',
     redirectTo: '/inicio', 
     pathMatch: 'full'
-  }
+  },
+
+  { path: '**', component: NotFoundComponent }
 ];

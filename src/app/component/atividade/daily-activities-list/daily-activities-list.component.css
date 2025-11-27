@@ -236,3 +236,77 @@
   align-items: center;
   gap: 10px;
 }
+@media (max-width: 768px) {
+
+  /* Layout vira coluna */
+  .atividades-page-container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  /* Lista ocupa 100% sem min-width travando */
+  .list-wrapper {
+    min-width: 0;
+    width: 100%;
+    padding: 12px;
+  }
+
+  /* Painel de detalhes vira 100% também */
+  .panel-wrapper {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #3a3a3c;
+  }
+
+  /* Conteúdo interno fica mais compacto */
+  .detail-body {
+    padding: 16px;
+  }
+
+  /* Painel de ferramentas (timer) fica fechado no mobile */
+  .tools-wrapper {
+    display: none !important;
+  }
+
+  /* Botão flutuante do timer APARECE no mobile (se você quiser) */
+  .btn-toggle-timer {
+    top: 12px;
+    left: 12px;
+    border-radius: 8px;
+    border: 1px solid #3a3a3c;
+    position: fixed;
+    z-index: 999;
+  }
+
+  /* Títulos menores */
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .task-item {
+    padding: 12px;
+  }
+}
+
+/* Remove qualquer scroll lateral */
+html, body {
+  overflow-x: hidden !important;
+}
+
+/* Impede que elementos quebrem o layout no mobile */
+* {
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* Corrige o valor que está quebrando a tela */
+.list-wrapper {
+  min-width: 0 !important;
+}
+
+/* Evita que o hover empurre o card para fora */
+.task-item:hover {
+  transform: none !important;
+}

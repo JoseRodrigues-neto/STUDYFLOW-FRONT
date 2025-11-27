@@ -12,6 +12,7 @@ import { environment } from '../../../environments/environment';
 export class AnotacaoService {
 
   private apiUrl = `${environment.apiUrl}/anotacoes`;
+ // private apiUrl = 'http://localhost:8080/anotacoes';
 
   constructor(
     private http: HttpClient,
