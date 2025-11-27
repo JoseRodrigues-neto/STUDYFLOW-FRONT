@@ -1,60 +1,53 @@
-<div class="timer-card">
-  
-  <!-- Cabeçalho com os Modos -->
-  <div class="timer-modes">
-    <button class="mode-btn" 
-            [class.active]="currentMode === 'focus'" 
-            (click)="setMode('focus')">Foco</button>
-    <button class="mode-btn" 
-            [class.active]="currentMode === 'short'" 
-            (click)="setMode('short')">Curta</button>
-    <button class="mode-btn" 
-            [class.active]="currentMode === 'long'" 
-            (click)="setMode('long')">Longa</button>
-  </div>
+<div class="timer-container">
+  <!-- Botão que ficará na navbar -->
+  <button class="timer-toggle-btn" 
+          mat-icon-button 
+          (click)="togglePopup()"
+          matTooltip="Abrir Pomodoro Timer"
+          aria-label="Abrir Pomodoro Timer">
+    <mat-icon>timer</mat-icon>
+  </button>
 
-  <!-- O Relógio Circular -->
-  <div class="timer-display">
-    <svg class="progress-ring" width="240" height="240">
-      <!-- Círculo de Fundo (Cinza) -->
-      <circle
-        class="progress-ring__circle-bg"
-        stroke-width="10"
-        fill="transparent"
-        r="90"
-        cx="120"
-        cy="120"
-      />
-      <!-- Círculo de Progresso (Colorido) -->
-      <circle
-        class="progress-ring__circle"
-        [ngClass]="modeColorClass"
-        stroke-width="10"
-        fill="transparent"
-        r="90"
-        cx="120"
-        cy="120"
-        [style.stroke-dasharray]="CIRCUMFERENCE"
-        [style.stroke-dashoffset]="strokeDashoffset"
-      />
-    </svg>
-    
-    <!-- Texto no meio -->
-    <div class="time-text">
-      <h1>{{ formatTime }}</h1>
-      <p>{{ modeLabel }}</p>
+  <!-- O card do timer, que agora é um popup -->
+  <div *ngIf="isPopupVisible" class="timer-popup">
+    <div class="timer-card">
+      
+      <!-- Cabeçalho com os Modos -->
+      <div class="timer-modes">
+        <button class="mode-btn" 
+                [class.active]="currentMode === 'focus'" 
+                (click)="setMode('focus')">Foco</button>
+        <button class="mode-btn" 
+                [class.active]="currentMode === 'short'" 
+                (click)="setMode('short')">Curta</button>
+        <button class="mode-btn" 
+                [class.active]="currentMode === 'long'" 
+                (click)="setMode('long')">Longa</button>
+      </div>
+
+      <!-- O Relógio Circular -->
+      <div class="timer-display">
+        <svg class="progress-ring" width="180" height="180">
+          <circle class="progress-ring__circle-bg" stroke-width="8" fill="transparent" r="82" cx="90" cy="90" />
+          <circle class="progress-ring__circle" [ngClass]="modeColorClass" stroke-width="8" fill="transparent" r="82" cx="90" cy="90"
+            [style.stroke-dasharray]="CIRCUMFERENCE"
+            [style.stroke-dashoffset]="strokeDashoffset" />
+        </svg>
+        
+        <div class="time-text">
+          <h1>{{ formatTime }}</h1>
+        </div>
+      </div>
+
+      <!-- Controles -->
+      <div class="timer-controls">
+        <button mat-icon-button class="control-btn reset-btn" (click)="resetTimer()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+        <button mat-icon-button class="control-btn main-btn" (click)="toggleTimer()">
+          <mat-icon>{{ isRunning ? 'pause' : 'play_arrow' }}</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
-
-  <!-- Controles -->
-  <div class="timer-controls">
-    <button mat-icon-button class="control-btn main-btn" (click)="toggleTimer()">
-      <mat-icon>{{ isRunning ? 'pause' : 'play_arrow' }}</mat-icon>
-    </button>
-    
-    <button mat-icon-button class="control-btn reset-btn" (click)="resetTimer()">
-      <mat-icon>refresh</mat-icon>
-    </button>
-  </div>
-
 </div>

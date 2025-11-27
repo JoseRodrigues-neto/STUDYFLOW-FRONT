@@ -1,45 +1,59 @@
 :host {
   display: block;
- 
-  /* --- Variáveis de Cor (Tema Apple Dark / Atividades) --- */
-  --bg-card: #2c2c2e;       /* Fundo dos painéis */
-  --bg-hover: #3a3a3c;      /* Fundo de hover/input */
-  
+  --bg-card: #2c2c2e;
+  --bg-hover: #3a3a3c;
   --text-primary: #f2f2f7;
   --text-secondary: #8e8e93;
-  
   --accent-blue: #007aff;
-  --accent-blue-hover: #005ecb;
   --accent-green: #34c759;
   --accent-purple: #af52de;
-  --accent-red: #ff3b30;
-  
-  --border-color: #3a3a3c;
+  --border-color: #48484a;
   --border-radius: 12px;
 }
 
+/* Contêiner principal para o botão e o popup */
+.timer-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Botão do ícone na navbar */
+.timer-toggle-btn {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.timer-toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+/* O Popup que contém o timer */
+.timer-popup {
+  position: absolute;
+  top: 130%; /* Posição abaixo do botão da navbar */
+  right: 0;
+  z-index: 1000;
+  width: 280px; /* Largura do popup */
+}
+
+/* Card do timer, agora menor */
 .timer-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 1.5rem;
-  
-  /* Sombra sutil igual ao form-container */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  
-  width: 100%;
-  max-width: 100%; /* Ocupa a largura do painel lateral */
-  box-sizing: border-box;
+  align-items: center; /* Centralizado */
+  gap: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* --- Botões de Modo (Tabs) --- */
+/* --- Abas de Modo --- */
 .timer-modes {
   display: flex;
-  background-color: var(--bg-hover); /* #3a3a3c */
+  background-color: var(--bg-hover);
   padding: 4px;
   border-radius: 8px;
   width: 100%;
@@ -50,38 +64,32 @@
   background: none;
   border: none;
   color: var(--text-secondary);
-  padding: 6px;
-  font-size: 0.85rem;
+  padding: 5px;
+  font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
   border-radius: 6px;
   transition: all 0.2s ease;
 }
 
-.mode-btn:hover {
-  color: var(--text-primary);
-}
-
-/* Ativo - Fica com a cor do card para dar efeito de "aba" */
 .mode-btn.active {
-  background-color: #636366; /* Um cinza um pouco mais claro para destaque */
+  background-color: #636366;
   color: var(--text-primary);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* --- O Círculo SVG --- */
+/* --- Visor do Timer (menor) --- */
 .timer-display {
   position: relative;
-  width: 240px;
-  height: 240px;
+  width: 180px;
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 }
 
 .progress-ring__circle-bg {
-  stroke: var(--bg-hover); /* #3a3a3c - Fundo do trilho */
+  stroke: var(--bg-hover);
 }
 
 .progress-ring__circle {
@@ -91,107 +99,55 @@
   stroke-linecap: round;
 }
 
-/* Cores dos Modos */
 .mode-focus { stroke: var(--accent-blue); }
 .mode-short { stroke: var(--accent-green); }
 .mode-long { stroke: var(--accent-purple); }
 
-/* --- Texto Central --- */
+/* --- Texto (menor) --- */
 .time-text {
   position: absolute;
   text-align: center;
 }
 
 .time-text h1 {
-  font-size: 3.5rem;
-  font-weight: 700;
+  font-size: 2.8rem; /* Reduzido */
+  font-weight: 600;
   margin: 0;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
-  line-height: 1;
 }
 
-.time-text p {
-  font-size: 1rem;
-  margin-top: 0.5rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-}
-
-/* --- Controles --- */
+/* --- Controles (reorganizados) --- */
 .timer-controls {
   display: flex;
   gap: 1rem;
   align-items: center;
-  width: 100%;
   justify-content: center;
+  width: 100%;
 }
 
- 
-/* Botão de Play/Pause (Estilo Button Primary) */
 .main-btn {
-  width: 56px;
-  height: 56px;
+  width: 50px;
+  height: 50px;
   background-color: var(--accent-blue);
   color: white;
-  border-radius: 50%; /* Redondo */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-}
-
-.main-btn:hover {
-  background-color: var(--accent-blue-hover);
 }
 
 .main-btn mat-icon {
-  font-size: 28px;
-  width: 28px;
-  height: 28px;
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
 }
 
 .reset-btn {
-  /* 1. AUMENTA O TAMANHO (Era 40px, agora 48px para dar espaço) */
-  width: 48px;
-  height: 48px;
-  min-width: 48px;  /* Força o navegador a respeitar o tamanho */
-  min-height: 48px;
-  
+  width: 44px;
+  height: 44px;
   background-color: var(--bg-hover);
   color: var(--text-secondary);
-  
-  border-radius: 50%;
-  border: none;
-  
-  /* 2. REMOVE O PADDING (Isso é o que estava cortando o ícone) */
-  padding: 0; 
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  transition: all 0.2s;
-  cursor: pointer;
-  flex-shrink: 0; 
-  overflow: visible; 
 }
 
-.reset-btn:hover {
-  background-color: #636366;
-  transform: scale(1.05);
-}
-
-/* 3. CENTRALIZA O ÍCONE DENTRO DO BOTÃO */
 .reset-btn mat-icon {
-  font-size: 24px;
-  width: 24px;
-  height: 24px;
-  line-height: 24px; /* Alinha verticalmente no centro */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
 }
